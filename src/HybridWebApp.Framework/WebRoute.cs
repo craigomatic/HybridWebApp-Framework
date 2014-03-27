@@ -17,7 +17,7 @@ namespace HybridWebApp.Framework
 
         public IBrowser Browser { get; private set; }
 
-        private Dictionary<string, Action> _MappedRoutes;
+        private Dictionary<string, List<MappedRoute>> _MappedRoutes;
 
         public WebRoute(Uri rootUri, Interpreter interpreter, IBrowser browser)
         {
@@ -28,42 +28,27 @@ namespace HybridWebApp.Framework
             this.Browser.NavigationFailed += Browser_NavigationFailed;
             this.Browser.Navigating += Browser_Navigating;
 
-            _MappedRoutes = new Dictionary<string, Action>();
+            _MappedRoutes = new Dictionary<string, List<MappedRoute>>();
         }
 
-        void Browser_Navigating(object sender, WrappedNavigatingEventArgs e)
+        /// <summary>
+        /// Maps a route to an action that is invoked when the browser loaded completed event has been raised
+        /// </summary>
+        /// <param name="fragment"></param>
+        /// <param name="action"></param>
+        /// <param name="runOnce"></param>
+        public void Map(string fragment, Func<Task> action, bool runOnce = false)
         {
-            if(e.Uri.Host != this.Root.Host)
+            List<MappedRoute> mappedRoutes = null;
+
+            if(!_MappedRoutes.TryGetValue(fragment, out mappedRoutes))
             {
-                if (_OtherHostsAction != null)
-                {
-                    _OtherHostsAction(e.Uri);
+                mappedRoutes = new List<MappedRoute>();
 
-                    e.Cancel = true;
-                }
+                _MappedRoutes.Add(fragment, mappedRoutes);
             }
-        }
 
-        void Browser_NavigationFailed(object sender, Uri e)
-        {
-            this.CurrentUri = e;
-        }
-
-        void Browser_LoadCompleted(object sender, Uri e)
-        {
-            this.CurrentUri = e;
-
-            Action action = null;
-
-            if (_MappedRoutes.TryGetValue(e.Fragment, out action))
-            {
-                action();
-            }
-        }
-
-        public void Map(string fragment, Action action)
-        {
-            _MappedRoutes.Add(fragment, action);
+            mappedRoutes.Add(new MappedRoute { Action = action, RunOnce = runOnce });
         }
 
         private Action<Uri> _OtherHostsAction;
@@ -87,5 +72,46 @@ namespace HybridWebApp.Framework
         {
             this.Interpreter.Eval(string.Format("framework.routeTo('{0}');", href));
         }
+
+        #region Browser event handlers
+
+        void Browser_Navigating(object sender, WrappedNavigatingEventArgs e)
+        {
+            if (e.Uri.Host != this.Root.Host)
+            {
+                if (_OtherHostsAction != null)
+                {
+                    _OtherHostsAction(e.Uri);
+
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        void Browser_NavigationFailed(object sender, Uri e)
+        {
+            this.CurrentUri = e;
+        }
+
+        private async void Browser_LoadCompleted(object sender, Uri e)
+        {
+            this.CurrentUri = e;
+
+            List<MappedRoute> mappedRoute = null;
+
+            if (_MappedRoutes.TryGetValue(e.Fragment, out mappedRoute))
+            {
+                foreach (var route in mappedRoute)
+                {
+                    if (!route.RunOnce || (route.RunOnce && route.Hits == 0))
+                    {
+                        route.Hits++;
+                        await route.Action();
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }
