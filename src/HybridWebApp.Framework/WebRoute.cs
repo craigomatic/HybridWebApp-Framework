@@ -25,8 +25,28 @@ namespace HybridWebApp.Framework
             this.Interpreter = interpreter;
             this.Browser = browser;
             this.Browser.LoadCompleted += Browser_LoadCompleted;
+            this.Browser.NavigationFailed += Browser_NavigationFailed;
+            this.Browser.Navigating += Browser_Navigating;
 
             _MappedRoutes = new Dictionary<string, Action>();
+        }
+
+        void Browser_Navigating(object sender, WrappedNavigatingEventArgs e)
+        {
+            if(e.Uri.Host != this.Root.Host)
+            {
+                if (_OtherHostsAction != null)
+                {
+                    _OtherHostsAction(e.Uri);
+
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        void Browser_NavigationFailed(object sender, Uri e)
+        {
+            this.CurrentUri = e;
         }
 
         void Browser_LoadCompleted(object sender, Uri e)
@@ -44,6 +64,13 @@ namespace HybridWebApp.Framework
         public void Map(string fragment, Action action)
         {
             _MappedRoutes.Add(fragment, action);
+        }
+
+        private Action<Uri> _OtherHostsAction;
+
+        public void MapOtherHosts(Action<Uri> action)
+        {
+            _OtherHostsAction = action;
         }
 
         public void NavigateHome()

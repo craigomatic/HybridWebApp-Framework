@@ -9,5 +9,7 @@ namespace HybridWebApp.Framework.Model
     public interface IBrowser
     {
         event EventHandler<Uri> LoadCompleted;
+        event EventHandler<Uri> NavigationFailed;
+        event EventHandler<WrappedNavigatingEventArgs> Navigating; 
     }
 }
