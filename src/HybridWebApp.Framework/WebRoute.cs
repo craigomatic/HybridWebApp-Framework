@@ -19,7 +19,16 @@ namespace HybridWebApp.Framework
 
         private Dictionary<string, List<MappedRoute>> _MappedRoutes;
 
-        public WebRoute(Uri rootUri, Interpreter interpreter, IBrowser browser)
+        private bool _MapOnNavigate;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rootUri"></param>
+        /// <param name="interpreter"></param>
+        /// <param name="browser"></param>
+        /// <param name="mapOnNavigate">When true, the mappings will be evaluated when the Browser Navigated event is raised. When false, the mappings will be evaluated when the Browser Loaded event is raised.</param>
+        public WebRoute(Uri rootUri, Interpreter interpreter, IBrowser browser, bool mapOnNavigate = true)
         {
             this.Root = rootUri;
             this.Interpreter = interpreter;
@@ -27,9 +36,11 @@ namespace HybridWebApp.Framework
             this.Browser.LoadCompleted += Browser_LoadCompleted;
             this.Browser.NavigationFailed += Browser_NavigationFailed;
             this.Browser.Navigating += Browser_Navigating;
+            this.Browser.Navigated += Browser_Navigated;
 
             _MappedRoutes = new Dictionary<string, List<MappedRoute>>();
-        }
+            _MapOnNavigate = mapOnNavigate;
+        }        
 
         /// <summary>
         /// Maps a route to an action that is invoked when the browser loaded completed event has been raised
@@ -73,9 +84,36 @@ namespace HybridWebApp.Framework
             this.Interpreter.Eval(string.Format("framework.routeTo('{0}');", href));
         }
 
+        private async Task _EvaluateMappedRoutesAsync(Uri uri)
+        {
+            this.CurrentUri = uri;
+
+            List<MappedRoute> mappedRoute = null;
+
+            if (_MappedRoutes.TryGetValue(uri.Fragment, out mappedRoute))
+            {
+                foreach (var route in mappedRoute)
+                {
+                    if (!route.RunOnce || (route.RunOnce && route.Hits == 0))
+                    {
+                        route.Hits++;
+                        await route.Action();
+                    }
+                }
+            }
+        }
+
         #region Browser event handlers
 
-        void Browser_Navigating(object sender, WrappedNavigatingEventArgs e)
+        private async void Browser_LoadCompleted(object sender, Uri uri)
+        {
+            if(!_MapOnNavigate)
+            {
+                await _EvaluateMappedRoutesAsync(uri);
+            }
+        }
+
+        private void Browser_Navigating(object sender, WrappedNavigatingEventArgs e)
         {
             if (e.Uri.Host != this.Root.Host)
             {
@@ -88,28 +126,17 @@ namespace HybridWebApp.Framework
             }
         }
 
+        private async void Browser_Navigated(object sender, WrappedNavigatedEventArgs e)
+        {
+            if (_MapOnNavigate)
+            {
+                await _EvaluateMappedRoutesAsync(e.Uri);
+            }
+        }
+
         void Browser_NavigationFailed(object sender, Uri e)
         {
             this.CurrentUri = e;
-        }
-
-        private async void Browser_LoadCompleted(object sender, Uri e)
-        {
-            this.CurrentUri = e;
-
-            List<MappedRoute> mappedRoute = null;
-
-            if (_MappedRoutes.TryGetValue(e.Fragment, out mappedRoute))
-            {
-                foreach (var route in mappedRoute)
-                {
-                    if (!route.RunOnce || (route.RunOnce && route.Hits == 0))
-                    {
-                        route.Hits++;
-                        await route.Action();
-                    }
-                }
-            }
         }
 
         #endregion
