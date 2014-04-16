@@ -33,6 +33,17 @@ framework.hideElement = function (elementId) {
     return false;
 }
 
+framework.removeElement = function (elementId) {
+    var toRemove = document.querySelector(elementId);
+
+    if(toRemove != null) {
+        toRemove.parentNode.removeChild(toRemove);
+        return true;
+    }
+
+    return false;
+}
+
 framework.routeTo = function (href) {
     try {
         document.location.href = href;
