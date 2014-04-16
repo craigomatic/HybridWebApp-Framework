@@ -88,11 +88,11 @@ namespace HybridWebApp.Framework
         {
             this.CurrentUri = uri;
 
-            List<MappedRoute> mappedRoute = null;
+            var mappedRoutes = _MappedRoutes.Where(r => uri.AbsolutePath.Contains(r.Key));
 
-            if (_MappedRoutes.TryGetValue(uri.Fragment, out mappedRoute))
+            foreach (var mappedRoute in mappedRoutes)
             {
-                foreach (var route in mappedRoute)
+                foreach (var route in mappedRoute.Value)
                 {
                     if (!route.RunOnce || (route.RunOnce && route.Hits == 0))
                     {
