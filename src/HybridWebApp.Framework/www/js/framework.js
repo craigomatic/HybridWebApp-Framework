@@ -14,6 +14,8 @@ window.onerror = function (message, url, lineNumber) {
 
 var framework = {};
 
+framework.messageProxyId = "hwaf-messageproxy";
+
 framework.postDom = function () {
     var msg = {};
     msg.type = 'body';
@@ -171,6 +173,24 @@ framework.hasMatch = function (selector) {
     return "false";
 }
 
-framework.hookClick = function (elementId) {
+framework.injectMessageProxy = function () {
 
+    var msgProxy = document.createElement('iframe');
+
+    msgProxy.frameBorder = 0;
+    msgProxy.width = "1px";
+    msgProxy.height = "1px";
+    msgProxy.id = framework.messageProxyId;
+    msgProxy.setAttribute("src", "http://localhost/hwaf/");
+
+    document.documentElement.appendChild(msgProxy);
+}
+
+framework.scriptNotify = function (json) {
+
+    //TODO: work out the context and if the message should be passed via iframe or window.external.notify
+
+    //place the message object into the src of the iframe as json params
+    var iframe = document.querySelector("#" + framework.messageProxyId);
+    iframe.setAttribute("src", "http://localhost/hwaf/" + json);
 }
