@@ -194,3 +194,9 @@ framework.scriptNotify = function (json) {
     var iframe = document.querySelector("#" + framework.messageProxyId);
     iframe.setAttribute("src", "http://localhost/hwaf/" + json);
 }
+
+framework.appendCss = function (cssString) {
+    var css = document.createElement("style");
+    css.innerHTML = cssString;
+    document.documentElement.appendChild(css);
+}

@@ -11,16 +11,18 @@ namespace HybridWebApp.Framework
 {
     public class Interpreter
     {
-        private string _Namespace;
+        private string _ScriptNamespace;
+        private string _CssNamespace;
         private Assembly _Assembly;
 
         private IScriptInvoker _ScriptInvoker;
 
-        public Interpreter(IScriptInvoker scriptInvoker, Assembly assembly, string scriptNamespace)
+        public Interpreter(IScriptInvoker scriptInvoker, Assembly assembly, string scriptNamespace, string cssNamespace)
         {
             _ScriptInvoker = scriptInvoker;
             _Assembly = assembly;
-            _Namespace = scriptNamespace;
+            _ScriptNamespace = scriptNamespace;
+            _CssNamespace = cssNamespace;
         }
 
         public async Task LoadFrameworkAsync()
@@ -31,16 +33,30 @@ namespace HybridWebApp.Framework
 
         public void Load(string scriptName)
         {
-            var scriptPayload = EmbeddedResource.ReadAsString(_Assembly, string.Format("{0}.{1}", _Namespace, scriptName));
+            var scriptPayload = EmbeddedResource.ReadAsString(_Assembly, string.Format("{0}.{1}", _ScriptNamespace, scriptName));
 
             this.Eval(scriptPayload);
         }
 
         public async Task LoadAsync(string scriptName)
         {
-            var scriptPayload = await EmbeddedResource.ReadAsStringAsync(_Assembly, string.Format("{0}.{1}", _Namespace, scriptName));
+            var scriptPayload = await EmbeddedResource.ReadAsStringAsync(_Assembly, string.Format("{0}.{1}", _ScriptNamespace, scriptName));
 
             this.Eval(scriptPayload);
+        }
+
+        public void LoadCss(string cssName)
+        {
+            var cssPayload = EmbeddedResource.ReadAsString(_Assembly, string.Format("{0}.{1}", _CssNamespace, cssName));
+
+            this.Eval(string.Format("framework.appendCss(\"{0}\");", cssPayload.Replace("\r", string.Empty).Replace("\n", string.Empty)));
+        }
+
+        public async Task LoadCssAsync(string cssName)
+        {
+            var cssPayload = await EmbeddedResource.ReadAsStringAsync(_Assembly, string.Format("{0}.{1}", _CssNamespace, cssName));
+
+            this.Eval(string.Format("framework.appendCss(\"{0}\");", cssPayload.Replace("\r", string.Empty).Replace("\n", string.Empty)));
         }
 
         public string Eval(string scriptPayload)
