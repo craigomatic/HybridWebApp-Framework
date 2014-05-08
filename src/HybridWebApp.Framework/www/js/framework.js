@@ -7,7 +7,7 @@ window.onerror = function (message, url, lineNumber) {
     msg.type = 'error';
     msg.payload = JSON.stringify({ message: message, url: url, lineNumber: lineNumber });
 
-    window.external.notify(JSON.stringify(msg));
+    framework.scriptNotify(JSON.stringify(msg));
 
     return true;
 };
@@ -15,13 +15,14 @@ window.onerror = function (message, url, lineNumber) {
 var framework = {};
 
 framework.messageProxyId = "hwaf-messageproxy";
+framework.useMessageProxy = false;
 
 framework.postDom = function () {
     var msg = {};
     msg.type = 'body';
     msg.payload = document.body.innerHTML;
 
-    window.external.notify(JSON.stringify(msg));
+    framework.scriptNotify(JSON.stringify(msg));
 };
 
 framework.hideElement = function (elementId) {
@@ -141,7 +142,7 @@ framework.enableGestures = function (gestureSurface) {
                 msg.type = 'gesture';
                 msg.payload = JSON.stringify(gesture);
 
-                window.external.notify(JSON.stringify(msg));
+                framework.scriptNotify(JSON.stringify(msg));
             }
         }
     });
@@ -184,19 +185,41 @@ framework.injectMessageProxy = function () {
     msgProxy.setAttribute("src", "http://localhost/hwaf/");
 
     document.documentElement.appendChild(msgProxy);
+
+    framework.useMessageProxy = true;
 }
 
 framework.scriptNotify = function (json) {
 
-    //TODO: work out the context and if the message should be passed via iframe or window.external.notify
+    //calling app defines if message should be passed via iframe or window.external.notify
 
-    //place the message object into the src of the iframe as json params
-    var iframe = document.querySelector("#" + framework.messageProxyId);
-    iframe.setAttribute("src", "http://localhost/hwaf/" + json);
+    if(framework.useMessageProxy) {
+        //place the message object into the src of the iframe as json params
+        var iframe = document.querySelector("#" + framework.messageProxyId);
+        iframe.setAttribute("src", "http://localhost/hwaf/" + encodeURIComponent(json));
+    }
+    else {
+        window.external.notify(json);
+    }
 }
 
 framework.appendCss = function (cssString) {
     var css = document.createElement("style");
     css.innerHTML = cssString;
     document.documentElement.appendChild(css);
+}
+
+framework.overrideWindowOpen = function () {
+
+    //redefine window.open so that it can be handled by the host app
+    window.open = function () {
+        var navItem = {};
+        navItem.href = arguments[0];
+
+        var msg = {};
+        msg.type = 'window.open';
+        msg.payload = JSON.stringify(navItem);
+
+        framework.scriptNotify(JSON.stringify(msg));
+    }
 }

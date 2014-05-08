@@ -15,5 +15,7 @@ namespace HybridWebApp.Framework
         public const string Menu = "menu";
 
         public const string Gesture = "gesture";
+
+        public const string WindowOpen = "window.open";
     }
 }

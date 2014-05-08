@@ -25,10 +25,15 @@ namespace HybridWebApp.Framework
             _CssNamespace = cssNamespace;
         }
 
-        public async Task LoadFrameworkAsync()
+        public async Task LoadFrameworkAsync(bool overrideWindowExternalNotify = false)
         {
             var scriptPayload = await EmbeddedResource.ReadAsStringAsync(typeof(Interpreter).GetTypeInfo().Assembly, string.Format("{0}.www.js.framework.js", typeof(Interpreter).GetTypeInfo().Namespace));
             this.Eval(scriptPayload);
+
+            if (overrideWindowExternalNotify)
+            {
+                this.Eval("framework.injectMessageProxy();");
+            }
         }
 
         public void Load(string scriptName)
