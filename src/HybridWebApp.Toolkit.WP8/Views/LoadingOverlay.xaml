@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="HybridWebApp.Toolkit.WP8.Views.LoadingOverlay"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}">
+
+    <Grid x:Name="LayoutRoot" Background="White" HorizontalAlignment="Stretch" VerticalAlignment='Stretch'>
+        <StackPanel Grid.Row="1" VerticalAlignment="Center">
+            <Image Source="/Assets/Tiles/FlipCycleTileLarge.png" Width="336" />
+            <ProgressBar x:Name="ProgBar" IsIndeterminate="True" VerticalAlignment="Top" Foreground="{StaticResource PhoneAccentBrush}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
