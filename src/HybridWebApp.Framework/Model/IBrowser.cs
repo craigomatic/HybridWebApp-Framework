@@ -12,5 +12,7 @@ namespace HybridWebApp.Framework.Model
         event EventHandler<Uri> NavigationFailed;
         event EventHandler<WrappedNavigatingEventArgs> Navigating;
         event EventHandler<WrappedNavigatedEventArgs> Navigated;
+
+        void Navigate(Uri uri);
     }
 }

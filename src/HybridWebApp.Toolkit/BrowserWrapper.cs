@@ -69,5 +69,11 @@ namespace HybridWebApp.Toolkit
         {
             return this.WebView.InvokeScript(scriptName, args);
         }
+
+
+        public void Navigate(Uri uri)
+        {
+            this.WebView.Navigate(uri);
+        }
     }
 }

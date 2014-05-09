@@ -22,9 +22,19 @@ namespace HybridWebApp.Toolkit.WP8
 
         public WebBrowser WebBrowser { get; private set; }
 
-        public BrowserWrapper(WebBrowser browser)
+        public string HttpHeaders { get; private set; }
+
+        private Uri _CurrentUri;
+
+        public BrowserWrapper(WebBrowser browser, string userAgent = null)
         {
             this.WebBrowser = browser;
+
+            if (userAgent != null)
+            {
+                this.HttpHeaders = string.Format("User-Agent: {0}", userAgent);
+            }
+
             this.WebBrowser.LoadCompleted += WebBrowser_LoadCompleted;
             this.WebBrowser.NavigationFailed += WebBrowser_NavigationFailed;
             this.WebBrowser.Navigating += WebBrowser_Navigating;
@@ -41,6 +51,14 @@ namespace HybridWebApp.Toolkit.WP8
 
         void WebBrowser_Navigating(object sender, NavigatingEventArgs e)
         {
+            //if a custom user agent is in play, cancel the navigation when it has been initiated by the browser as it won't include the custom user-agent
+            if(e.Uri != _CurrentUri)
+            {
+                e.Cancel = true;
+
+                this.Navigate(e.Uri);
+            }
+
             if (this.Navigating != null)
             {
                 var eventArgs = new WrappedNavigatingEventArgs(e.Uri);
@@ -74,6 +92,14 @@ namespace HybridWebApp.Toolkit.WP8
         public object Invoke(string scriptName, params string[] args)
         {
             return this.WebBrowser.InvokeScript(scriptName, args);
+        }
+
+
+        public void Navigate(Uri uri)
+        {
+            _CurrentUri = uri;
+
+            this.WebBrowser.Navigate(uri, null, this.HttpHeaders);
         }
     }
 }
