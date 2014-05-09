@@ -115,7 +115,7 @@ namespace HybridWebApp.Framework
 
         private void Browser_Navigating(object sender, WrappedNavigatingEventArgs e)
         {
-            if (e.Uri.Host != this.Root.Host)
+            if (!e.Uri.AbsoluteUri.Contains(this.Root.AbsoluteUri)) //often mobile websites are example.org/m/ or m.example.org - best to do a contains comparison
             {
                 if (_OtherHostsAction != null)
                 {
