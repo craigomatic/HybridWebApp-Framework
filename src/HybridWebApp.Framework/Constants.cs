@@ -8,6 +8,8 @@ namespace HybridWebApp.Framework
 {
     public class KnownMessageTypes
     {
+        public const string Log = "log";
+
         public const string Notice = "notice";
 
         public const string Error = "error";

@@ -17,6 +17,14 @@ var framework = {};
 framework.messageProxyId = "hwaf-messageproxy";
 framework.useMessageProxy = false;
 
+framework.log = function (message) {
+    var msg = {};
+    msg.type = "log";
+    msg.payload = message;
+
+    framework.scriptNotify(JSON.stringify(msg));
+}
+
 framework.postDom = function () {
     var msg = {};
     msg.type = 'body';
