@@ -88,6 +88,11 @@ namespace HybridWebApp.Framework
         {
             this.CurrentUri = uri;
 
+            if (this.CurrentUri.Host != this.Root.Host) //ignore requests to other hosts
+            {
+                return;
+            }
+
             var mappedRoutes = _MappedRoutes.Where(r => uri.AbsolutePath.Contains(r.Key));
 
             foreach (var mappedRoute in mappedRoutes)
