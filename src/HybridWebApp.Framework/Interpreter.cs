@@ -66,13 +66,7 @@ namespace HybridWebApp.Framework
 
         public string Eval(string scriptPayload)
         {
-            try
-            {
-                return (string)_ScriptInvoker.Eval(scriptPayload);
-            }
-            catch { }
-
-            return string.Empty;
+            return (string)_ScriptInvoker.Eval(scriptPayload);
         }
     }
 }
