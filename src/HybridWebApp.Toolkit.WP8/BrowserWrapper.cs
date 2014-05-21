@@ -52,7 +52,7 @@ namespace HybridWebApp.Toolkit.WP8
         void WebBrowser_Navigating(object sender, NavigatingEventArgs e)
         {
             //if a custom user agent is in play, cancel the navigation when it has been initiated by the browser as it won't include the custom user-agent
-            if(e.Uri != _CurrentUri)
+            if (!string.IsNullOrWhiteSpace(this.HttpHeaders) && e.Uri != _CurrentUri)
             {
                 e.Cancel = true;
 
