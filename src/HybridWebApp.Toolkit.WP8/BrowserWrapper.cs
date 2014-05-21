@@ -57,6 +57,7 @@ namespace HybridWebApp.Toolkit.WP8
                 e.Cancel = true;
 
                 this.Navigate(e.Uri);
+                return;
             }
 
             if (this.Navigating != null)
