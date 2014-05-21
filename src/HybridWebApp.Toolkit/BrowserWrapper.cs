@@ -9,16 +9,28 @@ namespace HybridWebApp.Toolkit
 {
     public class BrowserWrapper : IScriptInvoker, IBrowser
     {
+        [Obsolete("Use Navigated instead")]
         public event EventHandler<Uri> LoadCompleted;
+        [Obsolete("Use Navigated instead")]
         public event EventHandler<Uri> NavigationFailed;
         public event EventHandler<WrappedNavigatingEventArgs> Navigating;
         public event EventHandler<WrappedNavigatedEventArgs> Navigated;
 
         public WebView WebView { get; private set; }
 
-        public BrowserWrapper(WebView browser)
+        public string UserAgent { get; private set; }
+
+        private Uri _CurrentUri;
+
+        public BrowserWrapper(WebView browser, string userAgent = null)
         {
             this.WebView = browser;
+
+            if (userAgent != null)
+            {
+                this.UserAgent = userAgent;
+            }
+
             this.WebView.LoadCompleted += WebView_LoadCompleted;
             this.WebView.NavigationFailed += WebView_NavigationFailed;
             this.WebView.NavigationStarting += WebView_NavigationStarting;
@@ -51,6 +63,15 @@ namespace HybridWebApp.Toolkit
 
         void WebView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs e)
         {
+            //if a custom user agent is in play, cancel the navigation when it has been initiated by the browser as it won't include the custom user-agent
+            if (!string.IsNullOrWhiteSpace(this.UserAgent) && e.Uri != _CurrentUri)
+            {
+                e.Cancel = true;
+
+                this.Navigate(e.Uri);
+                return;
+            }
+
             if (this.Navigating != null)
             {
                 var eventArgs = new WrappedNavigatingEventArgs(e.Uri);
@@ -70,10 +91,21 @@ namespace HybridWebApp.Toolkit
             return this.WebView.InvokeScript(scriptName, args);
         }
 
-
         public void Navigate(Uri uri)
         {
-            this.WebView.Navigate(uri);
+            _CurrentUri = uri;
+
+            if(!string.IsNullOrWhiteSpace(this.UserAgent))
+            {
+                var httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(Windows.Web.Http.HttpMethod.Get, uri);
+                httpRequestMessage.Headers.Add("User-Agent", this.UserAgent);
+
+                this.WebView.NavigateWithHttpRequestMessage(httpRequestMessage);
+            }
+            else
+            {
+                this.WebView.Navigate(uri);
+            }
         }
     }
 }
