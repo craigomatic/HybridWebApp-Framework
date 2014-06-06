@@ -20,4 +20,23 @@ namespace HybridWebApp.Framework
 
         public const string WindowOpen = "window.open";
     }
+
+    public class GestureTypes
+    {
+        public const string Rotate = "rotate";
+        public const string Scale = "scale";
+        public const string Swipe = "swipe";
+
+
+    }
+
+    public class GestureDirections
+    {
+        public const string Left = "left";
+        public const string Right = "right";
+        public const string Up = "up";
+        public const string Down = "down";
+        public const string Stretch = "stretch";
+        public const string Pinch = "pinch";
+    }
 }

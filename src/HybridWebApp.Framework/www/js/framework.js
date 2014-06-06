@@ -104,27 +104,22 @@ framework.enableGestures = function (gestureSurface) {
 
         // Try to detect a gesture when not recognised
         if (!recognised) {
-            var direction;
             var gesture = {};
 
             // Check for horizontal swipe
             if (Math.abs(translationX) > MIN_SWIPE_DISTANCE) {
                 recognised = true;
-                
-                direction = translationX < 0 ? 'left' : 'right';
 
                 gesture.type = 'swipe';
-                gesture.direction = 'horizontal';
+                gesture.direction = translationX < 0 ? 'left' : 'right';
                 gesture.value = translationX;
 
                 // Check for vertical swipe
             } else if (Math.abs(translationY) > MIN_SWIPE_DISTANCE) {
                 recognised = true;
                 
-                direction = translationY < 0 ? 'up' : 'down'
-
                 gesture.type = 'swipe';
-                gesture.direction = 'vertical';
+                gesture.direction = translationY < 0 ? 'up' : 'down';
                 gesture.value = translationY;
             }
 
