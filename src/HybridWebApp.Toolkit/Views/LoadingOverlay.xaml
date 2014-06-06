@@ -9,7 +9,7 @@
 
     <Grid x:Name="LayoutRoot" Background="{Binding BackgroundBrush}" HorizontalAlignment="Stretch" VerticalAlignment='Stretch'>
         <StackPanel Grid.Row="1" VerticalAlignment="Center">
-            <Image Source="{Binding BackgroundImage}" Width="{Binding BackgroundImageWidth}" />
+            <Image Source="{Binding BackgroundImage}" Width="{Binding BackgroundImageWidth}" Stretch="None" />
             <ProgressBar x:Name="ProgBar" IsIndeterminate="True" VerticalAlignment="Top" />
         </StackPanel>
     </Grid>
