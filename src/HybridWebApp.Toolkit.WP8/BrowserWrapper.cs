@@ -2,6 +2,7 @@
 using Microsoft.Phone.Controls;
 using System;
 using System.Net;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -15,10 +16,15 @@ namespace HybridWebApp.Toolkit.WP8
 {
     public class BrowserWrapper : IScriptInvoker, IBrowser
     {
-        public event EventHandler<Uri> LoadCompleted;
+        [Obsolete("Use navigated instead.")]
+        public event EventHandler<WrappedNavigatedEventArgs> LoadCompleted;
+        [Obsolete("Use navigated instead.")]
         public event EventHandler<Uri> NavigationFailed;
         public event EventHandler<WrappedNavigatingEventArgs> Navigating;
         public event EventHandler<WrappedNavigatedEventArgs> Navigated;
+
+        [Obsolete("Not available on WP8, do not use")]
+        public event EventHandler<Uri> DOMContentLoaded;
 
         public WebBrowser WebBrowser { get; private set; }
 
@@ -45,7 +51,7 @@ namespace HybridWebApp.Toolkit.WP8
         {
             if (this.Navigated != null)
             {
-                this.Navigated(this, new WrappedNavigatedEventArgs(e.Uri));
+                this.Navigated(this, new WrappedNavigatedEventArgs(e.Uri, true));
             }
         }
 
@@ -73,7 +79,12 @@ namespace HybridWebApp.Toolkit.WP8
         {
             if (this.LoadCompleted != null)
             {
-                this.LoadCompleted(this, e.Uri);
+                this.LoadCompleted(this, new WrappedNavigatedEventArgs(e.Uri, true, 0));
+            }
+
+            if (this.Navigated != null)
+            {
+                this.Navigated(this, new WrappedNavigatedEventArgs(e.Uri, true));
             }
         }
 
@@ -95,6 +106,15 @@ namespace HybridWebApp.Toolkit.WP8
             return this.WebBrowser.InvokeScript(scriptName, args);
         }
 
+        public Task<string> EvalAsync(params string[] args)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> InvokeAsync(string scriptName, params string[] args)
+        {
+            throw new NotImplementedException();
+        }
 
         public void Navigate(Uri uri)
         {

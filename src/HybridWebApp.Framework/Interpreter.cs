@@ -68,5 +68,10 @@ namespace HybridWebApp.Framework
         {
             return (string)_ScriptInvoker.Eval(scriptPayload);
         }
+
+        public Task<string> EvalAsync(string scriptPayload)
+        {
+            return _ScriptInvoker.EvalAsync(scriptPayload);
+        }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
 namespace HybridWebApp.Toolkit
@@ -10,11 +11,13 @@ namespace HybridWebApp.Toolkit
     public class BrowserWrapper : IScriptInvoker, IBrowser
     {
         [Obsolete("Use Navigated instead")]
-        public event EventHandler<Uri> LoadCompleted;
+        public event EventHandler<WrappedNavigatedEventArgs> LoadCompleted;
         [Obsolete("Use Navigated instead")]
         public event EventHandler<Uri> NavigationFailed;
         public event EventHandler<WrappedNavigatingEventArgs> Navigating;
         public event EventHandler<WrappedNavigatedEventArgs> Navigated;
+
+        public event EventHandler<Uri> DOMContentLoaded;
 
         public WebView WebView { get; private set; }
 
@@ -31,25 +34,29 @@ namespace HybridWebApp.Toolkit
                 this.UserAgent = userAgent;
             }
 
-            this.WebView.LoadCompleted += WebView_LoadCompleted;
-            this.WebView.NavigationFailed += WebView_NavigationFailed;
             this.WebView.NavigationStarting += WebView_NavigationStarting;
             this.WebView.NavigationCompleted += WebView_NavigationCompleted;
+            this.WebView.DOMContentLoaded += WebView_DOMContentLoaded;
+        }
+
+        void WebView_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
+        {
+            if(this.DOMContentLoaded != null)
+            {
+                this.DOMContentLoaded(this, args.Uri);
+            }
         }
 
         void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs e)
         {
             if (this.Navigated != null)
             {
-                this.Navigated(this, new WrappedNavigatedEventArgs(e.Uri));
+                this.Navigated(this, new WrappedNavigatedEventArgs(e.Uri, e.IsSuccess, (int)e.WebErrorStatus));
             }
-        }
 
-        void WebView_LoadCompleted(object sender, Windows.UI.Xaml.Navigation.NavigationEventArgs e)
-        {
             if (this.LoadCompleted != null)
             {
-                this.LoadCompleted(this, e.Uri);
+                this.LoadCompleted(this, new WrappedNavigatedEventArgs(e.Uri, e.IsSuccess, (int)e.WebErrorStatus));
             }
         }
 
@@ -89,6 +96,16 @@ namespace HybridWebApp.Toolkit
         public object Invoke(string scriptName, params string[] args)
         {
             return this.WebView.InvokeScript(scriptName, args);
+        }
+
+        public async Task<string> EvalAsync(params string[] args)
+        {
+            return await this.InvokeAsync("eval", args);
+        }
+
+        public async Task<string> InvokeAsync(string scriptName, params string[] args)
+        {
+            return await this.WebView.InvokeScriptAsync(scriptName, args);
         }
 
         public void Navigate(Uri uri)

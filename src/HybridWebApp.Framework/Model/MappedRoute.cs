@@ -8,7 +8,7 @@ namespace HybridWebApp.Framework.Model
 {
     public class MappedRoute
     {
-        public Func<Task> Action { get; set; }
+        public Func<Uri,bool,int, Task> Action { get; set; }
 
         public bool RunOnce { get; set; }
 
