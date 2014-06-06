@@ -13,5 +13,7 @@ namespace HybridWebApp.Framework.Model
         public string Hash { get; set; }
 
         public string Title { get; set; }
+
+        public string Target { get; set; }
     }
 }
