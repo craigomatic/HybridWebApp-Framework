@@ -5,13 +5,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
-    FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}">
+    FontSize="{StaticResource PhoneFontSizeNormal}">
 
-    <Grid x:Name="LayoutRoot" Background="White" HorizontalAlignment="Stretch" VerticalAlignment='Stretch'>
+    <Grid x:Name="LayoutRoot" Background="{Binding BackgroundBrush}" HorizontalAlignment="Stretch" VerticalAlignment='Stretch'>
         <StackPanel Grid.Row="1" VerticalAlignment="Center">
-            <Image Source="/Assets/Tiles/FlipCycleTileLarge.png" Width="336" />
-            <ProgressBar x:Name="ProgBar" IsIndeterminate="True" VerticalAlignment="Top" Foreground="{StaticResource PhoneAccentBrush}"/>
+            <Image Source="{Binding BackgroundImage}" Width="{Binding BackgroundImageWidth}" Stretch="None" />
+            <ProgressBar x:Name="ProgBar" IsIndeterminate="True" VerticalAlignment="Top" Foreground="{Binding ForegroundBrush}"/>
         </StackPanel>
     </Grid>
 </UserControl>
