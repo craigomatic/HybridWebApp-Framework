@@ -21,6 +21,8 @@ namespace HybridWebApp.Framework
 
         private Dictionary<string, List<MappedRoute>> _MappedRoutes;
 
+        private List<string> _KnownRoutes;
+
         private bool _MapOnNavigate;
 
         /// <summary>
@@ -40,10 +42,20 @@ namespace HybridWebApp.Framework
             this.Browser.Navigating += Browser_Navigating;
             this.Browser.Navigated += Browser_Navigated;
 
+            _KnownRoutes = new List<string>();
             _MappedRoutes = new Dictionary<string, List<MappedRoute>>();
             _MapOnNavigate = mapOnNavigate;
 
             this.UriHistory = new List<Uri>();
+        }
+
+        /// <summary>
+        /// Adds a route that when matched should be considered an internal route regardless of any internal matching rules
+        /// </summary>
+        /// <param name="knownRoute"></param>
+        public void AddKnownRoute(string knownRoute)
+        {
+            _KnownRoutes.Add(knownRoute);
         }
 
         /// <summary>
@@ -97,18 +109,25 @@ namespace HybridWebApp.Framework
                 return;
             }
 
-            var mappedRoutes = _MappedRoutes.Where(r => uri.AbsolutePath.Contains(r.Key));
-
-            foreach (var mappedRoute in mappedRoutes)
+            try
             {
-                foreach (var route in mappedRoute.Value)
+                var mappedRoutes = _MappedRoutes.Where(r => uri.AbsolutePath.Contains(r.Key));
+
+                foreach (var mappedRoute in mappedRoutes)
                 {
-                    if (!route.RunOnce || (route.RunOnce && route.Hits == 0) && isSuccess)
+                    foreach (var route in mappedRoute.Value)
                     {
-                        route.Hits++;
-                        await route.Action(uri, isSuccess, webErrorStatus);
+                        if (!route.RunOnce || (route.RunOnce && route.Hits == 0) && isSuccess)
+                        {
+                            route.Hits++;
+                            await route.Action(uri, isSuccess, webErrorStatus);
+                        }
                     }
                 }
+            }
+            finally
+            {
+                this.UriHistory.Add(uri);
             }
         }
 
@@ -119,14 +138,16 @@ namespace HybridWebApp.Framework
             if (!_MapOnNavigate)
             {
                 await _EvaluateMappedRoutesAsync(args.Uri, args.IsSuccess, args.WebErrorStatus);
-
-                this.UriHistory.Add(args.Uri);
             }
         }
 
         private void Browser_Navigating(object sender, WrappedNavigatingEventArgs e)
         {
-            if (!e.Uri.AbsoluteUri.StartsWith(this.Root.AbsoluteUri)) //often mobile websites are example.org/m/ or m.example.org - best to do a StartsWith comparison
+            var hostComparison = Uri.Compare(e.Uri, this.Root, UriComponents.Host, UriFormat.UriEscaped, StringComparison.OrdinalIgnoreCase);
+            var isValidPath = e.Uri.AbsolutePath.StartsWith(this.Root.AbsolutePath) || _IsAllowedViaKnownRoute(e.Uri);
+
+
+            if (hostComparison != 0 || !isValidPath) //often mobile websites are example.org/m/ or m.example.org - best to do a StartsWith comparison
             {
                 if (_OtherHostsAction != null)
                 {
@@ -137,19 +158,30 @@ namespace HybridWebApp.Framework
             }
         }
 
+        private bool _IsAllowedViaKnownRoute(Uri uri)
+        {
+            foreach (var knownRoute in _KnownRoutes)
+            {
+                if(uri.AbsolutePath.StartsWith(knownRoute))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private async void Browser_Navigated(object sender, WrappedNavigatedEventArgs e)
         {
             if (_MapOnNavigate)
             {
                 await _EvaluateMappedRoutesAsync(e.Uri, e.IsSuccess, e.WebErrorStatus);
-
-                this.UriHistory.Add(e.Uri);
             }
         }
 
-        void Browser_NavigationFailed(object sender, Uri e)
+        async void Browser_NavigationFailed(object sender, WrappedFailedEventArgs e)
         {
-            this.CurrentUri = e;
+            await _EvaluateMappedRoutesAsync(e.Uri, false, 0);
         }
 
         #endregion
