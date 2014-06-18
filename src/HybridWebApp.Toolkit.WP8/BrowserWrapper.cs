@@ -19,7 +19,7 @@ namespace HybridWebApp.Toolkit.WP8
         [Obsolete("Use navigated instead.")]
         public event EventHandler<WrappedNavigatedEventArgs> LoadCompleted;
         [Obsolete("Use navigated instead.")]
-        public event EventHandler<Uri> NavigationFailed;
+        public event EventHandler<WrappedFailedEventArgs> NavigationFailed;
         public event EventHandler<WrappedNavigatingEventArgs> Navigating;
         public event EventHandler<WrappedNavigatedEventArgs> Navigated;
 
@@ -90,9 +90,11 @@ namespace HybridWebApp.Toolkit.WP8
 
         void WebBrowser_NavigationFailed(object sender, System.Windows.Navigation.NavigationFailedEventArgs e)
         {
+            e.Handled = true;
+            
             if (this.NavigationFailed != null)
             {
-                this.NavigationFailed(this, e.Uri);
+                this.NavigationFailed(this, new WrappedFailedEventArgs(e.Uri));
             }
         }
 
