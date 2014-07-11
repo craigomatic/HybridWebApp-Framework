@@ -44,6 +44,7 @@
     <Compile Include="IO\EmbeddedResource.cs" />
     <Compile Include="Model\Gesture.cs" />
     <Compile Include="Model\IBrowser.cs" />
+    <Compile Include="Model\CustomRoute.cs" />
     <Compile Include="Model\MappedRoute.cs" />
     <Compile Include="Model\WrappedFailedEventArgs.cs" />
     <Compile Include="Model\WrappedNavigatedEventArgs.cs" />

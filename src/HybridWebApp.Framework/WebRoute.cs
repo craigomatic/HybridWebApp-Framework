@@ -21,7 +21,7 @@ namespace HybridWebApp.Framework
 
         private Dictionary<string, List<MappedRoute>> _MappedRoutes;
 
-        private List<string> _KnownRoutes;
+        private List<CustomRoute> _CustomRoutes;
 
         private bool _MapOnNavigate;
 
@@ -42,7 +42,7 @@ namespace HybridWebApp.Framework
             this.Browser.Navigating += Browser_Navigating;
             this.Browser.Navigated += Browser_Navigated;
 
-            _KnownRoutes = new List<string>();
+            _CustomRoutes = new List<CustomRoute>();
             _MappedRoutes = new Dictionary<string, List<MappedRoute>>();
             _MapOnNavigate = mapOnNavigate;
 
@@ -53,9 +53,9 @@ namespace HybridWebApp.Framework
         /// Adds a route that when matched should be considered an internal route regardless of any internal matching rules
         /// </summary>
         /// <param name="knownRoute"></param>
-        public void AddKnownRoute(string knownRoute)
+        public void AddCustomRoute(CustomRoute customRoute)
         {
-            _KnownRoutes.Add(knownRoute);
+            _CustomRoutes.Add(customRoute);
         }
 
         /// <summary>
@@ -111,6 +111,16 @@ namespace HybridWebApp.Framework
 
             try
             {
+                //look for a custom route first
+                var customRouteAction = CustomRouteAction.None;
+                var customRoute = _FindCustomRoute(uri, out customRouteAction);
+
+                if (customRoute != null)
+                {
+                    await customRoute.Action(uri, isSuccess, webErrorStatus);
+                    return;
+                }
+
                 var mappedRoutes = _MappedRoutes.Where(r => uri.AbsolutePath.Contains(r.Key));
 
                 foreach (var mappedRoute in mappedRoutes)
@@ -143,11 +153,38 @@ namespace HybridWebApp.Framework
 
         private void Browser_Navigating(object sender, WrappedNavigatingEventArgs e)
         {
+            var customRouteAction = CustomRouteAction.None;
+            var customRoute = _FindCustomRoute(e.Uri, out customRouteAction);
+
+            switch (customRouteAction)
+            {
+                case CustomRouteAction.ForceInternal:
+                    {
+                        return;
+                    }
+                case CustomRouteAction.Cancel:
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
+                case CustomRouteAction.Redirect:
+                    {
+                        e.Cancel = true;
+                        this.Browser.Navigate(customRoute.Redirect);
+                        return;
+                    }
+                case CustomRouteAction.None:
+                    {
+                        //do nothing, continue processing
+                        break;
+                    }
+            }
+
             var hostComparison = Uri.Compare(e.Uri, this.Root, UriComponents.Host, UriFormat.UriEscaped, StringComparison.OrdinalIgnoreCase);
-            var isValidPath = e.Uri.AbsolutePath.StartsWith(this.Root.AbsolutePath) || _IsAllowedViaKnownRoute(e.Uri);
+            
+            var isValidPath = e.Uri.AbsolutePath.StartsWith(this.Root.AbsolutePath);
 
-
-            if (hostComparison != 0 || !isValidPath) //often mobile websites are example.org/m/ or m.example.org - best to do a StartsWith comparison
+            if (hostComparison != 0 || !isValidPath)
             {
                 if (_OtherHostsAction != null)
                 {
@@ -158,17 +195,22 @@ namespace HybridWebApp.Framework
             }
         }
 
-        private bool _IsAllowedViaKnownRoute(Uri uri)
+        private CustomRoute _FindCustomRoute(Uri uri, out CustomRouteAction action)
         {
-            foreach (var knownRoute in _KnownRoutes)
+            action = CustomRouteAction.None;
+
+            //first evaluate custom routes
+            foreach (var customRoute in _CustomRoutes)
             {
-                if(uri.AbsolutePath.StartsWith(knownRoute))
+                action = customRoute.Evaluate(uri);
+
+                if (action != CustomRouteAction.None) //first route found that matches with a CustomRouteAction other than None is the winner
                 {
-                    return true;
+                    return customRoute;
                 }
             }
 
-            return false;
+            return null;
         }
 
         private async void Browser_Navigated(object sender, WrappedNavigatedEventArgs e)

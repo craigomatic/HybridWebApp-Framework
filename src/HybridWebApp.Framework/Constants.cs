@@ -39,4 +39,27 @@ namespace HybridWebApp.Framework
         public const string Stretch = "stretch";
         public const string Pinch = "pinch";
     }
+
+    public enum CustomRouteAction
+    {
+        /// <summary>
+        /// No action, process as usual
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// Cancel navigation
+        /// </summary>
+        Cancel,
+
+        /// <summary>
+        /// Redirect to the specified route
+        /// </summary>
+        Redirect,
+
+        /// <summary>
+        /// For routes that otherwise would have loaded in the browser, force them to open internal to the app
+        /// </summary>
+        ForceInternal
+    }
 }
