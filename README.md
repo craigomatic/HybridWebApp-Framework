@@ -22,11 +22,18 @@ var interpreter = new Interpreter(browserWrapper, typeof(WebHost).GetTypeInfo().
 var webRoute = new WebRoute(new Uri("http://example.org"), interpreter, browserWrapper);
 
 //map all route changes so that the framework, app.js and app.css are loaded each time (they are flushed on navigation)
-webRoute.Map("/", async() => 
+webRoute.Map("/", async (uri, success, errorCode) =>
 {
-  await _Interpreter.LoadFrameworkAsync();
-  await _Interpreter.LoadAsync("app.js");
-  await _Interpreter.LoadCssAsync("app.css");
+    if (success)
+    {
+        await _Interpreter.LoadFrameworkAsync();
+        await _Interpreter.LoadAsync("app.js");
+        await _Interpreter.LoadCssAsync("app.css");
+    }
+    else
+    {
+        //TODO: handle this somehow, ie: show offline overlay
+    }
 });
 ```
 
@@ -99,6 +106,22 @@ The same process for WP8/WP8.1 applies here, see above.
 #### From Client to Host
 
 ```C#
+
+//in the initial mapping code, be sure to overload the LoadFramworkAsync with true so the iFrame channel is created
+webRoute.Map("/", async (uri, success, errorCode) =>
+{
+    if (success)
+    {
+        await _Interpreter.LoadFrameworkAsync(true);
+        
+        //etc
+    }
+    
+    //etc
+}
+
+//listen for the iFrame navigation event, this is where the messages will be delivered
+        
 WebBrowser.FrameNavigationStarting += (sender, args) =>
 {
     if (!args.Uri.ToString().Contains("http://localhost/hwaf/") || args.Uri.Segments.Length < 3)
