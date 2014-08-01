@@ -81,6 +81,17 @@ namespace HybridWebApp.Toolkit.Views
         // Using a DependencyProperty as the backing store for BackgroundImageWidth.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BackgroundImageWidthProperty =
             DependencyProperty.Register("BackgroundImageWidth", typeof(double), typeof(OfflineOverlay), new PropertyMetadata(336));
+
+        public Thickness BackgroundImageMargin
+        {
+            get { return (Thickness)GetValue(BackgroundImageMarginProperty); }
+            set { SetValue(BackgroundImageMarginProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for BackgroundImageMargin.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BackgroundImageMarginProperty =
+            DependencyProperty.Register("BackgroundImageMargin", typeof(Thickness), typeof(OfflineOverlay), new PropertyMetadata(new Thickness()));
+
         public Action RetryAction { get; set; }
 
         public OfflineOverlay()
