@@ -28,11 +28,11 @@ namespace HybridWebApp.Framework
         public async Task LoadFrameworkAsync(bool overrideWindowExternalNotify = false)
         {
             var scriptPayload = await EmbeddedResource.ReadAsStringAsync(typeof(Interpreter).GetTypeInfo().Assembly, string.Format("{0}.www.js.framework.js", typeof(Interpreter).GetTypeInfo().Namespace));
-            this.Eval(scriptPayload);
+            await this.EvalAsync(scriptPayload);
 
             if (overrideWindowExternalNotify)
             {
-                this.Eval("framework.injectMessageProxy();");
+                await this.EvalAsync("framework.injectMessageProxy();");
             }
         }
 
@@ -47,7 +47,7 @@ namespace HybridWebApp.Framework
         {
             var scriptPayload = await EmbeddedResource.ReadAsStringAsync(_Assembly, string.Format("{0}.{1}", _ScriptNamespace, scriptName));
 
-            this.Eval(scriptPayload);
+            await this.EvalAsync(scriptPayload);
         }
 
         public void LoadCss(string cssName)
@@ -61,7 +61,7 @@ namespace HybridWebApp.Framework
         {
             var cssPayload = await EmbeddedResource.ReadAsStringAsync(_Assembly, string.Format("{0}.{1}", _CssNamespace, cssName));
 
-            this.Eval(string.Format("framework.appendCss(\"{0}\");", cssPayload.Replace("\r", string.Empty).Replace("\n", string.Empty)));
+            await this.EvalAsync(string.Format("framework.appendCss(\"{0}\");", cssPayload.Replace("\r", string.Empty).Replace("\n", string.Empty)));
         }
 
         public string Eval(string scriptPayload)

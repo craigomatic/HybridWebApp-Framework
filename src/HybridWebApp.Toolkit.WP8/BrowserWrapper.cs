@@ -108,14 +108,18 @@ namespace HybridWebApp.Toolkit.WP8
             return this.WebBrowser.InvokeScript(scriptName, args);
         }
 
-        public Task<string> EvalAsync(params string[] args)
+        public async Task<string> EvalAsync(params string[] args)
         {
-            throw new NotImplementedException();
+            //Note the blocking approach here due to WP8 not supporting async invocation
+            var result = (string)this.Eval(args);
+            return result;
         }
 
-        public Task<string> InvokeAsync(string scriptName, params string[] args)
+        public async Task<string> InvokeAsync(string scriptName, params string[] args)
         {
-            throw new NotImplementedException();
+            //Note the blocking approach here due to WP8 not supporting async invocation
+            var result = (string)this.Invoke(scriptName, args);
+            return result;
         }
 
         public void Navigate(Uri uri)
