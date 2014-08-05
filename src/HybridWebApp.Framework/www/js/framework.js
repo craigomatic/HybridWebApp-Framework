@@ -25,36 +25,6 @@ framework.log = function (message) {
     framework.scriptNotify(JSON.stringify(msg));
 }
 
-framework.postDom = function () {
-    var msg = {};
-    msg.type = 'body';
-    msg.payload = document.body.innerHTML;
-
-    framework.scriptNotify(JSON.stringify(msg));
-};
-
-framework.hideElement = function (elementId) {
-    var toHide = document.querySelector(elementId);
-
-    if (toHide != null) {
-        toHide.style.display = "none";
-        return true;
-    }
-
-    return false;
-}
-
-framework.removeElement = function (elementId) {
-    var toRemove = document.querySelector(elementId);
-
-    if(toRemove != null) {
-        toRemove.parentNode.removeChild(toRemove);
-        return true;
-    }
-
-    return false;
-}
-
 framework.routeTo = function (href) {
     try {
         document.location.href = href;
@@ -63,7 +33,6 @@ framework.routeTo = function (href) {
         window.onerror(exception.message, hash, exception.number);
     }
 }
-
 
 //Enable gesture monitoring in the browser so that the host application can act on them - code adapted from http://www.exploretouch.ie/behind-the-scenes/
 
@@ -149,32 +118,6 @@ framework.enableGestures = function (gestureSurface) {
             }
         }
     });
-}
-
-framework.fillInput = function (value, elementId) {
-    var toFill = document.querySelector(elementId);
-
-    if (toFill != null) {
-        toFill.value = value;
-    }
-}
-
-framework.clickButton = function (elementId) {
-    var toClick = document.querySelector(elementId);
-
-    if (toClick != null) {
-        toClick.onclick.call(toClick);
-    }
-}
-
-framework.hasMatch = function (selector) {
-    var toFind = document.querySelector(selector);
-
-    if (toFind != null) {
-        return "true";
-    }
-        
-    return "false";
 }
 
 framework.injectMessageProxy = function () {
