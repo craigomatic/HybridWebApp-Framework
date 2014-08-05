@@ -56,6 +56,11 @@ namespace HybridWebApp.Universal.Controls
                 }
             });
 
+            _WebRoute.MapOtherHosts(async uri => 
+            {
+                await Windows.System.Launcher.LaunchUriAsync(uri);
+            });
+
             //only load the menu once
             _WebRoute.Map("/", async (uri, success, errorCode) =>
             {
@@ -86,7 +91,7 @@ namespace HybridWebApp.Universal.Controls
             }
         }
 
-        protected async Task _ProcessMessageAsync(Uri uri)
+        private async Task _ProcessMessageAsync(Uri uri)
         {
             if (!uri.ToString().Contains("http://localhost/hwaf/") || uri.Segments.Length < 3)
             {
