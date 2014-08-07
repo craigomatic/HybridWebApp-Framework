@@ -39,6 +39,12 @@ namespace HybridWebApp.Universal.Controls
             DependencyProperty.Register("NavigateOnLoad", typeof(bool), typeof(HybridWebView), new PropertyMetadata(true));
 
         private Interpreter _Interpreter;
+
+        public Interpreter Interpreter
+        {
+            get { return _Interpreter; }
+        }
+        
         private WebRoute _WebRoute;
         private BrowserWrapper _BrowserWrapper;
 
