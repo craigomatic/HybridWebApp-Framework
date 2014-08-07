@@ -1,3 +1,11 @@
 ﻿.header-main {
     display: none;
 }
+
+#main {
+    top: 0;
+}
+
+.site-description {
+    display: none;
+}
