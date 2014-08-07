@@ -62,7 +62,8 @@ namespace HybridWebApp.Universal
                         {
                             var pivotItem = new PivotItem
                             {
-                                Header = item.Title
+                                Header = item.Title,
+                                Tag = item
                             };
 
                             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => { MainPivot.Items.Add(pivotItem); });
@@ -107,7 +108,7 @@ namespace HybridWebApp.Universal
                 return;
             }
 
-            var navItem = e.AddedItems[0] as NavItem;
+            var navItem = (e.AddedItems[0] as PivotItem).Tag as NavItem;
             WebHost.Navigate(new Uri(navItem.Href)); 
         }
     }
