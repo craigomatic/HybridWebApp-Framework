@@ -15,10 +15,19 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Pivot x:Name="MainPivot" Height="80" SelectionChanged="MainPivot_SelectionChanged" />
-        <controls:HybridWebView x:Name="WebHost" Grid.Row="1" MessageReceived="WebHost_MessageReceived" WebUri="http://hybridwebapp.azurewebsites.net/" />
+        <Pivot x:Name="MainPivot" Height="80" SelectionChanged="MainPivot_SelectionChanged" Visibility="Collapsed" Background="#FF24890d"/>
+        <controls:HybridWebView x:Name="WebHost" 
+                                Grid.Row="1" 
+                                NavigateOnLoad="False"
+                                WebUri="http://hybridwebapp.azurewebsites.net/" 
+                                MessageReceived="WebHost_MessageReceived" 
+                                NavigationStarting="WebHost_NavigationStarting"
+                                DOMContentLoaded="WebHost_DOMContentLoaded"
+                                Loaded="WebHost_Loaded"/>
     </Grid>
     <Page.BottomAppBar>
-        <CommandBar x:Name="CommandBar" />
+        <CommandBar x:Name="CommandBar" Visibility="Collapsed" Background="#FF24890d">
+            <AppBarButton Icon="Find" Label="search" Click="SearchButton_Click" />
+        </CommandBar>
     </Page.BottomAppBar>
 </Page>

@@ -1,5 +1,6 @@
 ﻿using HybridWebApp.Framework;
 using HybridWebApp.Framework.Model;
+using HybridWebApp.Universal.Controls;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -26,6 +28,8 @@ namespace HybridWebApp.Universal
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private string _ParamForNavigation;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -40,6 +44,13 @@ namespace HybridWebApp.Universal
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            var param = e.Parameter as string;
+
+            if (!string.IsNullOrWhiteSpace(param))
+            {
+                _ParamForNavigation = param;
+            }
+
             // If your application contains multiple pages, ensure that you are
             // handling the hardware Back button
             Windows.Phone.UI.Input.HardwareButtons.BackPressed += (s,a) =>
@@ -47,10 +58,10 @@ namespace HybridWebApp.Universal
                 Frame.GoBack();
                 a.Handled = true;
             };
-        }
+        }        
 
         //event handler for messages that have been posted back from the website to the host app
-        private async void WebHost_MessageReceived(Controls.HybridWebView sender, Framework.Model.ScriptMessage msg)
+        private async void WebHost_MessageReceived(HybridWebView sender, Framework.Model.ScriptMessage msg)
         {
             switch (msg.Type)
             {
@@ -67,6 +78,11 @@ namespace HybridWebApp.Universal
                             };
 
                             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => { MainPivot.Items.Add(pivotItem); });
+                        }
+
+                        if (navItems.Any())
+                        {
+                            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => { MainPivot.Visibility = Windows.UI.Xaml.Visibility.Visible; });
                         }
 
                         break;
@@ -110,6 +126,39 @@ namespace HybridWebApp.Universal
 
             var navItem = (e.AddedItems[0] as PivotItem).Tag as NavItem;
             WebHost.Navigate(new Uri(navItem.Href)); 
+        }
+
+        private void WebHost_NavigationStarting(HybridWebView sender, Uri uri)
+        {
+            MainPivot.IsEnabled = false;
+            CommandBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+        }
+
+        private void WebHost_DOMContentLoaded(HybridWebView sender, Uri uri)
+        {
+            MainPivot.IsEnabled = true;
+            CommandBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SearchPage));
+        }
+
+        private void WebHost_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(_ParamForNavigation))
+            {
+                //Note: only expecting params that can be appended to the end of the root URI 
+
+                WebHost.Navigate(new Uri(WebHost.WebUri, _ParamForNavigation));
+
+                _ParamForNavigation = null;
+            }
+            else
+            {
+                WebHost.Navigate(WebHost.WebUri);
+            }
         }
     }
 }

@@ -12,7 +12,7 @@
         <controls:HybridWebView x:Name="WebHost" MessageReceived="WebHost_MessageReceived" WebUri="http://hybridwebapp.azurewebsites.net/" />
     </Grid>
     <Page.TopAppBar>
-        <AppBar x:Name="TopAppBar">
+        <AppBar x:Name="TopAppBar" Background="#FF24890d">
             <StackPanel x:Name="AppBarItemsHost" Orientation="Horizontal" Margin="28,0,0,0"/>
         </AppBar>
     </Page.TopAppBar>

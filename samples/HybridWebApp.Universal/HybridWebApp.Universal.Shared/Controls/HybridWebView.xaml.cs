@@ -61,7 +61,15 @@ namespace HybridWebApp.Universal.Controls
                 {
                     await _Interpreter.LoadFrameworkAsync(WebToHostMessageChannel.IFrame, this.WebUri.OriginalString);
                     await _Interpreter.LoadAsync("app.js");
-                    await _Interpreter.LoadCssAsync("app.css");
+                    await _Interpreter.LoadCssAsync("app.css"); //common CSS
+
+#if WINDOWS_PHONE_APP
+                    await _Interpreter.LoadCssAsync("app.phone.css"); //phone specific CSS
+#endif
+
+#if WINDOWS_APP
+                    await _Interpreter.LoadCssAsync("app.notphone.css"); //big windows specific CSS
+#endif
 
                     _HideNavigatingOverlay();
                 }
