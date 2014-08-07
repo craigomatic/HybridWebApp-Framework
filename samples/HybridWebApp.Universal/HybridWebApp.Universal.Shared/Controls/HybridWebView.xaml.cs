@@ -19,14 +19,24 @@ namespace HybridWebApp.Universal.Controls
 
         public event TypedEventHandler<HybridWebView, Uri> DOMContentLoaded;
 
-        public string WebUri
+        public Uri WebUri
         {
-            get { return (string)GetValue(WebUriProperty); }
+            get { return (Uri)GetValue(WebUriProperty); }
             set { SetValue(WebUriProperty, value); }
         }
 
         public static readonly DependencyProperty WebUriProperty =
-            DependencyProperty.Register("WebUri", typeof(string), typeof(HybridWebView), new PropertyMetadata(string.Empty));
+            DependencyProperty.Register("WebUri", typeof(Uri), typeof(HybridWebView), new PropertyMetadata(string.Empty));
+
+        public bool NavigateOnLoad
+        {
+            get { return (bool)GetValue(NavigateOnLoadProperty); }
+            set { SetValue(NavigateOnLoadProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for NavigateOnLoad.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NavigateOnLoadProperty =
+            DependencyProperty.Register("NavigateOnLoad", typeof(bool), typeof(HybridWebView), new PropertyMetadata(true));
 
         private Interpreter _Interpreter;
         private WebRoute _WebRoute;
@@ -43,13 +53,13 @@ namespace HybridWebApp.Universal.Controls
         {            
             _BrowserWrapper = new BrowserWrapper(WebView);
             _Interpreter = new Interpreter(_BrowserWrapper, typeof(HybridWebView).GetTypeInfo().Assembly, "HybridWebApp.Universal", "HybridWebApp.Universal");
-            _WebRoute = new WebRoute(new Uri(this.WebUri), _Interpreter, _BrowserWrapper);
+            _WebRoute = new WebRoute(this.WebUri, _Interpreter, _BrowserWrapper);
 
             _WebRoute.Map("/", async (uri, success, errorCode) =>
             {
                 if (success)
                 {
-                    await _Interpreter.LoadFrameworkAsync(WebToHostMessageChannel.IFrame, this.WebUri);
+                    await _Interpreter.LoadFrameworkAsync(WebToHostMessageChannel.IFrame, this.WebUri.OriginalString);
                     await _Interpreter.LoadAsync("app.js");
                     await _Interpreter.LoadCssAsync("app.css");
 
@@ -81,7 +91,10 @@ namespace HybridWebApp.Universal.Controls
                 args.Cancel = true;
             };
 
-            WebView.Navigate(_WebRoute.Root);
+            if (this.NavigateOnLoad)
+            {
+                WebView.Navigate(_WebRoute.Root);
+            }
         }
 
         public void Navigate(Uri uri)
@@ -104,7 +117,7 @@ namespace HybridWebApp.Universal.Controls
 
         private async Task _ProcessMessageAsync(Uri uri)
         {
-            if (!uri.ToString().Contains(string.Format("{0}/hwaf/", this.WebUri.TrimEnd('/'))) || uri.Segments.Length < 3)
+            if (!uri.ToString().Contains(string.Format("{0}/hwaf/", this.WebUri.OriginalString.TrimEnd('/'))) || uri.Segments.Length < 3)
             {
                 return;
             }
