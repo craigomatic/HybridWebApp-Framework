@@ -15,6 +15,10 @@ namespace HybridWebApp.Universal.Controls
     {
         public event TypedEventHandler<HybridWebView, ScriptMessage> MessageReceived;
 
+        public event TypedEventHandler<HybridWebView, Uri> NavigationStarting;
+
+        public event TypedEventHandler<HybridWebView, Uri> DOMContentLoaded;
+
         public string WebUri
         {
             get { return (string)GetValue(WebUriProperty); }
@@ -48,11 +52,13 @@ namespace HybridWebApp.Universal.Controls
                     await _Interpreter.LoadFrameworkAsync(WebToHostMessageChannel.IFrame, this.WebUri);
                     await _Interpreter.LoadAsync("app.js");
                     await _Interpreter.LoadCssAsync("app.css");
+
+                    _HideNavigatingOverlay();
                 }
                 else
                 {
-                    //TODO: handle this somehow, ie: show offline overlay
-
+                    _HideNavigatingOverlay();
+                    _ShowOfflineOverlay();
                 }
             });
 
@@ -110,6 +116,65 @@ namespace HybridWebApp.Universal.Controls
 
             //send it up to be handled
             _OnMessageReceived(msg);
+        }
+
+        #region Overlays
+
+        private void _ShowNavigatingOverlay()
+        {
+            LoadingOverlay.Visibility = Visibility.Visible;
+            OfflineOverlay.Visibility = Visibility.Collapsed;
+
+            //Browser.Opacity = 0.1d;
+            WebView.Visibility = Visibility.Visible;
+        }
+
+        private void _HideNavigatingOverlay()
+        {
+            LoadingOverlay.Visibility = Visibility.Collapsed;
+            OfflineOverlay.Visibility = Visibility.Collapsed;
+
+            //Browser.Opacity = 1;
+            WebView.Visibility = Visibility.Visible;
+        }
+
+        private void _ShowOfflineOverlay()
+        {
+            LoadingOverlay.Visibility = Visibility.Collapsed;
+            OfflineOverlay.Visibility = Visibility.Visible;
+
+            WebView.Visibility = Visibility.Collapsed;//.Opacity = 0.1d;
+        }
+
+        /// <summary>
+        /// Hides the offline overlay and transitions to the navigating overlay before refreshing the browser
+        /// </summary>
+        private void _HideOfflineOverlayAndRetry()
+        {
+            LoadingOverlay.Visibility = Visibility.Visible;
+            OfflineOverlay.Visibility = Visibility.Collapsed;
+
+            _BrowserWrapper.Navigate(_WebRoute.CurrentUri);
+        }
+
+        #endregion
+
+        private void WebView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+        {
+            if (this.NavigationStarting != null)
+            {
+                this.NavigationStarting(this, args.Uri);
+            }
+
+            _ShowNavigatingOverlay();
+        }
+
+        private void WebView_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
+        {
+            if (this.DOMContentLoaded != null)
+            {
+                this.DOMContentLoaded(this, args.Uri);
+            }
         }
     }
 }
