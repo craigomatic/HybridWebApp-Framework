@@ -16,6 +16,7 @@ var framework = {};
 
 framework.messageProxyId = "hwaf-messageproxy";
 framework.useMessageProxy = false;
+framework.baseUri = "http://localhost";
 
 framework.log = function (message) {
     var msg = {};
@@ -120,19 +121,20 @@ framework.enableGestures = function (gestureSurface) {
     });
 }
 
-framework.injectMessageProxy = function () {
-
+framework.injectMessageProxy = function (baseUri) {
+    
     var msgProxy = document.createElement('iframe');
 
     msgProxy.frameBorder = 0;
     msgProxy.width = "1px";
     msgProxy.height = "1px";
     msgProxy.id = framework.messageProxyId;
-    msgProxy.setAttribute("src", "http://localhost/hwaf/");
+    msgProxy.setAttribute("src", baseUri + "/hwaf/");
 
     document.documentElement.appendChild(msgProxy);
 
     framework.useMessageProxy = true;
+    framework.baseUri = baseUri;
 }
 
 framework.scriptNotify = function (json) {
@@ -142,7 +144,7 @@ framework.scriptNotify = function (json) {
     if(framework.useMessageProxy) {
         //place the message object into the src of the iframe as json params
         var iframe = document.querySelector("#" + framework.messageProxyId);
-        iframe.setAttribute("src", "http://localhost/hwaf/" + encodeURIComponent(json));
+        iframe.setAttribute("src", framework.baseUri + "/hwaf/" + encodeURIComponent(json));
     }
     else {
         window.external.notify(json);

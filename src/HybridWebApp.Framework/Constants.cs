@@ -28,8 +28,6 @@ namespace HybridWebApp.Framework
         public const string Rotate = "rotate";
         public const string Scale = "scale";
         public const string Swipe = "swipe";
-
-
     }
 
     public class GestureDirections
@@ -64,4 +62,17 @@ namespace HybridWebApp.Framework
         /// </summary>
         ForceInternal
     }
+
+    public enum WebToHostMessageChannel
+    {
+        /// <summary>
+        /// The default messaging channel, ie: ScriptNotify event
+        /// </summary>
+        Default,
+
+        /// <summary>
+        /// Uses an iFrame's src atttribute as the messaging channel
+        /// </summary>
+        IFrame
+    }    
 }

@@ -25,14 +25,21 @@ namespace HybridWebApp.Framework
             _CssNamespace = cssNamespace;
         }
 
-        public async Task LoadFrameworkAsync(bool overrideWindowExternalNotify = false)
+        public async Task LoadFrameworkAsync(WebToHostMessageChannel messageChannel = WebToHostMessageChannel.Default, string baseUri = "http://localhost")
         {
             var scriptPayload = await EmbeddedResource.ReadAsStringAsync(typeof(Interpreter).GetTypeInfo().Assembly, string.Format("{0}.www.js.framework.js", typeof(Interpreter).GetTypeInfo().Namespace));
             await this.EvalAsync(scriptPayload);
 
-            if (overrideWindowExternalNotify)
+            switch(messageChannel)
             {
-                await this.EvalAsync("framework.injectMessageProxy();");
+                case WebToHostMessageChannel.IFrame:
+                    {
+                        //trim trailing slash as the framework includes it
+                        baseUri = baseUri.TrimEnd('/');
+
+                        await this.EvalAsync(string.Format("framework.injectMessageProxy('{0}');", baseUri));
+                        break;
+                    }
             }
         }
 

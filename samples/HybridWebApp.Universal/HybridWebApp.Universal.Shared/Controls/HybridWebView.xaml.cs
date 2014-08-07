@@ -45,7 +45,7 @@ namespace HybridWebApp.Universal.Controls
             {
                 if (success)
                 {
-                    await _Interpreter.LoadFrameworkAsync(true);
+                    await _Interpreter.LoadFrameworkAsync(WebToHostMessageChannel.IFrame, this.WebUri);
                     await _Interpreter.LoadAsync("app.js");
                     await _Interpreter.LoadCssAsync("app.css");
                 }
@@ -80,6 +80,11 @@ namespace HybridWebApp.Universal.Controls
 
         public void Navigate(Uri uri)
         {
+            if(_WebRoute.CurrentUri == uri)
+            {
+                return;
+            }
+
             _BrowserWrapper.Navigate(uri);
         }
 
@@ -93,7 +98,7 @@ namespace HybridWebApp.Universal.Controls
 
         private async Task _ProcessMessageAsync(Uri uri)
         {
-            if (!uri.ToString().Contains("http://localhost/hwaf/") || uri.Segments.Length < 3)
+            if (!uri.ToString().Contains(string.Format("{0}/hwaf/", this.WebUri.TrimEnd('/'))) || uri.Segments.Length < 3)
             {
                 return;
             }
