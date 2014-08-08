@@ -13,7 +13,7 @@ namespace HybridWebApp.Framework
 
         public Uri CurrentUri { get; private set; }
 
-        public Uri Root { get; private set; }
+        public Uri Root { get; set; }
 
         public Interpreter Interpreter { get; private set; }
 
@@ -32,9 +32,8 @@ namespace HybridWebApp.Framework
         /// <param name="interpreter"></param>
         /// <param name="browser"></param>
         /// <param name="mapOnNavigate">When true, the mappings will be evaluated when the Browser Navigated event is raised. When false, the mappings will be evaluated when the Browser Loaded event is raised.</param>
-        public WebRoute(Uri rootUri, Interpreter interpreter, IBrowser browser, bool mapOnNavigate = true)
+        public WebRoute(Interpreter interpreter, IBrowser browser, bool mapOnNavigate = true)
         {
-            this.Root = rootUri;
             this.Interpreter = interpreter;
             this.Browser = browser;
             this.Browser.LoadCompleted += Browser_LoadCompleted;
