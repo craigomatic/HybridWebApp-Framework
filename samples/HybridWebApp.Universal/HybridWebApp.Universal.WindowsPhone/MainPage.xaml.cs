@@ -1,6 +1,6 @@
 ﻿using HybridWebApp.Framework;
 using HybridWebApp.Framework.Model;
-using HybridWebApp.Universal.Controls;
+using HybridWebApp.Toolkit.Controls;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -55,8 +55,16 @@ namespace HybridWebApp.Universal
             // handling the hardware Back button
             Windows.Phone.UI.Input.HardwareButtons.BackPressed += (s,a) =>
             {
-                Frame.GoBack();
-                a.Handled = true;
+                if (Frame.CanGoBack)
+                {
+                    Frame.GoBack();
+                    a.Handled = true;
+                }
+                else if(WebHost.CanGoBack)
+                {
+                    WebHost.GoBack();
+                    a.Handled = true;
+                }
             };
         }        
 
@@ -66,7 +74,7 @@ namespace HybridWebApp.Universal
             switch (msg.Type)
             {
                 case KnownMessageTypes.Menu:
-                    {
+                    {                        
                         var navItems = await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<IList<NavItem>>(msg.Payload));
 
                         foreach (var item in navItems)
@@ -117,36 +125,16 @@ namespace HybridWebApp.Universal
             }
         }
 
-        private void MainPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void WebHost_Ready(object sender, EventArgs e)
         {
-            if(e.AddedItems.Count == 0)
+            if (MainPivot.Items.Count == 0) //avoid duplicate mappings due to frame navigation causing this event to fire
             {
-                return;
+                WebHost.WebRoute.Map("/", async (uri, success, errorCode) =>
+                {
+                    await WebHost.Interpreter.EvalAsync("app.readMenu();");
+                }, true); //true = run once
             }
-
-            var navItem = (e.AddedItems[0] as PivotItem).Tag as NavItem;
-            WebHost.Navigate(new Uri(navItem.Href)); 
-        }
-
-        private void WebHost_NavigationStarting(HybridWebView sender, Uri uri)
-        {
-            MainPivot.IsEnabled = false;
-            CommandBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-        }
-
-        private void WebHost_DOMContentLoaded(HybridWebView sender, Uri uri)
-        {
-            MainPivot.IsEnabled = true;
-            CommandBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
-        }
-
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(SearchPage));
-        }
-
-        private void WebHost_Loaded(object sender, RoutedEventArgs e)
-        {
+            
             if (!string.IsNullOrWhiteSpace(_ParamForNavigation))
             {
                 //Note: only expecting params that can be appended to the end of the root URI 
@@ -159,6 +147,40 @@ namespace HybridWebApp.Universal
             {
                 WebHost.Navigate(WebHost.WebUri);
             }
+        }
+
+        private void MainPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count == 0)
+            {
+                return;
+            }
+
+            var navItem = (e.AddedItems[0] as PivotItem).Tag as NavItem;
+            WebHost.Navigate(new Uri(navItem.Href)); 
+        }
+
+        private void WebHost_NavigationStarting(HybridWebView sender, Uri uri)
+        {
+            CommandBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+        }
+
+        private void WebHost_DOMContentLoaded(HybridWebView sender, Uri uri)
+        {
+            CommandBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
+
+            //make sure the pivot and the view are in sync
+            var expectedPivotSelection = MainPivot.Items.Cast<PivotItem>().Where(p => (p.Tag as NavItem).Href == uri.OriginalString).FirstOrDefault();
+
+            if (expectedPivotSelection != null && MainPivot.SelectedItem != expectedPivotSelection)
+            {
+                MainPivot.SelectedItem = expectedPivotSelection;
+            }
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SearchPage));
         }
     }
 }

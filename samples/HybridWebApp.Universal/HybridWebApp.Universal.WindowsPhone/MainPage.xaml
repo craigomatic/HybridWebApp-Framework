@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:HybridWebApp.Universal"
-    xmlns:controls="using:HybridWebApp.Universal.Controls"
+    xmlns:toolkit="using:HybridWebApp.Toolkit.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -11,19 +11,24 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Pivot x:Name="MainPivot" Height="80" SelectionChanged="MainPivot_SelectionChanged" Visibility="Collapsed" Background="#FF24890d"/>
-        <controls:HybridWebView x:Name="WebHost" 
-                                Grid.Row="1" 
-                                NavigateOnLoad="False"
-                                WebUri="http://hybridwebapp.azurewebsites.net/" 
-                                MessageReceived="WebHost_MessageReceived" 
-                                NavigationStarting="WebHost_NavigationStarting"
-                                DOMContentLoaded="WebHost_DOMContentLoaded"
-                                Loaded="WebHost_Loaded"/>
+        <Pivot x:Name="MainPivot" Title="Hybrid WebApp Sample" SelectionChanged="MainPivot_SelectionChanged" Visibility="Collapsed" Background="#FF24890d"/>
+        <toolkit:HybridWebView x:Name="WebHost" 
+                               Grid.Row="1" 
+                               NavigateOnLoad="False"
+                               WebUri="http://hybridwebapp.azurewebsites.net/" 
+                               CssResourcePath="ms-appx:///www/css/app.css" 
+                               CssResourcePathNotPhone="ms-appx:///www/css/app.notphone.css"
+                               JsResourcePath="ms-appx:///www/js/app.js" 
+                               LoadingBackgroundImage="ms-appx:///Assets/Logo.png"
+                               OfflineBackgroundImage="ms-appx:///Assets/Logo.png"
+                               MessageReceived="WebHost_MessageReceived" 
+                               NavigationStarting="WebHost_NavigationStarting"
+                               DOMContentLoaded="WebHost_DOMContentLoaded"
+                               Ready="WebHost_Ready"/>
     </Grid>
     <Page.BottomAppBar>
         <CommandBar x:Name="CommandBar" Visibility="Collapsed" Background="#FF24890d">

@@ -31,9 +31,10 @@ namespace HybridWebApp.WP81
 
             _BrowserWrapper = new BrowserWrapper(Browser, null);
 
-            _Interpreter = new Interpreter(_BrowserWrapper, Assembly.GetExecutingAssembly(), "HybridWebApp.WP81.www.js", "HybridWebApp.WP81.www.css");
+            _Interpreter = new Interpreter(_BrowserWrapper);
 
-            _WebRoute = new WebRoute(new Uri("http://hybridwebapp.azurewebsites.net/"), _Interpreter, _BrowserWrapper);
+            _WebRoute = new WebRoute(_Interpreter, _BrowserWrapper);
+            _WebRoute.Root = new Uri("http://hybridwebapp.azurewebsites.net/");
 
             //links to other hosts should be handled by the native browser
             _WebRoute.MapOtherHosts(a =>

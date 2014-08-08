@@ -1,6 +1,6 @@
 ﻿using HybridWebApp.Framework;
 using HybridWebApp.Framework.Model;
-using HybridWebApp.Universal.Controls;
+using HybridWebApp.Toolkit.Controls;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -87,6 +87,14 @@ namespace HybridWebApp.Universal
                         break;
                     }
             }
+        }
+
+        private void WebHost_Ready(object sender, EventArgs e)
+        {
+            WebHost.WebRoute.Map("/", async (uri, success, errorCode) =>
+            {
+                await WebHost.Interpreter.EvalAsync("app.readMenu();");
+            }, true); //true = run once
         }
     }
 }

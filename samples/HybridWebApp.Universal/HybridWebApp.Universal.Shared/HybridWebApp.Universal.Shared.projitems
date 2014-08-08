@@ -16,26 +16,21 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\HybridWebView.xaml.cs">
-      <DependentUpon>HybridWebView.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="$(MSBuildThisFileDirectory)Controls\HybridWebView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="$(MSBuildThisFileDirectory)Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)www\css\app.css" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)www\js\app.js" />
+    <Content Include="$(MSBuildThisFileDirectory)www\css\app.css">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)www\js\app.js" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)www\css\app.notphone.css" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)www\css\app.phone.css" />
+    <Content Include="$(MSBuildThisFileDirectory)www\css\app.notphone.css" />
+    <Content Include="$(MSBuildThisFileDirectory)www\css\app.phone.css" />
   </ItemGroup>
 </Project>

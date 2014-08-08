@@ -75,7 +75,19 @@ namespace HybridWebApp.Toolkit.Controls
             get { return _WebRoute; }
         }
 
+        public bool CanGoBack
+        {
+            get { return WebView.CanGoBack; }
+        }
+
+        public bool CanGoForward
+        {
+            get { return WebView.CanGoForward; }
+        }        
+
         private BrowserWrapper _BrowserWrapper;
+
+        private bool _IsInitialised;
 
         public HybridWebView()
         {
@@ -94,7 +106,15 @@ namespace HybridWebApp.Toolkit.Controls
 
         async void HybridWebView_Loaded(object sender, RoutedEventArgs e)
         {
-            await _Initialise();
+            if (!_IsInitialised)
+            {
+                await _Initialise();
+            }
+
+            if (this.Ready != null)
+            {
+                this.Ready(this, EventArgs.Empty);
+            }
 
             if (this.NavigateOnLoad)
             {
@@ -180,6 +200,7 @@ namespace HybridWebApp.Toolkit.Controls
             {
                 _WebRoute.MapOtherHosts(async uri =>
                 {
+                    _HideNavigatingOverlay();
                     await Windows.System.Launcher.LaunchUriAsync(uri);
                 });
             }
@@ -192,10 +213,7 @@ namespace HybridWebApp.Toolkit.Controls
                 args.Cancel = true;
             };
 
-            if (this.Ready != null)
-            {
-                this.Ready(this, EventArgs.Empty);
-            }
+            _IsInitialised = true;
         }
 
         public void Navigate(Uri uri)
@@ -206,6 +224,16 @@ namespace HybridWebApp.Toolkit.Controls
             }
 
             _BrowserWrapper.Navigate(uri);
+        }
+
+        public void GoBack()
+        {
+            WebView.GoBack();
+        }
+
+        public void GoForward()
+        {
+            WebView.GoForward();
         }
 
         private void _OnMessageReceived(ScriptMessage scriptMessage)
