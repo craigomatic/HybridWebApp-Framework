@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace HybridWebApp.Toolkit.WP8.Views
 {
@@ -30,7 +31,7 @@ namespace HybridWebApp.Toolkit.WP8.Views
                 }
 
                 _BackgroundBrush = value;
-                _OnPropertyChanged("BackgroundBrush");
+                _OnPropertyChanged();
             }
         }
 
@@ -47,13 +48,13 @@ namespace HybridWebApp.Toolkit.WP8.Views
                 }
 
                 _ForegroundBrush = value;
-                _OnPropertyChanged("ForegroundBrush");
+                _OnPropertyChanged();
             }
         }
 
-        private ImageSource _BackgroundImage;
+        private string _BackgroundImage;
 
-        public ImageSource BackgroundImage
+        public string BackgroundImage
         {
             get { return _BackgroundImage; }
             set
@@ -64,7 +65,7 @@ namespace HybridWebApp.Toolkit.WP8.Views
                 }
 
                 _BackgroundImage = value;
-                _OnPropertyChanged("BackgroundImage");
+                _OnPropertyChanged();
             }
         }
 
@@ -81,7 +82,7 @@ namespace HybridWebApp.Toolkit.WP8.Views
                 }
 
                 _BackgroundImageWidth = value;
-                _OnPropertyChanged("BackgroundImageWidth");
+                _OnPropertyChanged();
             }
         }
 
@@ -96,7 +97,7 @@ namespace HybridWebApp.Toolkit.WP8.Views
             this.DataContext = this;
         }
 
-        private void _OnPropertyChanged(string propertyName)
+        private void _OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             if (PropertyChanged != null)
             {

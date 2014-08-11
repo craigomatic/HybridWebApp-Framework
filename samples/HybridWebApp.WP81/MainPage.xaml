@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-    xmlns:toolkit="clr-namespace:HybridWebApp.Toolkit.WP8.Views;assembly=HybridWebApp.Toolkit.WP8"
+    xmlns:toolkit="clr-namespace:HybridWebApp.Toolkit.WP8.Controls;assembly=HybridWebApp.Toolkit.WP8"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -21,19 +21,21 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <phone:Pivot x:Name="MainPivot" SelectionChanged="MainPivot_SelectionChanged" />
+        <phone:Pivot x:Name="MainPivot" Title="Hybrid WebApp Sample" SelectionChanged="MainPivot_SelectionChanged" Background="#FF24890d" />
 
-        <phone:WebBrowser x:Name="Browser" Grid.Row="1"
-                                  HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Stretch"
-                                  Navigating="Browser_Navigating" />
-        <toolkit:LoadingOverlay x:Name="LoadingOverlay" Grid.Row="1" Visibility="Collapsed" 
-                                BackgroundImageWidth="336" />
-        <toolkit:OfflineOverlay x:Name="OfflineOverlay" 
-                                Grid.Row="1" 
-                                BackgroundBrush="{StaticResource PhoneBackgroundBrush}"
-                                ForegroundBrush="{StaticResource PhoneAccentBrush}"
-                                Visibility="Collapsed" />
+        <toolkit:HybridWebView x:Name="WebHost" 
+                               Grid.Row="1"
+                               MessageReceived="WebHost_MessageReceived"
+                               LoadingBackgroundImage="/Assets/SquareTile150x150.png"
+                               LoadingBackgroundImageWidth="360"
+                               OfflineBackgroundImage="/Assets/SquareTile150x150.png"
+                               OfflineBackgroundImageWidth="360"
+                               WebUri="http://hybridwebapp.azurewebsites.net/" 
+                               CssResourcePath="ms-appx:///www/css/app.css" 
+                               JsResourcePath="ms-appx:///www/js/app.js"
+                               BackgroundBrush="#FF24890d"
+                               ForegroundBrush="White"
+                               Ready="WebHost_Ready" />
     </Grid>
 
 </phone:PhoneApplicationPage>

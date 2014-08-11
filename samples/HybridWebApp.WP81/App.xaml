@@ -8,8 +8,7 @@
     <!--Application Resources-->
     <Application.Resources>
         <local:LocalizedStrings xmlns:local="clr-namespace:HybridWebApp.WP81" x:Key="LocalizedStrings"/>
-        
-        
+        <SolidColorBrush x:Key="ProgressBarIndeterminateForegroundThemeBrush" Color="White" />
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

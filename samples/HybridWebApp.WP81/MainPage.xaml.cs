@@ -14,110 +14,19 @@ using HybridWebApp.Framework.Model;
 using Newtonsoft.Json;
 using HybridWebApp.Framework;
 using HybridWebApp.Toolkit.WP8;
+using HybridWebApp.Toolkit.WP8.Controls;
 
 namespace HybridWebApp.WP81
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private BrowserWrapper _BrowserWrapper;
-        private Interpreter _Interpreter;
-        private WebRoute _WebRoute;
-
         public MainPage()
         {
             InitializeComponent();
-
-            Browser.Width = Application.Current.Host.Content.ActualWidth;
-
-            _BrowserWrapper = new BrowserWrapper(Browser, null);
-
-            _Interpreter = new Interpreter(_BrowserWrapper);
-
-            _WebRoute = new WebRoute(_Interpreter, _BrowserWrapper);
-            _WebRoute.Root = new Uri("http://hybridwebapp.azurewebsites.net/");
-
-            //links to other hosts should be handled by the native browser
-            _WebRoute.MapOtherHosts(a =>
-            {
-                _HideNavigatingOverlay();
-
-                var webBrowserTask = new Microsoft.Phone.Tasks.WebBrowserTask();
-                webBrowserTask.Uri = a;
-                webBrowserTask.Show();
-            });
-
-            _WebRoute.Map("/", async (uri, success, errorCode) =>
-            {
-                if (success)
-                {
-                    await _Interpreter.LoadFrameworkAsync();
-                    await _Interpreter.LoadCssAsync("app.css");
-                    await _Interpreter.LoadAsync("app.js");
-
-                    _HideNavigatingOverlay();
-                }
-                else
-                {
-                    _HideNavigatingOverlay();
-                    _ShowOfflineOverlay();
-                }
-            });
-
-            //redirect links that contain google.com to bing.com
-            _WebRoute.AddCustomRoute(new CustomRoute
-            {
-                Action = async (uri, success, errorCode) =>
-                {
-                    if (success)
-                    {
-                        await _Interpreter.LoadFrameworkAsync();
-                        await _Interpreter.LoadCssAsync("app.css");
-                        await _Interpreter.LoadAsync("app.js");
-
-                        _HideNavigatingOverlay();
-                    }
-                    else
-                    {
-                        _HideNavigatingOverlay();
-                        _ShowOfflineOverlay();
-                    }
-                },
-                Evaluate = (uri) =>
-                {
-                    if (uri.OriginalString.Contains("google.com"))
-                    {
-                        return CustomRouteAction.Redirect;
-                    }
-
-                    return CustomRouteAction.None;
-                },
-                Redirect = new Uri("http://bing.com")
-            });
-
-            //only load the menu once
-            _WebRoute.Map("/", async (uri, success, errorCode) =>
-            {
-                await _Interpreter.EvalAsync("app.readMenu();");
-            }, true);
-
-            Browser.IsScriptEnabled = true;
-            Browser.ScriptNotify += Browser_ScriptNotify;
-
-            OfflineOverlay.RetryAction = () => { _HideOfflineOverlayAndRetry(); };
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        private async void WebHost_MessageReceived(HybridWebView sender, ScriptMessage msg)
         {
-            if (e.NavigationMode == NavigationMode.New)
-            {
-                _BrowserWrapper.Navigate(_WebRoute.Root);
-            }
-        }
-
-        async void Browser_ScriptNotify(object sender, NotifyEventArgs e)
-        {
-            var msg = JsonConvert.DeserializeObject<ScriptMessage>(e.Value);
-
             switch (msg.Type)
             {
                 case KnownMessageTypes.Error:
@@ -150,52 +59,6 @@ namespace HybridWebApp.WP81
             }
         }
 
-        #region Overlays
-
-        private void _ShowNavigatingOverlay()
-        {
-            LoadingOverlay.Visibility = System.Windows.Visibility.Visible;
-            OfflineOverlay.Visibility = System.Windows.Visibility.Collapsed;
-
-            //Browser.Opacity = 0.1d;
-            Browser.Visibility = System.Windows.Visibility.Visible;
-        }
-
-        private void _HideNavigatingOverlay()
-        {
-            LoadingOverlay.Visibility = System.Windows.Visibility.Collapsed;
-            OfflineOverlay.Visibility = System.Windows.Visibility.Collapsed;
-
-            //Browser.Opacity = 1;
-            Browser.Visibility = System.Windows.Visibility.Visible;
-        }
-
-        private void _ShowOfflineOverlay()
-        {
-            LoadingOverlay.Visibility = System.Windows.Visibility.Collapsed;
-            OfflineOverlay.Visibility = System.Windows.Visibility.Visible;
-
-            Browser.Visibility = System.Windows.Visibility.Collapsed;//.Opacity = 0.1d;
-        }
-
-        /// <summary>
-        /// Hides the offline overlay and transitions to the navigating overlay before refreshing the browser
-        /// </summary>
-        private void _HideOfflineOverlayAndRetry()
-        {
-            LoadingOverlay.Visibility = System.Windows.Visibility.Visible;
-            OfflineOverlay.Visibility = System.Windows.Visibility.Collapsed;
-
-            _BrowserWrapper.Navigate(_WebRoute.CurrentUri);
-        }
-
-        #endregion
-
-        private void Browser_Navigating(object sender, NavigatingEventArgs e)
-        {
-            _ShowNavigatingOverlay();
-        }
-
         private void MainPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count == 0)
@@ -204,10 +67,49 @@ namespace HybridWebApp.WP81
             }
 
             var navItem = (e.AddedItems[0] as PivotItem).Tag as NavItem;
+            WebHost.Navigate(new Uri(navItem.Href)); 
+        }
 
-            if (_WebRoute.CurrentUri.OriginalString != navItem.Href)
+        private void WebHost_Ready(object sender, EventArgs e)
+        {
+            //redirect links that contain google.com to bing.com
+            WebHost.WebRoute.AddCustomRoute(new CustomRoute
             {
-                _BrowserWrapper.Navigate(new Uri(navItem.Href));
+                Action = async (uri, success, errorCode) =>
+                {
+                    //if (success)
+                    //{
+                    //    await WebHost.Interpreter.LoadFrameworkAsync();
+                    //    await WebHost.Interpreter.LoadCssAsync("app.css");
+                    //    await WebHost.Interpreter.LoadAsync("app.js");
+
+                    //    _HideNavigatingOverlay();
+                    //}
+                    //else
+                    //{
+                    //    _HideNavigatingOverlay();
+                    //    _ShowOfflineOverlay();
+                    //}
+                },
+                Evaluate = (uri) =>
+                {
+                    if (uri.OriginalString.Contains("google.com"))
+                    {
+                        return CustomRouteAction.Redirect;
+                    }
+
+                    return CustomRouteAction.None;
+                },
+                Redirect = new Uri("http://bing.com")
+            });
+
+            //only load the menu once
+            if (MainPivot.Items.Count == 0)
+            {
+                WebHost.WebRoute.Map("/", async (uri, success, errorCode) =>
+                {
+                    await WebHost.Interpreter.EvalAsync("app.readMenu();");
+                }, true);
             }
         }
     }
