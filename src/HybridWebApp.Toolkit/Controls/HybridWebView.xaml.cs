@@ -27,7 +27,11 @@ namespace HybridWebApp.Toolkit.Controls
         
         public string LoadingBackgroundImage { get; set; }
 
+        public double LoadingBackgroundImageWidth { get; set; }
+
         public string OfflineBackgroundImage { get; set; }
+
+        public double OfflineBackgroundImageWidth { get; set; }
 
         /// <summary>
         /// Default CSS resource to load
@@ -92,6 +96,9 @@ namespace HybridWebApp.Toolkit.Controls
         public HybridWebView()
         {
             this.InitializeComponent();
+
+            this.LoadingBackgroundImageWidth = 360;
+            this.OfflineBackgroundImageWidth = 360;
 
             _BrowserWrapper = new BrowserWrapper(WebView);
             _Interpreter = new Interpreter(_BrowserWrapper);

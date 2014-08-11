@@ -12,7 +12,7 @@
     
     <Grid>
         <WebView x:Name="WebView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationStarting="WebView_NavigationStarting" DOMContentLoaded="WebView_DOMContentLoaded"/>
-        <toolkit:LoadingOverlay x:Name="LoadingOverlay" BackgroundImage="{Binding ElementName=This, Path=LoadingBackgroundImage}" BackgroundBrush="#FF24890d" />
-        <toolkit:OfflineOverlay x:Name="OfflineOverlay" BackgroundImage="{Binding ElementName=This, Path=OfflineBackgroundImage}" Visibility="Collapsed" BackgroundBrush="#FF24890d" ForegroundBrush="White"/>
+        <toolkit:LoadingOverlay x:Name="LoadingOverlay" BackgroundImage="{Binding ElementName=This, Path=LoadingBackgroundImage}" BackgroundImageWidth="{Binding ElementName=This, Path=LoadingBackgroundImageWidth}" BackgroundBrush="#FF24890d" />
+        <toolkit:OfflineOverlay x:Name="OfflineOverlay" BackgroundImage="{Binding ElementName=This, Path=OfflineBackgroundImage}" BackgroundImageWidth="{Binding ElementName=This, Path=OfflineBackgroundImageWidth}" Visibility="Collapsed" BackgroundBrush="#FF24890d" ForegroundBrush="White"/>
     </Grid>
 </UserControl>
