@@ -16,7 +16,9 @@
                                CssResourcePathNotPhone="ms-appx:///www/css/app.notphone.css"
                                JsResourcePath="ms-appx:///www/js/app.js" 
                                LoadingBackgroundImage="ms-appx:///Assets/Logo.png"
+                               LoadingBackgroundBrush="#FF24890D"
                                OfflineBackgroundImage="ms-appx:///Assets/Logo.png"
+                               OfflineBackgroundBrush="#FF24890D"
                                Ready="WebHost_Ready"/>
     </Grid>
     <Page.TopAppBar>

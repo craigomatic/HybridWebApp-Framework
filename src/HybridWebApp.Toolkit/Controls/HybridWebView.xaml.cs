@@ -9,6 +9,7 @@ using Windows.UI.Xaml.Controls;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Windows.Storage;
+using Windows.UI.Xaml.Media;
 
 namespace HybridWebApp.Toolkit.Controls
 {
@@ -24,10 +25,14 @@ namespace HybridWebApp.Toolkit.Controls
         /// Fires when the HybridWebView is ready for manipulation
         /// </summary>
         public event EventHandler Ready;
-        
+
+        public Brush LoadingBackgroundBrush { get; set; }
+
         public string LoadingBackgroundImage { get; set; }
 
         public double LoadingBackgroundImageWidth { get; set; }
+
+        public Brush OfflineBackgroundBrush { get; set; }
 
         public string OfflineBackgroundImage { get; set; }
 
