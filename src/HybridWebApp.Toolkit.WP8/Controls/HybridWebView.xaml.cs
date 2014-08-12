@@ -26,6 +26,9 @@ namespace HybridWebApp.Toolkit.WP8.Controls
             }
         }
 
+        /// <summary>
+        /// Raised when a new Script Message is received from the web page
+        /// </summary>
         public event TypedEventHandler<HybridWebView, ScriptMessage> MessageReceived;
 
         public event TypedEventHandler<HybridWebView, Uri> NavigationStarting;
@@ -84,9 +87,26 @@ namespace HybridWebApp.Toolkit.WP8.Controls
         /// </summary>
         public string JsResourcePath { get; set; }
 
+        /// <summary>
+        /// Gets or sets the base website URI the control should render.
+        /// </summary>
         public Uri WebUri { get; set; }
 
+        /// <summary>
+        /// When true, the WebUri is navigated to when the control finishes loading
+        /// </summary>
         public bool NavigateOnLoad { get; set; }
+
+        /// <summary>
+        /// When true, the default loading overlay is displayed during navigation requests. 
+        /// </summary>
+        /// <remarks>For single-page apps this should almost always be set to false as they typically provide their own loading spinners.</remarks>
+        public bool EnableLoadingOverlay { get; set; }
+
+        /// <summary>
+        /// When true, the default offline overlay is displayed when navigation attempts fail due to connectivity
+        /// </summary>
+        public bool EnableOfflineOverlay { get; set; }
 
         /// <summary>
         /// When true, all requests do a host/path combination that differs from the WebUri will be opened in an external IE window
@@ -134,6 +154,8 @@ namespace HybridWebApp.Toolkit.WP8.Controls
 
             this.OpenOtherHostsExternal = true;
             this.NavigateOnLoad = true;
+            this.EnableLoadingOverlay = true;
+            this.EnableOfflineOverlay = true;
 
             //always just try to load the current URI during retries
             OfflineOverlay.RetryAction = () => { _BrowserWrapper.Navigate(_WebRoute.CurrentUri); };
@@ -175,32 +197,60 @@ namespace HybridWebApp.Toolkit.WP8.Controls
 
             if (!string.IsNullOrWhiteSpace(this.CssResourcePath))
             {
-                var cssFile = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(this.CssResourcePath));
-                cssString = new StreamReader((await cssFile.OpenReadAsync()).AsStream()).ReadToEnd();
+                try
+                {
+                    var cssFile = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(this.CssResourcePath));
+                    cssString = new StreamReader((await cssFile.OpenReadAsync()).AsStream()).ReadToEnd();
+                }
+                catch
+                {
+                    throw new Exception(string.Format("Unable to load CSS from the given path {0}.", this.CssResourcePath));
+                }
             }
 
             var jsString = string.Empty;
 
             if (!string.IsNullOrWhiteSpace(this.JsResourcePath))
             {
-                var jsFile = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(this.JsResourcePath));
-                jsString = new StreamReader((await jsFile.OpenReadAsync()).AsStream()).ReadToEnd();
+                try
+                {
+                    var jsFile = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(this.JsResourcePath));
+                    jsString = new StreamReader((await jsFile.OpenReadAsync()).AsStream()).ReadToEnd();
+                }
+                catch
+                {
+                    throw new Exception(string.Format("Unable to load JS from the given path {0}.", this.JsResourcePath));
+                }
             }
 
             var additionalPhoneCssString = string.Empty;
 
             if (!string.IsNullOrWhiteSpace(this.CssResourcePathPhone))
             {
-                var additionalCssFile = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(this.CssResourcePathPhone));
-                additionalPhoneCssString = new StreamReader((await additionalCssFile.OpenReadAsync()).AsStream()).ReadToEnd();
+                try
+                {
+                    var additionalCssFile = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(this.CssResourcePathPhone));
+                    additionalPhoneCssString = new StreamReader((await additionalCssFile.OpenReadAsync()).AsStream()).ReadToEnd();
+                }
+                catch
+                {
+                    throw new Exception(string.Format("Unable to load CSS from the given path {0}.", this.CssResourcePathPhone));
+                }
             }
 
             var additionalNotPhoneCssString = string.Empty;
 
             if (!string.IsNullOrWhiteSpace(this.CssResourcePathNotPhone))
             {
-                var additionalCssFile = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(this.CssResourcePathNotPhone));
-                additionalNotPhoneCssString = new StreamReader((await additionalCssFile.OpenReadAsync()).AsStream()).ReadToEnd();
+                try
+                {
+                    var additionalCssFile = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(this.CssResourcePathNotPhone));
+                    additionalNotPhoneCssString = new StreamReader((await additionalCssFile.OpenReadAsync()).AsStream()).ReadToEnd();
+                }
+                catch
+                {
+                    throw new Exception(string.Format("Unable to load CSS from the given path {0}.", this.CssResourcePathNotPhone));
+                }
             }
 
             _WebRoute.Root = this.WebUri;
@@ -299,6 +349,11 @@ namespace HybridWebApp.Toolkit.WP8.Controls
 
         private void _ShowNavigatingOverlay()
         {
+            if (!this.EnableLoadingOverlay)
+            {
+                return;
+            }
+
             LoadingOverlay.Visibility = Visibility.Visible;
             OfflineOverlay.Visibility = Visibility.Collapsed;
 
@@ -308,6 +363,11 @@ namespace HybridWebApp.Toolkit.WP8.Controls
 
         private void _HideNavigatingOverlay()
         {
+            if (!this.EnableLoadingOverlay)
+            {
+                return;
+            }
+
             LoadingOverlay.Visibility = Visibility.Collapsed;
             OfflineOverlay.Visibility = Visibility.Collapsed;
 
@@ -317,6 +377,11 @@ namespace HybridWebApp.Toolkit.WP8.Controls
 
         private void _ShowOfflineOverlay()
         {
+            if (!this.EnableOfflineOverlay)
+            {
+                return;
+            }
+
             LoadingOverlay.Visibility = Visibility.Collapsed;
             OfflineOverlay.Visibility = Visibility.Visible;
 
@@ -328,8 +393,15 @@ namespace HybridWebApp.Toolkit.WP8.Controls
         /// </summary>
         private void _HideOfflineOverlayAndRetry()
         {
-            LoadingOverlay.Visibility = Visibility.Visible;
-            OfflineOverlay.Visibility = Visibility.Collapsed;
+            if (this.EnableLoadingOverlay)
+            {
+                LoadingOverlay.Visibility = Visibility.Visible;
+            }
+
+            if (this.EnableOfflineOverlay)
+            {
+                OfflineOverlay.Visibility = Visibility.Collapsed;
+            }
 
             _BrowserWrapper.Navigate(_WebRoute.CurrentUri);
         }

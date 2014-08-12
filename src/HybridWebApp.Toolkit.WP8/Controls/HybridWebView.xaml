@@ -13,7 +13,7 @@
     
     <Grid>
         <phone:WebBrowser x:Name="WebView" IsScriptEnabled="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Navigating="WebView_Navigating" Navigated="WebView_Navigated"/>
-        <toolkit:LoadingOverlay x:Name="LoadingOverlay" BackgroundBrush="#FF24890d" />
-        <toolkit:OfflineOverlay x:Name="OfflineOverlay" Visibility="Collapsed" BackgroundBrush="#FF24890d" ForegroundBrush="White"/>
+        <toolkit:LoadingOverlay x:Name="LoadingOverlay" Visibility="Collapsed" />
+        <toolkit:OfflineOverlay x:Name="OfflineOverlay" Visibility="Collapsed" />
     </Grid>
 </UserControl>
