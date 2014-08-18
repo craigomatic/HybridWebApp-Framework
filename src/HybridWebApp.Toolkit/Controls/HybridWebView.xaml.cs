@@ -225,7 +225,7 @@ namespace HybridWebApp.Toolkit.Controls
             {
                 if (success)
                 {
-                    await _Interpreter.LoadFrameworkAsync(WebToHostMessageChannel.IFrame, this.WebUri.OriginalString);
+                    await _Interpreter.LoadFrameworkAsync(WebToHostMessageChannel.IFrame);
 
                     //load JS
                     if (!string.IsNullOrWhiteSpace(jsString))
@@ -308,13 +308,13 @@ namespace HybridWebApp.Toolkit.Controls
 
         private async Task _ProcessMessageAsync(Uri uri)
         {
-            if (!uri.ToString().Contains(string.Format("{0}/hwaf/", this.WebUri.OriginalString.TrimEnd('/'))) || uri.Segments.Length < 3)
+            if (!uri.OriginalString.Contains(FrameworkConstants.MessageProxyPath) || uri.OriginalString.EndsWith(FrameworkConstants.MessageProxyPath))
             {
                 return;
             }
 
             //process message
-            var encodedMsg = uri.AbsolutePath.Replace("/hwaf/", string.Empty);
+            var encodedMsg = uri.AbsolutePath.Replace(FrameworkConstants.MessageProxyPath, string.Empty);
             var jsonString = System.Net.WebUtility.UrlDecode(encodedMsg).Replace("/\"", "\\\"");
             var msg = await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<ScriptMessage>(jsonString));
 

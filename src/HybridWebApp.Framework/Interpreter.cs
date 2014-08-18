@@ -18,7 +18,7 @@ namespace HybridWebApp.Framework
             _ScriptInvoker = scriptInvoker;
         }
 
-        public async Task LoadFrameworkAsync(WebToHostMessageChannel messageChannel = WebToHostMessageChannel.Default, string baseUri = "http://localhost")
+        public async Task LoadFrameworkAsync(WebToHostMessageChannel messageChannel = WebToHostMessageChannel.Default)
         {
             var scriptPayload = await EmbeddedResource.ReadAsStringAsync(typeof(Interpreter).GetTypeInfo().Assembly, string.Format("{0}.www.js.framework.js", typeof(Interpreter).GetTypeInfo().Namespace));
             await this.EvalAsync(scriptPayload);
@@ -27,10 +27,7 @@ namespace HybridWebApp.Framework
             {
                 case WebToHostMessageChannel.IFrame:
                     {
-                        //trim trailing slash as the framework includes it
-                        baseUri = baseUri.TrimEnd('/');
-
-                        await this.EvalAsync(string.Format("framework.injectMessageProxy('{0}');", baseUri));
+                        await this.EvalAsync("framework.injectMessageProxy();");
                         break;
                     }
             }

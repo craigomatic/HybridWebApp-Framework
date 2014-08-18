@@ -15,8 +15,8 @@ window.onerror = function (message, url, lineNumber) {
 var framework = {};
 
 framework.messageProxyId = "hwaf-messageproxy";
+framework.messageProxyPath = "/_hwaf_/";
 framework.useMessageProxy = false;
-framework.baseUri = "http://localhost";
 
 framework.log = function (message) {
     var msg = {};
@@ -121,7 +121,7 @@ framework.enableGestures = function (gestureSurface) {
     });
 }
 
-framework.injectMessageProxy = function (baseUri) {
+framework.injectMessageProxy = function () {
     
     var msgProxy = document.createElement('iframe');
 
@@ -129,12 +129,11 @@ framework.injectMessageProxy = function (baseUri) {
     msgProxy.width = "1px";
     msgProxy.height = "1px";
     msgProxy.id = framework.messageProxyId;
-    msgProxy.setAttribute("src", baseUri + "/hwaf/");
+    msgProxy.setAttribute("src", framework.messageProxyPath);
 
     document.documentElement.appendChild(msgProxy);
 
     framework.useMessageProxy = true;
-    framework.baseUri = baseUri;
 }
 
 framework.scriptNotify = function (json) {
@@ -144,7 +143,7 @@ framework.scriptNotify = function (json) {
     if(framework.useMessageProxy) {
         //place the message object into the src of the iframe as json params
         var iframe = document.querySelector("#" + framework.messageProxyId);
-        iframe.setAttribute("src", framework.baseUri + "/hwaf/" + encodeURIComponent(json));
+        iframe.setAttribute("src", framework.messageProxyPath + encodeURIComponent(json));
     }
     else {
         window.external.notify(json);

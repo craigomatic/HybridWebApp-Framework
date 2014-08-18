@@ -74,5 +74,10 @@ namespace HybridWebApp.Framework
         /// Uses an iFrame's src atttribute as the messaging channel
         /// </summary>
         IFrame
-    }    
+    }  
+  
+    public class FrameworkConstants
+    {
+        public const string MessageProxyPath = "/_hwaf_/";
+    }
 }

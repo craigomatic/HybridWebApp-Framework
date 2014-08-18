@@ -150,7 +150,7 @@ namespace HybridWebApp.Toolkit.WP8.Controls
 
             _BrowserWrapper = new BrowserWrapper(WebView);
             _Interpreter = new Interpreter(_BrowserWrapper);
-            _WebRoute = new WebRoute(_Interpreter, _BrowserWrapper);
+            _WebRoute = new WebRoute(_Interpreter, _BrowserWrapper, false);
 
             this.OpenOtherHostsExternal = true;
             this.NavigateOnLoad = true;
@@ -259,7 +259,7 @@ namespace HybridWebApp.Toolkit.WP8.Controls
             {
                 if (success)
                 {
-                    await _Interpreter.LoadFrameworkAsync(WebToHostMessageChannel.Default, this.WebUri.OriginalString);
+                    await _Interpreter.LoadFrameworkAsync(WebToHostMessageChannel.Default);
 
                     //load JS
                     if (!string.IsNullOrWhiteSpace(jsString))
