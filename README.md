@@ -9,6 +9,14 @@ This library currently supports:
 * Error surfacing to the host app
 * Misc DOM helpers
 
+## Download via NuGet
+
+*New!* A NuGet package has been created for all the supported platforms and is now the recommended way that users install both the framework and the toolkit:
+
+[Install-Package HybridWebApp.Toolkit](https://www.nuget.org/packages/HybridWebApp.Toolkit/)
+
+The toolkit includes a reusable control that makes it even simple to get up and running and is the recommended starting point for new projects.
+
 ## Basic Usage
 
 ```c#
@@ -16,10 +24,10 @@ This library currently supports:
 //BrowserWrapper is an implementation of IBrowser and IScriptInvoker tied either to WebBrowser or WebView (depending on WP8/WP8.1 or Universal App)
 var browserWrapper = new BrowserWrapper(WebBrowser);
 
-var interpreter = new Interpreter(browserWrapper, typeof(WebHost).GetTypeInfo().Assembly, 
-"hybridwebapp.universal.www.js", "hybridwebapp.universal.www.css");
+var interpreter = new Interpreter(browserWrapper);
 
-var webRoute = new WebRoute(new Uri("http://example.org"), interpreter, browserWrapper);
+var webRoute = new WebRoute(interpreter, browserWrapper);
+webRoute.Root = new Uri("http://example.org");
 
 //map all route changes so that the framework, app.js and app.css are loaded each time (they are flushed on navigation)
 webRoute.Map("/", async (uri, success, errorCode) =>
@@ -27,8 +35,8 @@ webRoute.Map("/", async (uri, success, errorCode) =>
     if (success)
     {
         await _Interpreter.LoadFrameworkAsync();
-        await _Interpreter.LoadAsync("app.js");
-        await _Interpreter.LoadCssAsync("app.css");
+        await _Interpreter.LoadAsync("ms-appx:///www/js/app.js");
+        await _Interpreter.LoadCssAsync("ms-appx:///www/css/app.css");
     }
     else
     {
@@ -70,7 +78,7 @@ In app.js:
     msg.type = 'something';
     msg.payload = JSON.stringify(payload);
 
-    window.external.notify(JSON.stringify(msg));
+    framework.scriptNotify(JSON.stringify(msg));
 }
 ```
 
@@ -112,7 +120,7 @@ webRoute.Map("/", async (uri, success, errorCode) =>
 {
     if (success)
     {
-        await _Interpreter.LoadFrameworkAsync(true);
+        await _Interpreter.LoadFrameworkAsync(WebToHostMessageChannel.IFrame);
         
         //etc
     }
@@ -124,15 +132,15 @@ webRoute.Map("/", async (uri, success, errorCode) =>
         
 WebBrowser.FrameNavigationStarting += (sender, args) =>
 {
-    if (!args.Uri.ToString().Contains("http://localhost/hwaf/") || args.Uri.Segments.Length < 3)
-    {
-        return;
-    }
+    if (!uri.OriginalString.Contains(FrameworkConstants.MessageProxyPath) || uri.OriginalString.EndsWith(FrameworkConstants.MessageProxyPath))
+            {
+                return;
+            }
 
-    //process message
-    var encodedMsg = args.Uri.AbsolutePath.Replace("/hwaf/", string.Empty);
-    var jsonString = System.Net.WebUtility.UrlDecode(encodedMsg).Replace("/\"", "\\\"");
-    var msg = JsonConvert.DeserializeObject<ScriptMessage>(jsonString);
+            //process message
+            var encodedMsg = uri.AbsolutePath.Replace(FrameworkConstants.MessageProxyPath, string.Empty);
+            var jsonString = System.Net.WebUtility.UrlDecode(encodedMsg).Replace("/\"", "\\\"");
+            var msg = await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<ScriptMessage>(jsonString));
 
     switch (msg.Type)
     {
