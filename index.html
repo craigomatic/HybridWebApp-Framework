@@ -32,9 +32,9 @@
 <a name="beyond-website-in-a-box" class="anchor" href="#beyond-website-in-a-box"><span class="octicon octicon-link"></span></a>Beyond <em>website in a box</em>
 </h2>
 
-<p>The HybridWebApp Framework allows developers to more easily go beyond basic apps that do little more than display a website in a browser control. The framework makes this easy by facilitating the messaging channel between the native application and the website through a simple messaging protocol. </p>
+<p>The HybridWebApp Framework allows developers to more easily create higher fidelity web/app hybrids than the "website in a box" approach of website hosted by a browser control. The framework makes this easy by opening up a bi-directional messaging channel between the native application and the website through a simple messaging protocol. </p>
 
-<p>Allowing the developer to take advantage of structured **bi-directional ** communication opens up more advanced integration with the host OS and the ability to get creative and do the following becomes significantly easier:</p>
+<p>Two-way communication opens up more advanced integration with the host OS and as a result its significantly easier to be creative, for example:</p>
 
 <ul>
 <li>Dynamically replace the websites navigational structure with a native app structure</li>
@@ -42,55 +42,9 @@
 <li>Interact with OS features such as the <a href="http://msdn.microsoft.com/en-us/library/windows/apps/windows.media.systemmediatransportcontrols.aspx">System Media Transport Controls</a> </li>
 <li>Manipulate the DOM to add new buttons into the website that perform actions in the host app</li>
 <li>Delegate Facebook Login to OS native UI (ie: <a href="http://msdn.microsoft.com/en-us/library/windows/apps/windows.security.authentication.web.webauthenticationbroker.aspx">WebAuthenticationBroker</a>)</li>
-</ul><h3>
-<a name="two-ways-to-get-started" class="anchor" href="#two-ways-to-get-started"><span class="octicon octicon-link"></span></a>Two ways to get started</h3>
+</ul><p>Find out how to get started using the project over at the wiki: <a href="https://github.com/craigomatic/HybridWebApp-Framework/wiki">https://github.com/craigomatic/HybridWebApp-Framework/wiki</a></p>
 
-<h4>
-<a name="use-the-toolkit" class="anchor" href="#use-the-toolkit"><span class="octicon octicon-link"></span></a>Use the Toolkit</h4>
-
-<p>For convenience, the HybridWebApp Toolkit provides a reusable control that can be dropped into a new project in Visual Studio.</p>
-
-<p>To install using NuGet: Install-Package HybridWebApp.Toolkit </p>
-
-<p>Then add a reference to <code>xmlns:toolkit="using:HybridWebApp.Toolkit.Controls"</code> and the HybridWebView control in your XAML:</p>
-
-<div class="highlight highlight-xml"><pre><span class="nt">&lt;Page</span>
-    <span class="na">x:Class=</span><span class="s">"MyHybridWebApp.MainPage"</span>
-    <span class="na">xmlns=</span><span class="s">"http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span>
-    <span class="na">xmlns:x=</span><span class="s">"http://schemas.microsoft.com/winfx/2006/xaml"</span>
-    <span class="na">xmlns:local=</span><span class="s">"using:MyHybridWebApp"</span>
-    <span class="na">xmlns:toolkit=</span><span class="s">"using:HybridWebApp.Toolkit.Controls"</span>
-    <span class="na">xmlns:d=</span><span class="s">"http://schemas.microsoft.com/expression/blend/2008"</span>
-    <span class="na">xmlns:mc=</span><span class="s">"http://schemas.openxmlformats.org/markup-compatibility/2006"</span>
-    <span class="na">mc:Ignorable=</span><span class="s">"d"</span><span class="nt">&gt;</span>
-
-    <span class="nt">&lt;Grid</span> <span class="na">Background=</span><span class="s">"{ThemeResource ApplicationPageBackgroundThemeBrush}"</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;toolkit:HybridWebView</span> <span class="na">WebUri=</span><span class="s">"http://craigomatic.github.io/HybridWebApp-Framework"</span> <span class="na">MessageReceived=</span><span class="s">"HybridWebView_MessageReceived"</span> <span class="na">CssResourcePath=</span><span class="s">"ms-appx:///www/css/app.css"</span> <span class="na">JsResourcePath=</span><span class="s">"ms-appx:///www/js/app.js"</span> <span class="nt">/&gt;</span>
-    <span class="nt">&lt;/Grid&gt;</span>
-<span class="nt">&lt;/Page&gt;</span>
-</pre></div>
-
-<div class="highlight highlight-csharp"><pre><span class="k">private</span> <span class="k">async</span> <span class="k">void</span> <span class="nf">WebHost_MessageReceived</span><span class="p">(</span><span class="n">HybridWebView</span> <span class="n">sender</span><span class="p">,</span> <span class="n">ScriptMessage</span> <span class="n">msg</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="k">switch</span> <span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="n">Type</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">case</span> <span class="s">"myCustomMessageType"</span><span class="p">:</span>
-            <span class="p">{</span>
-                <span class="kt">var</span> <span class="n">myCustomObject</span> <span class="p">=</span> <span class="n">JsonConvert</span><span class="p">.</span><span class="n">DeserializeObject</span><span class="p">&lt;</span><span class="n">MyCustomObject</span><span class="p">&gt;(</span><span class="n">msg</span><span class="p">.</span><span class="n">Payload</span><span class="p">);</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-
-<h4>
-<a name="use-the-framework-directly" class="anchor" href="#use-the-framework-directly"><span class="octicon octicon-link"></span></a>Use the Framework directly</h4>
-
-<p>If you'd like to go lower level you can install the framework itself directly and bypass the controls. Note that you will need an implementation of IScriptInvoker and IBrowser which <a href="https://github.com/craigomatic/HybridWebApp-Framework/blob/master/src/HybridWebApp.Toolkit/BrowserWrapper.cs">BrowserWrapper</a> from the toolkit conveniently implements for you.</p>
-
-<p>To install using NuGet: Install-Package HybridWebApp.Framework</p>
-
-<hr><h3>
+<h3>
 <a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
 <p>Authored by <a href="https://github.com/craigomatic" class="user-mention">@craigomatic</a></p>
