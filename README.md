@@ -9,22 +9,21 @@ This library currently supports:
 * Error surfacing to the host app
 * Misc DOM helpers
 
-## Download via NuGet
+If you're new to the framework, the best place to being is the [Getting Started](https://github.com/craigomatic/HybridWebApp-Framework/wiki#getting-started) section of the wiki. 
 
-*New!* A NuGet package has been created for all the supported platforms and is now the recommended way that users install both the framework and the toolkit.
+### Download via NuGet
 
-### Framework
+If you already know what you're doing, grab the NuGet package(s) below and start building!
+
+#### Framework
 
 The framework library, you do all the work to wire it up yourself.
 
 [Install-Package HybridWebApp.Framework](https://www.nuget.org/packages/HybridWebApp.Framework/)
 
-### Toolkit
+#### Toolkit
 
 The toolkit, contains reusable control(s) and implementations of interfaces defined in the HybridWebApp.Framework project. 
 
 [Install-Package HybridWebApp.Toolkit](https://www.nuget.org/packages/HybridWebApp.Toolkit/)
 
-## Documentation
-
-See the [Getting Started](https://github.com/craigomatic/HybridWebApp-Framework/wiki#getting-started) section of the wiki
