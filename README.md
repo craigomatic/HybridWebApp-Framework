@@ -9,7 +9,7 @@ This library currently supports:
 * Error surfacing to the host app
 * Misc DOM helpers
 
-If you're new to the framework, the best place to being is the [Getting Started](https://github.com/craigomatic/HybridWebApp-Framework/wiki#getting-started) section of the wiki. 
+If you're new to the framework, the best place to begin is the [Getting Started](https://github.com/craigomatic/HybridWebApp-Framework/wiki#getting-started) section of the wiki. 
 
 ### Download via NuGet
 
