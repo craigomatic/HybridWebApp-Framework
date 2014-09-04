@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
+using Windows.Web.Http;
 
 namespace HybridWebApp.Toolkit
 {
@@ -123,6 +124,33 @@ namespace HybridWebApp.Toolkit
             {
                 this.WebView.Navigate(uri);
             }
+        }
+
+        public void Navigate(Uri uri, HttpMethod httpMethod, IList<KeyValuePair<string, string>> httpHeaders, IHttpContent httpContent = null)
+        {
+            _CurrentUri = uri;
+
+            var httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(httpMethod, uri);
+
+            if (!string.IsNullOrWhiteSpace(this.UserAgent))
+            {
+                httpRequestMessage.Headers.Add("User-Agent", this.UserAgent);
+            }
+
+            if (httpHeaders != null)
+            {
+                foreach (var item in httpHeaders)
+                {
+                    httpRequestMessage.Headers.Add(item);
+                }
+            }
+
+            if (httpContent != null)
+            {
+                httpRequestMessage.Content = httpContent;
+            }
+
+            this.WebView.NavigateWithHttpRequestMessage(httpRequestMessage);
         }
     }
 }

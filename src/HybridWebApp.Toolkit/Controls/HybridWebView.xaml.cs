@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Windows.Storage;
 using Windows.UI.Xaml.Media;
+using Windows.Web.Http;
+using System.Collections.Generic;
 
 namespace HybridWebApp.Toolkit.Controls
 {
@@ -286,6 +288,16 @@ namespace HybridWebApp.Toolkit.Controls
             }
 
             _BrowserWrapper.Navigate(uri);
+        }
+
+        public void Navigate(Uri uri, HttpMethod httpMethod, IList<KeyValuePair<string, string>> httpHeaders, IHttpContent httpContent = null)
+        {
+            if (_WebRoute.CurrentUri == uri)
+            {
+                return;
+            }
+
+            _BrowserWrapper.Navigate(uri, httpMethod, httpHeaders, httpContent);
         }
 
         public void GoBack()
