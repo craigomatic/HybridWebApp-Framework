@@ -136,8 +136,7 @@ namespace HybridWebApp.Toolkit.Controls
             this.EnableLoadingOverlay = true;
             this.EnableOfflineOverlay = true;
 
-            //always just try to load the current URI during retries
-            OfflineOverlay.RetryAction = () => { _BrowserWrapper.Navigate(_WebRoute.CurrentUri); };
+            OfflineOverlay.RetryAction = () => { this.HideOfflineOverlayAndRetry(); };
         }
 
         async void HybridWebView_Loaded(object sender, RoutedEventArgs e)
@@ -343,6 +342,11 @@ namespace HybridWebApp.Toolkit.Controls
                 return;
             }
 
+            this.ShowOfflineOverlay();
+        }
+
+        public void ShowNavigatingOverlay()
+        {
             LoadingOverlay.Visibility = Visibility.Visible;
             OfflineOverlay.Visibility = Visibility.Collapsed;
 
@@ -357,6 +361,11 @@ namespace HybridWebApp.Toolkit.Controls
                 return;
             }
 
+            this.HideNavigatingOverlay();
+        }
+
+        public void HideNavigatingOverlay()
+        {
             LoadingOverlay.Visibility = Visibility.Collapsed;
             OfflineOverlay.Visibility = Visibility.Collapsed;
 
@@ -371,15 +380,17 @@ namespace HybridWebApp.Toolkit.Controls
                 return;
             }
 
+            this.ShowOfflineOverlay();
+        }
+
+        public void ShowOfflineOverlay()
+        {
             LoadingOverlay.Visibility = Visibility.Collapsed;
             OfflineOverlay.Visibility = Visibility.Visible;
 
             WebView.Visibility = Visibility.Collapsed;//.Opacity = 0.1d;
         }
 
-        /// <summary>
-        /// Hides the offline overlay and transitions to the navigating overlay before refreshing the browser
-        /// </summary>
         private void _HideOfflineOverlayAndRetry()
         {
             if (this.EnableLoadingOverlay)
@@ -391,6 +402,17 @@ namespace HybridWebApp.Toolkit.Controls
             {
                 OfflineOverlay.Visibility = Visibility.Collapsed;
             }
+
+            _BrowserWrapper.Navigate(_WebRoute.CurrentUri);
+        }
+
+        /// <summary>
+        /// Hides the offline overlay and transitions to the navigating overlay before refreshing the browser
+        /// </summary>
+        public void HideOfflineOverlayAndRetry()
+        {
+            LoadingOverlay.Visibility = Visibility.Visible;
+            OfflineOverlay.Visibility = Visibility.Collapsed;
 
             _BrowserWrapper.Navigate(_WebRoute.CurrentUri);
         }
