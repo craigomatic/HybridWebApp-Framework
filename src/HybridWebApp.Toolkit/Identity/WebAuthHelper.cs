@@ -14,6 +14,8 @@ namespace HybridWebApp.Toolkit.Identity
     {
         public string Provider { get; protected set; }
 
+        public Uri CallbackUri { get; set; }
+
         protected string _AppID;
         protected string _Scopes;
         protected Action<Uri, Uri> _AuthenticationAction;

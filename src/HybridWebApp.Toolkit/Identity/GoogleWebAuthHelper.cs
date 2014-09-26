@@ -16,14 +16,14 @@ namespace HybridWebApp.Toolkit.Identity
             :base(appId, scopes, authenticationAction)
         {
             this.Provider = "google";
+            this.CallbackUri = new Uri("http://localhost");
         }
 
         public override void StartWebAuthentication()
         {
-            var callbackUri = new Uri("http://localhost");
-            var requestUri = new Uri(string.Format("https://accounts.google.com/o/oauth2/auth?client_id={0}&redirect_uri={1}&scope={2}&response_type=code", _AppID, callbackUri.ToString(), _Scopes));
+            var requestUri = new Uri(string.Format("https://accounts.google.com/o/oauth2/auth?client_id={0}&redirect_uri={1}&scope={2}&response_type=code", _AppID, this.CallbackUri.ToString(), _Scopes));
 
-            _AuthenticationAction(requestUri, callbackUri);
+            _AuthenticationAction(requestUri, this.CallbackUri);
         }
 
         public async override Task<Model.UserInfo> RetrieveForAccessToken(string accessToken)
