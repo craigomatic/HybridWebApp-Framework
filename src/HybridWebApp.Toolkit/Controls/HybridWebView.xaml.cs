@@ -89,6 +89,15 @@ namespace HybridWebApp.Toolkit.Controls
         /// </summary>
         public bool OpenOtherHostsExternal { get; set; }
 
+        /// <summary>
+        /// Gets or sets the custom user agent that will be sent out with each request (doesn't update the client-side userAgent retrieved via Javascript)
+        /// </summary>
+        public string UserAgent
+        {
+            get { return _BrowserWrapper.UserAgent; }
+            set { _BrowserWrapper.UserAgent = value; }
+        }
+
         private Interpreter _Interpreter;
 
         /// <summary>
@@ -151,9 +160,9 @@ namespace HybridWebApp.Toolkit.Controls
                 this.Ready(this, EventArgs.Empty);
             }
 
-            if (this.NavigateOnLoad)
+            if (this.NavigateOnLoad && _WebRoute.Root != null)
             {
-                WebView.Navigate(_WebRoute.Root);
+                _BrowserWrapper.Navigate(_WebRoute.Root);
             }
         }
 
