@@ -16,5 +16,13 @@ namespace HybridWebApp.Framework.Model
         event EventHandler<Uri> DOMContentLoaded;
 
         void Navigate(Uri uri);
+
+        bool CanGoForward { get; }
+
+        bool CanGoBack { get; }
+
+        void GoBack();
+
+        void GoForward();
     }
 }

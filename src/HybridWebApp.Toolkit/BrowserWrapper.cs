@@ -22,7 +22,17 @@ namespace HybridWebApp.Toolkit
 
         public WebView WebView { get; private set; }
 
-        public string UserAgent { get; private set; }
+        public bool CanGoBack
+        {
+            get { return this.WebView.CanGoBack; }
+        }
+
+        public bool CanGoForward
+        {
+            get { return this.WebView.CanGoForward; }
+        }
+
+        public string UserAgent { get; internal set; }
 
         private Uri _CurrentUri;
 
@@ -116,7 +126,7 @@ namespace HybridWebApp.Toolkit
             if(!string.IsNullOrWhiteSpace(this.UserAgent))
             {
                 var httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(Windows.Web.Http.HttpMethod.Get, uri);
-                httpRequestMessage.Headers.Add("User-Agent", this.UserAgent);
+                httpRequestMessage.Headers.UserAgent.Add(new Windows.Web.Http.Headers.HttpProductInfoHeaderValue(this.UserAgent));
 
                 this.WebView.NavigateWithHttpRequestMessage(httpRequestMessage);
             }
@@ -134,7 +144,7 @@ namespace HybridWebApp.Toolkit
 
             if (!string.IsNullOrWhiteSpace(this.UserAgent))
             {
-                httpRequestMessage.Headers.Add("User-Agent", this.UserAgent);
+                httpRequestMessage.Headers.UserAgent.Add(new Windows.Web.Http.Headers.HttpProductInfoHeaderValue(this.UserAgent));
             }
 
             if (httpHeaders != null)
@@ -151,6 +161,16 @@ namespace HybridWebApp.Toolkit
             }
 
             this.WebView.NavigateWithHttpRequestMessage(httpRequestMessage);
+        }
+
+        public void GoBack()
+        {
+            this.WebView.GoBack();
+        }
+
+        public void GoForward()
+        {
+            this.WebView.GoForward();
         }
     }
 }
