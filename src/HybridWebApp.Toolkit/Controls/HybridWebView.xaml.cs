@@ -26,6 +26,14 @@ namespace HybridWebApp.Toolkit.Controls
 
         public event TypedEventHandler<HybridWebView, Uri> DOMContentLoaded;
 
+        public event TypedEventHandler<HybridWebView, Uri> FrameContentLoading;
+
+        public event TypedEventHandler<HybridWebView, Uri> FrameDOMContentLoaded;
+
+        public event TypedEventHandler<HybridWebView, Tuple<Uri, bool, int>> FrameNavigationCompleted;
+
+        public event TypedEventHandler<HybridWebView, Uri> FrameNavigationStarting;
+
         /// <summary>
         /// Fires when the HybridWebView is ready for manipulation
         /// </summary>
@@ -277,14 +285,6 @@ namespace HybridWebApp.Toolkit.Controls
                 });
             }
 
-            WebView.FrameNavigationStarting += async (s, args) =>
-            {
-                await _ProcessMessageAsync(args.Uri);
-
-                //cancel navigation
-                args.Cancel = true;
-            };
-
             _IsInitialised = true;
         }
 
@@ -326,11 +326,16 @@ namespace HybridWebApp.Toolkit.Controls
             }
         }
 
-        private async Task _ProcessMessageAsync(Uri uri)
+        private async Task<bool> _ProcessMessageAsync(Uri uri)
         {
-            if (!uri.OriginalString.Contains(FrameworkConstants.MessageProxyPath) || uri.OriginalString.EndsWith(FrameworkConstants.MessageProxyPath))
+            if (!uri.OriginalString.Contains(FrameworkConstants.MessageProxyPath))
             {
-                return;
+                return false;
+            }
+
+            if (uri.OriginalString.EndsWith(FrameworkConstants.MessageProxyPath)) //no msg, just mark this as handled
+            {
+                return true;
             }
 
             //process message
@@ -340,6 +345,8 @@ namespace HybridWebApp.Toolkit.Controls
 
             //send it up to be handled
             _OnMessageReceived(msg);
+
+            return true;
         }
 
         #region Overlays
@@ -443,6 +450,47 @@ namespace HybridWebApp.Toolkit.Controls
             if (this.DOMContentLoaded != null)
             {
                 this.DOMContentLoaded(this, args.Uri);
+            }
+        }
+
+        private void WebView_FrameContentLoading(WebView sender, WebViewContentLoadingEventArgs args)
+        {
+            if(this.FrameContentLoading != null)
+            {
+                this.FrameContentLoading(this, args.Uri);
+            }
+        }
+
+        private void WebView_FrameDOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
+        {
+            if (this.FrameDOMContentLoaded != null)
+            {
+                this.FrameDOMContentLoaded(this, args.Uri);
+            }
+        }
+
+        private void WebView_FrameNavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
+        {
+            if (this.FrameNavigationCompleted != null)
+            {
+                this.FrameNavigationCompleted(this, new Tuple<Uri, bool, int>(args.Uri, args.IsSuccess, (int)args.WebErrorStatus));
+            }
+        }
+
+        private async void WebView_FrameNavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+        {
+            var handled = await _ProcessMessageAsync(args.Uri);
+
+            //cancel navigation
+            if (handled)
+            {
+                args.Cancel = true;
+                return;
+            }
+
+            if (this.FrameNavigationStarting != null)
+            {
+                this.FrameNavigationStarting(this, args.Uri);
             }
         }
     }
