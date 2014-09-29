@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
@@ -32,7 +33,22 @@ namespace HybridWebApp.Toolkit
             get { return this.WebView.CanGoForward; }
         }
 
-        public string UserAgent { get; internal set; }
+        private string _UserAgent;
+
+        public string UserAgent
+        {
+            get { return _UserAgent; }
+            internal set 
+            {
+                if (_UserAgent == value)
+                {
+                    return;
+                }
+
+                _UserAgent = value;
+                _SetUserAgent(_UserAgent);
+            }
+        }
 
         private Uri _CurrentUri;
 
@@ -81,15 +97,6 @@ namespace HybridWebApp.Toolkit
 
         void WebView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs e)
         {
-            //if a custom user agent is in play, cancel the navigation when it has been initiated by the browser as it won't include the custom user-agent
-            if (!string.IsNullOrWhiteSpace(this.UserAgent) && e.Uri != _CurrentUri)
-            {
-                e.Cancel = true;
-
-                this.Navigate(e.Uri);
-                return;
-            }
-
             if (this.Navigating != null)
             {
                 var eventArgs = new WrappedNavigatingEventArgs(e.Uri);
@@ -123,17 +130,7 @@ namespace HybridWebApp.Toolkit
         {
             _CurrentUri = uri;
 
-            if(!string.IsNullOrWhiteSpace(this.UserAgent))
-            {
-                var httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(Windows.Web.Http.HttpMethod.Get, uri);
-                httpRequestMessage.Headers.UserAgent.Add(new Windows.Web.Http.Headers.HttpProductInfoHeaderValue(this.UserAgent));
-
-                this.WebView.NavigateWithHttpRequestMessage(httpRequestMessage);
-            }
-            else
-            {
-                this.WebView.Navigate(uri);
-            }
+            this.WebView.Navigate(uri);
         }
 
         public void Navigate(Uri uri, HttpMethod httpMethod, IList<KeyValuePair<string, string>> httpHeaders, IHttpContent httpContent = null)
@@ -141,19 +138,6 @@ namespace HybridWebApp.Toolkit
             _CurrentUri = uri;
 
             var httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(httpMethod, uri);
-
-            if (!string.IsNullOrWhiteSpace(this.UserAgent))
-            {
-                httpRequestMessage.Headers.UserAgent.Add(new Windows.Web.Http.Headers.HttpProductInfoHeaderValue(this.UserAgent));
-            }
-
-            if (httpHeaders != null)
-            {
-                foreach (var item in httpHeaders)
-                {
-                    httpRequestMessage.Headers.Add(item);
-                }
-            }
 
             if (httpContent != null)
             {
@@ -172,5 +156,19 @@ namespace HybridWebApp.Toolkit
         {
             this.WebView.GoForward();
         }
+
+        #region User Agent Import
+
+        [DllImport("urlmon.dll", CharSet = CharSet.Ansi)]
+        private static extern int UrlMkSetSessionOption(int dwOption, string pBuffer, int dwBufferLength, int dwReserved);
+
+        const int URLMON_OPTION_USERAGENT = 0x10000001;
+
+        private void _SetUserAgent(string Agent)
+        {
+            UrlMkSetSessionOption(URLMON_OPTION_USERAGENT, Agent, Agent.Length, 0);
+        }
+
+        #endregion
     }
 }
