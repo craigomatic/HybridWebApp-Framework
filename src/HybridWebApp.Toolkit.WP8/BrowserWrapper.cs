@@ -28,6 +28,16 @@ namespace HybridWebApp.Toolkit.WP8
 
         public WebBrowser WebBrowser { get; private set; }
 
+        public bool CanGoBack
+        {
+            get { return this.WebBrowser.CanGoBack; }
+        }
+
+        public bool CanGoForward
+        {
+            get { return this.WebBrowser.CanGoForward; }
+        }
+
         public string HttpHeaders { get; private set; }
 
         private Uri _CurrentUri;
@@ -127,6 +137,16 @@ namespace HybridWebApp.Toolkit.WP8
             _CurrentUri = uri;
 
             this.WebBrowser.Navigate(uri, null, this.HttpHeaders);
+        }
+
+        public void GoBack()
+        {
+            this.WebBrowser.GoBack();
+        }
+
+        public void GoForward()
+        {
+            this.WebBrowser.GoForward();
         }
     }
 }
