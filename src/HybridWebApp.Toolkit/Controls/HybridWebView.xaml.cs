@@ -358,7 +358,7 @@ namespace HybridWebApp.Toolkit.Controls
                 return;
             }
 
-            this.ShowOfflineOverlay();
+            this.ShowNavigatingOverlay();
         }
 
         public void ShowNavigatingOverlay()
