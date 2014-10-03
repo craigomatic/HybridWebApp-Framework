@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>HybridWebApp.Toolkit</id>
-    <version>1.0.2</version>
+    <version>1.0.3.2</version>
     <title>HybridWebApp.Toolkit</title>
     <authors>Craig Presti</authors>
     <owners>Craig Presti</owners>
@@ -10,11 +10,11 @@
     <projectUrl>http://github.com/craigomatic/HybridWebApp-Framework</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Toolkit that makes working with the HybridWebApp Toolkit simpler. Supports Windows Phone 8, Windows Phone 8.1 Silverlight, Windows Phone 8.1 Runtime and Windows 8.1 Apps</description>
-    <releaseNotes>Added identity helpers for Google and Facebook, fixed some UserAgent related bugs and improved navigation performance.</releaseNotes>
+    <releaseNotes></releaseNotes>
     <copyright>Copyright 2014</copyright>
     <tags>WebApp HybridWeb PhoneGap HybridWebApp Toolkit</tags>
 	<dependencies>
-		<dependency id="HybridWebApp.Framework" version="1.0.1" />
+		<dependency id="HybridWebApp.Framework" version="1.0.1.1" />
 	</dependencies>
   </metadata>
   <files>

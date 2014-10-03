@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>HybridWebApp.Framework</id>
-    <version>1.0.1</version>
+    <version>1.0.1.1</version>
     <title>HybridWebApp.Framework</title>
     <authors>Craig Presti</authors>
     <owners>Craig Presti</owners>
@@ -10,9 +10,12 @@
     <projectUrl>http://github.com/craigomatic/HybridWebApp-Framework</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A framework to make life easier when creating Hybrid WebApps with Windows Phone 8, Windows Phone 8.1 and Windows 8.1</description>
-    <releaseNotes>Exposed back/forward navigation properties/methods.</releaseNotes>
+    <releaseNotes>Added missing Json.NET dependency.</releaseNotes>
     <copyright>Copyright 2014</copyright>
     <tags>WebApp HybridWeb PhoneGap WebView</tags>
+	<dependencies>
+		<dependency id="Newtonsoft.Json" version="6.0.4" />
+	</dependencies>
   </metadata>
   <files>
     <file src="..\src\HybridWebApp.Framework\bin\Release\HybridWebApp.Framework.dll" target="lib\portable-net45+win+wpa81+wp80\HybridWebApp.Framework.dll" />
