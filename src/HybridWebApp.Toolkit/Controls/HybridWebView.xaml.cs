@@ -139,6 +139,11 @@ namespace HybridWebApp.Toolkit.Controls
 
         public HybridWebView()
         {
+            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+            {
+                return;
+            }
+
             this.InitializeComponent();
 
             this.LoadingBackgroundImageWidth = 360;
