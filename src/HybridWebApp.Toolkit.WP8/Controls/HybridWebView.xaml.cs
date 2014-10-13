@@ -290,7 +290,7 @@ namespace HybridWebApp.Toolkit.WP8.Controls
                     _HideNavigatingOverlay();
                     _ShowOfflineOverlay();
                 }
-            },  false, EvalTiming.LoadCompleted);
+            },  false, RouteTiming.LoadCompleted);
 
             if (this.OpenOtherHostsExternal)
             {
