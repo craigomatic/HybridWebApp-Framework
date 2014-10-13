@@ -14,6 +14,7 @@ namespace HybridWebApp.Framework.Model
         event EventHandler<WrappedNavigatingEventArgs> Navigating;
         event EventHandler<WrappedNavigatedEventArgs> Navigated;
         event EventHandler<Uri> DOMContentLoaded;
+        event EventHandler<Uri> FrameContentLoading;
 
         void Navigate(Uri uri);
 

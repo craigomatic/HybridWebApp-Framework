@@ -26,6 +26,9 @@ namespace HybridWebApp.Toolkit.WP8
         [Obsolete("Not available on WP8, do not use")]
         public event EventHandler<Uri> DOMContentLoaded;
 
+        [Obsolete("Not available on WP8, do not use")]
+        public event EventHandler<Uri> FrameContentLoading;
+
         public WebBrowser WebBrowser { get; private set; }
 
         public bool CanGoBack

@@ -74,7 +74,26 @@ namespace HybridWebApp.Framework
         /// Uses an iFrame's src atttribute as the messaging channel
         /// </summary>
         IFrame
-    }  
+    }
+
+    public enum RouteTiming
+    {
+        /// <summary>
+        /// Evaluate when the load completed event has fired
+        /// </summary>
+        [Obsolete("Use Navigate instead on W8.x/WP8.x or newer")]
+        LoadCompleted,
+
+        /// <summary>
+        /// Evaulate when the navigated event has fired
+        /// </summary>
+        Navigated,
+
+        /// <summary>
+        /// Evaluate when the FrameContentLoading event has fired (useful for Single-Page Apps)
+        /// </summary>
+        FrameContentLoading
+    }
   
     public class FrameworkConstants
     {

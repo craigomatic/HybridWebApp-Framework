@@ -150,7 +150,7 @@ namespace HybridWebApp.Toolkit.WP8.Controls
 
             _BrowserWrapper = new BrowserWrapper(WebView);
             _Interpreter = new Interpreter(_BrowserWrapper);
-            _WebRoute = new WebRoute(_Interpreter, _BrowserWrapper, false);
+            _WebRoute = new WebRoute(_Interpreter, _BrowserWrapper);
 
             this.OpenOtherHostsExternal = true;
             this.NavigateOnLoad = true;
@@ -290,7 +290,7 @@ namespace HybridWebApp.Toolkit.WP8.Controls
                     _HideNavigatingOverlay();
                     _ShowOfflineOverlay();
                 }
-            });
+            },  false, EvalTiming.LoadCompleted);
 
             if (this.OpenOtherHostsExternal)
             {

@@ -13,5 +13,7 @@ namespace HybridWebApp.Framework.Model
         public bool RunOnce { get; set; }
 
         public int Hits { get; set; }
+
+        public RouteTiming Timing { get; set; }
     }
 }

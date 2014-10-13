@@ -20,6 +20,7 @@ namespace HybridWebApp.Toolkit
         public event EventHandler<WrappedNavigatedEventArgs> Navigated;
 
         public event EventHandler<Uri> DOMContentLoaded;
+        public event EventHandler<Uri> FrameContentLoading;
 
         public WebView WebView { get; private set; }
 
@@ -49,11 +50,20 @@ namespace HybridWebApp.Toolkit
             this.WebView.NavigationStarting += WebView_NavigationStarting;
             this.WebView.NavigationCompleted += WebView_NavigationCompleted;
             this.WebView.DOMContentLoaded += WebView_DOMContentLoaded;
+            this.WebView.FrameContentLoading += WebView_FrameContentLoading;
+        }
+
+        void WebView_FrameContentLoading(WebView sender, WebViewContentLoadingEventArgs args)
+        {
+            if (this.FrameContentLoading != null)
+            {
+                this.FrameContentLoading(this, args.Uri);
+            }
         }
 
         void WebView_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
         {
-            if(this.DOMContentLoaded != null)
+            if (this.DOMContentLoaded != null)
             {
                 this.DOMContentLoaded(this, args.Uri);
             }
