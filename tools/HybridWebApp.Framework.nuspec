@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>HybridWebApp.Framework</id>
-    <version>1.0.1.1</version>
+    <version>1.0.2</version>
     <title>HybridWebApp.Framework</title>
     <authors>Craig Presti</authors>
     <owners>Craig Presti</owners>
@@ -10,7 +10,7 @@
     <projectUrl>http://github.com/craigomatic/HybridWebApp-Framework</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A framework to make life easier when creating Hybrid WebApps with Windows Phone 8, Windows Phone 8.1 and Windows 8.1</description>
-    <releaseNotes>Added missing Json.NET dependency.</releaseNotes>
+    <releaseNotes>Improved support for single page apps (SPAs).</releaseNotes>
     <copyright>Copyright 2014</copyright>
     <tags>WebApp HybridWeb PhoneGap WebView</tags>
 	<dependencies>
