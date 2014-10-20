@@ -102,8 +102,14 @@ namespace HybridWebApp.Toolkit.Controls
         /// </summary>
         public string UserAgent
         {
-            get { return _BrowserWrapper.UserAgent; }
-            set { _BrowserWrapper.UserAgent = value; }
+            get { return _BrowserWrapper != null ? _BrowserWrapper.UserAgent : string.Empty; }
+            set
+            {
+                if (_BrowserWrapper != null)
+                {
+                    _BrowserWrapper.UserAgent = value;
+                }
+            }
         }
 
         private Interpreter _Interpreter;
