@@ -1,4 +1,5 @@
-﻿using HybridWebApp.Framework.Model;
+﻿using HybridWebApp.Framework;
+using HybridWebApp.Framework.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,9 +104,27 @@ namespace HybridWebApp.Toolkit
 
         public object Eval(params string[] args)
         {
-            return this.Invoke("eval", args);
+            try
+            {
+                return this.Invoke("eval", args);
+            }
+            catch(Exception e)
+            {
+                throw _ResolvedException(e, args);
+            }
         }
 
+        private Exception _ResolvedException(Exception e, params string[] args)
+        {
+            if (e.Message.Contains("0x80020006") || e.Message.Contains("0x80020101"))
+            {
+                return new FunctionNotFoundException(string.Format("Unable to find specified function: {0}", args[0]));
+            }
+
+            return e;
+        }
+
+        [Obsolete("Use InvokeAsync instead")]
         public object Invoke(string scriptName, params string[] args)
         {
             return this.WebView.InvokeScript(scriptName, args);
