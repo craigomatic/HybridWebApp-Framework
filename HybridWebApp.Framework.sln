@@ -32,6 +32,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CB59BB
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{E1DDC61A-A690-4748-A4DD-A96018D8E5F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HybridWebApp.Framework.Test", "test\HybridWebApp.Framework.Test\HybridWebApp.Framework.Test.csproj", "{EC2034F5-EA00-426B-B9E3-406B2441EEB3}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		samples\HybridWebApp.Universal\HybridWebApp.Universal.Shared\HybridWebApp.Universal.Shared.projitems*{9fb9ff50-932a-4fcc-9b22-0b5c9d775974}*SharedItemsImports = 13
@@ -167,6 +171,30 @@ Global
 		{E4B1018B-980A-4F7E-A5B0-10446BF527F4}.Release|x64.ActiveCfg = Release|Any CPU
 		{E4B1018B-980A-4F7E-A5B0-10446BF527F4}.Release|x86.ActiveCfg = Release|x86
 		{E4B1018B-980A-4F7E-A5B0-10446BF527F4}.Release|x86.Build.0 = Release|x86
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Debug|ARM.ActiveCfg = Debug|ARM
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Debug|ARM.Build.0 = Debug|ARM
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Debug|ARM.Deploy.0 = Debug|ARM
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Debug|x64.ActiveCfg = Debug|x64
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Debug|x64.Build.0 = Debug|x64
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Debug|x64.Deploy.0 = Debug|x64
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Debug|x86.ActiveCfg = Debug|x86
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Debug|x86.Build.0 = Debug|x86
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Debug|x86.Deploy.0 = Debug|x86
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Release|ARM.ActiveCfg = Release|ARM
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Release|ARM.Build.0 = Release|ARM
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Release|ARM.Deploy.0 = Release|ARM
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Release|x64.ActiveCfg = Release|x64
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Release|x64.Build.0 = Release|x64
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Release|x64.Deploy.0 = Release|x64
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Release|x86.ActiveCfg = Release|x86
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Release|x86.Build.0 = Release|x86
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -181,5 +209,6 @@ Global
 		{1C33A1CC-9D91-48AC-AAD4-971EB3FF3579} = {249C44AA-9018-4ED4-AB7F-982EE036B506}
 		{DFCE8E26-5BBB-4256-8B44-0BA3D8A370B2} = {4D49153E-C0A7-4E3F-B874-ECF3E81A7A9F}
 		{E4B1018B-980A-4F7E-A5B0-10446BF527F4} = {4D49153E-C0A7-4E3F-B874-ECF3E81A7A9F}
+		{EC2034F5-EA00-426B-B9E3-406B2441EEB3} = {E1DDC61A-A690-4748-A4DD-A96018D8E5F3}
 	EndGlobalSection
 EndGlobal
