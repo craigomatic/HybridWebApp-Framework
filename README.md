@@ -13,6 +13,7 @@ The toolkit library currently provides:
 * Reusable [HybridWebView control](https://github.com/craigomatic/HybridWebApp-Framework/wiki/HybridWebView-Control) that simplifies the communcation between web and host contexts
 * Facebook and Google authentication helpers
 * Default loading and offline overlays
+* Imaging helpers (ie: file -> DataURI)
 
 If you're new to the framework, the best place to begin is the [Getting Started](https://github.com/craigomatic/HybridWebApp-Framework/wiki#getting-started) section of the wiki. 
 
