@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Windows.Media;
 using Windows.Storage.Streams;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
@@ -20,20 +21,23 @@ namespace HybridWebApp.Toolkit.Audio
         private SystemMediaTransportControls _TransportControls;
         private MediaElement _MediaElement;
         private AudioInfo _NowPlaying;
+        
         private Panel _MediaElementHost;
+        private CoreDispatcher _Dispatcher;
+
         private bool _WasPlaying;
 
-        public BackgroundAudioService(Panel mediaElementHost)
+        public BackgroundAudioService(Panel mediaElementHost, CoreDispatcher dispatcher)
         {
             _MediaElementHost = mediaElementHost;
+            _Dispatcher = dispatcher;
 
             _MediaElement = new MediaElement();
             _MediaElement.IsLooping = true;
             _MediaElement.AudioCategory = AudioCategory.BackgroundCapableMedia;
             _MediaElement.AutoPlay = false;
-            _MediaElement.Source = new Uri("ms-appx:///Audio/empty.mp3");
+            _MediaElement.Source = new Uri("ms-appx:///HybridWebApp.Toolkit/Audio/empty.mp3");
             _MediaElement.Volume = 1;
-
             _MediaElementHost.Children.Add(_MediaElement);
 
             _TransportControls = SystemMediaTransportControls.GetForCurrentView();
@@ -64,8 +68,8 @@ namespace HybridWebApp.Toolkit.Audio
 
             _TransportControls.IsPlayEnabled = _NowPlaying.IsPlayEnabled;
             _TransportControls.IsPauseEnabled = _NowPlaying.IsPauseEnabled;
-            _TransportControls.IsNextEnabled = true;
-            _TransportControls.IsPreviousEnabled = true;
+            _TransportControls.IsNextEnabled = _NowPlaying.IsNextEnabled;
+            _TransportControls.IsPreviousEnabled = _NowPlaying.IsPreviousEnabled;
 
             if (!string.IsNullOrWhiteSpace(_NowPlaying.Artist))
             {
@@ -110,13 +114,14 @@ namespace HybridWebApp.Toolkit.Audio
 
         #region Transport Control Event Handlers
 
-       async void _TransportControls_PropertyChanged(SystemMediaTransportControls sender, SystemMediaTransportControlsPropertyChangedEventArgs args)
+        async void _TransportControls_PropertyChanged(SystemMediaTransportControls sender, SystemMediaTransportControlsPropertyChangedEventArgs args)
         {
             if (_NowPlaying == null)
             {
                 return;
             }
 
+            //this handles the scenario where the app goes into the background and another app is playing audio in the foreground, in addition to the scenario where it returns to the foreground
             if (args.Property == SystemMediaTransportControlsProperty.SoundLevel)
             {
                 try
@@ -126,7 +131,7 @@ namespace HybridWebApp.Toolkit.Audio
                         case SoundLevel.Muted:
                             {
                                 _WasPlaying = _NowPlaying.PlaybackStatus == AudioPlaybackStatus.Playing ? true : false;
-                                
+
                                 await this.PauseFunc();
 
                                 break;
@@ -159,22 +164,42 @@ namespace HybridWebApp.Toolkit.Audio
             {
                 case SystemMediaTransportControlsButton.Play:
                     {
-                        await this.PlayFunc();
+                        await _Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                        {
+                            _TransportControls.PlaybackStatus = MediaPlaybackStatus.Playing;
+                            _TransportControls.IsPauseEnabled = true;
+                            await this.PlayFunc();
+                        });
+
                         break;
                     }
                 case SystemMediaTransportControlsButton.Pause:
                     {
-                        await this.PauseFunc();
+                        await _Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                        {
+                            _TransportControls.PlaybackStatus = MediaPlaybackStatus.Paused;
+                            _TransportControls.IsPlayEnabled = true;
+                            await this.PauseFunc();
+                        });
+
                         break;
                     }
                 case SystemMediaTransportControlsButton.Next:
                     {
-                        await this.NextFunc();
+                        await _Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                        {
+                            await this.NextFunc();
+                        });
+
                         break;
                     }
                 case SystemMediaTransportControlsButton.Previous:
                     {
-                        await this.PreviousFunc();
+                        await _Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                        {
+                            await this.PreviousFunc();
+                        });
+
                         break;
                     }
             }
