@@ -47,7 +47,10 @@
     <TargetPlatform Include="Windows, Version=8.1" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio\AudioInfo.cs" />
+    <Compile Include="Audio\BackgroundAudioService.cs" />
     <Compile Include="BrowserWrapper.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Controls\HybridWebView.xaml.cs">
       <DependentUpon>HybridWebView.xaml</DependentUpon>
     </Compile>
@@ -86,6 +89,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Audio\empty.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
