@@ -14,6 +14,7 @@ The toolkit library currently provides:
 * Facebook and Google authentication helpers
 * Default loading and offline overlays
 * Imaging helpers (ie: file -> DataURI)
+* [Background audio service](https://github.com/craigomatic/HybridWebApp-Framework/wiki/Background-Audio)
 
 If you're new to the framework, the best place to begin is the [Getting Started](https://github.com/craigomatic/HybridWebApp-Framework/wiki#getting-started) section of the wiki. 
 
