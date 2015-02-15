@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>HybridWebApp.Toolkit</id>
-    <version>1.0.6</version>
+    <version>1.0.6.1</version>
     <title>HybridWebApp.Toolkit</title>
     <authors>Craig Presti</authors>
     <owners>Craig Presti</owners>
@@ -18,6 +18,7 @@
 	</dependencies>
   </metadata>
   <files>
+	<file src="..\src\HybridWebApp.Toolkit\bin\Release\Audio\empty.mp3" target="lib\portable-win81+wpa81\HybridWebApp.Toolkit\Audio\empty.mp3" />
     <file src="..\src\HybridWebApp.Toolkit\bin\Release\Controls\HybridWebView.xbf" target="lib\portable-win81+wpa81\HybridWebApp.Toolkit\Controls\HybridWebView.xbf" />
 	<file src="..\src\HybridWebApp.Toolkit\bin\Release\Views\LoadingOverlay.xbf" target="lib\portable-win81+wpa81\HybridWebApp.Toolkit\Views\LoadingOverlay.xbf" />
 	<file src="..\src\HybridWebApp.Toolkit\bin\Release\Views\OfflineOverlay.xbf" target="lib\portable-win81+wpa81\HybridWebApp.Toolkit\Views\OfflineOverlay.xbf" />
