@@ -141,7 +141,7 @@ namespace HybridWebApp.Framework
         {
             this.CurrentUri = uri;
 
-            if (this.CurrentUri.Host != this.Root.Host) //ignore requests to other hosts
+            if (this.CurrentUri.Scheme != "ms-appx-web" && this.CurrentUri.Host != this.Root.Host) //ignore requests to other hosts
             {
                 return;
             }
