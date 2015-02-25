@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>HybridWebApp.Toolkit</id>
-    <version>1.0.6.1</version>
+    <version>1.0.6.2</version>
     <title>HybridWebApp.Toolkit</title>
     <authors>Craig Presti</authors>
     <owners>Craig Presti</owners>
@@ -14,7 +14,7 @@
     <copyright>Copyright 2015</copyright>
     <tags>WebApp HybridWeb PhoneGap HybridWebApp Toolkit</tags>
 	<dependencies>
-		<dependency id="HybridWebApp.Framework" version="1.0.3" />
+		<dependency id="HybridWebApp.Framework" version="1.0.4" />
 	</dependencies>
   </metadata>
   <files>
