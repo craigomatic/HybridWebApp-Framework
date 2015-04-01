@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>HybridWebApp.Toolkit</id>
-    <version>1.0.6.2</version>
+    <version>1.0.7</version>
     <title>HybridWebApp.Toolkit</title>
     <authors>Craig Presti</authors>
     <owners>Craig Presti</owners>
@@ -10,7 +10,7 @@
     <projectUrl>http://github.com/craigomatic/HybridWebApp-Framework</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Toolkit that makes working with the HybridWebApp Toolkit simpler. Supports Windows Phone 8, Windows Phone 8.1 Silverlight, Windows Phone 8.1 Runtime and Windows 8.1 Apps</description>
-    <releaseNotes>Added BackgroundAudioService to better support websites that play audio.</releaseNotes>
+    <releaseNotes>Minor improvements to the BackgroundAudioService, fixed some issues with play/pause states.</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>WebApp HybridWeb PhoneGap HybridWebApp Toolkit</tags>
 	<dependencies>
