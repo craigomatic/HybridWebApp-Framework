@@ -66,8 +66,8 @@ namespace HybridWebApp.Toolkit.Audio
 
             _TransportControls.DisplayUpdater.Type = MediaPlaybackType.Music;
 
-            _TransportControls.IsPlayEnabled = _NowPlaying.IsPlayEnabled;
-            _TransportControls.IsPauseEnabled = _NowPlaying.IsPauseEnabled;
+            _TransportControls.IsPlayEnabled = _NowPlaying.PlaybackStatus == AudioPlaybackStatus.Paused || _NowPlaying.PlaybackStatus == AudioPlaybackStatus.Stopped;
+            _TransportControls.IsPauseEnabled = _NowPlaying.PlaybackStatus == AudioPlaybackStatus.Playing;
             _TransportControls.IsNextEnabled = _NowPlaying.IsNextEnabled;
             _TransportControls.IsPreviousEnabled = _NowPlaying.IsPreviousEnabled;
 
