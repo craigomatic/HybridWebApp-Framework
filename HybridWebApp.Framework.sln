@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HybridWebApp.Framework", "src\HybridWebApp.Framework\HybridWebApp.Framework.csproj", "{70B07379-CC0C-41C7-BD02-B1EEDF2F0277}"
 EndProject
@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{8E9D31B8-91E9-4496-970A-5624DD45409E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HybridWebApp.Toolkit", "src\HybridWebApp.Toolkit\HybridWebApp.Toolkit.csproj", "{DFCE8E26-5BBB-4256-8B44-0BA3D8A370B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HybridWebApp.Toolkit.W81", "src\HybridWebApp.Toolkit.W81\HybridWebApp.Toolkit.W81.csproj", "{DFCE8E26-5BBB-4256-8B44-0BA3D8A370B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HybridWebApp.Toolkit.WP8", "src\HybridWebApp.Toolkit.WP8\HybridWebApp.Toolkit.WP8.csproj", "{E4B1018B-980A-4F7E-A5B0-10446BF527F4}"
 EndProject
