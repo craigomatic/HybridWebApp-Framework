@@ -11,13 +11,14 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <toolkit:HybridWebView x:Name="WebHost" 
                                MessageReceived="WebHost_MessageReceived"
-                               WebUri="http://hybridwebapp.azurewebsites.net/" 
+                               WebUri="http://hybridwebapp.azurewebsites.net/geolocation-demo/" 
                                CssResourcePath="ms-appx:///www/css/app.css" 
                                JsResourcePath="ms-appx:///www/js/app.js" 
                                LoadingBackgroundImage="ms-appx:///Assets/StoreLogo.png"
                                LoadingBackgroundBrush="#FF24890D"
                                OfflineBackgroundImage="ms-appx:///Assets/StoreLogo.png"
                                OfflineBackgroundBrush="#FF24890D"
-                               Ready="WebHost_Ready" />
+                               Ready="WebHost_Ready"
+                               PermissionRequested="WebHost_PermissionRequested" />
     </Grid>
 </Page>
