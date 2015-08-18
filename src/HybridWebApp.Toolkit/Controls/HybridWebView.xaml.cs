@@ -12,6 +12,8 @@ using Windows.Storage;
 using Windows.UI.Xaml.Media;
 using Windows.Web.Http;
 using System.Collections.Generic;
+using Windows.Storage.Streams;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace HybridWebApp.Toolkit.Controls
 {
@@ -33,6 +35,10 @@ namespace HybridWebApp.Toolkit.Controls
         public event TypedEventHandler<HybridWebView, Tuple<Uri, bool, int>> FrameNavigationCompleted;
 
         public event TypedEventHandler<HybridWebView, Uri> FrameNavigationStarting;
+
+        public event TypedEventHandler<HybridWebView, WebViewLongRunningScriptDetectedEventArgs> LongRunningScriptDetected;
+
+        public event TypedEventHandler<HybridWebView, WebViewPermissionRequestedEventArgs> PermissionRequested;
 
         /// <summary>
         /// Fires when the HybridWebView is ready for manipulation
@@ -329,6 +335,31 @@ namespace HybridWebApp.Toolkit.Controls
             WebView.GoForward();
         }
 
+        public IAsyncAction ClearTemporaryWebDataAsync()
+        {
+            return WebView.ClearTemporaryWebDataAsync();
+        }
+
+        public void AddWebAllowedObject(System.String name, System.Object pObject)
+        {
+            WebView.AddWebAllowedObject(name, pObject);
+        }
+
+        public IAsyncAction CapturePreviewToStreamAsync(IRandomAccessStream stream)
+        {
+            return WebView.CapturePreviewToStreamAsync(stream);
+        }
+
+        public IAsyncOperation<DataPackage> CaptureSelectedContentToDataPackageAsync()
+        {
+            return WebView.CaptureSelectedContentToDataPackageAsync();
+        }
+
+        public WebViewDeferredPermissionRequest DeferredPermissionRequestById(System.UInt32 id)
+        {
+            return WebView.DeferredPermissionRequestById(id);
+        }
+
         private void _OnMessageReceived(ScriptMessage scriptMessage)
         {
             if (MessageReceived != null)
@@ -502,6 +533,22 @@ namespace HybridWebApp.Toolkit.Controls
             if (this.FrameNavigationStarting != null)
             {
                 this.FrameNavigationStarting(this, args.Uri);
+            }
+        }
+
+        private void WebView_LongRunningScriptDetected(WebView sender, WebViewLongRunningScriptDetectedEventArgs args)
+        {
+            if (this.LongRunningScriptDetected != null)
+            {
+                this.LongRunningScriptDetected(this, args);
+            }
+        }
+
+        private void WebView_PermissionRequested(WebView sender, WebViewPermissionRequestedEventArgs args)
+        {
+            if (this.PermissionRequested != null)
+            {
+                this.PermissionRequested(this, args);
             }
         }
     }
