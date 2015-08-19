@@ -120,6 +120,11 @@
     <Compile Include="Controls\HybridWebView.xaml.cs">
       <DependentUpon>HybridWebView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Identity\FacebookWebAuthHelper.cs" />
+    <Compile Include="Identity\GoogleWebAuthHelper.cs" />
+    <Compile Include="Identity\IWebAuthHelper.cs" />
+    <Compile Include="Identity\Model\UserInfo.cs" />
+    <Compile Include="Identity\WebAuthHelper.cs" />
     <Compile Include="Imaging\ImagingExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\LoadingOverlay.xaml.cs">
@@ -128,7 +133,9 @@
     <Compile Include="Views\OfflineOverlay.xaml.cs">
       <DependentUpon>OfflineOverlay.xaml</DependentUpon>
     </Compile>
-    <Content Include="Audio\empty.mp3" />
+    <Content Include="Audio\empty.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Properties\HybridWebApp.Toolkit.rd.xml" />
   </ItemGroup>
   <ItemGroup>

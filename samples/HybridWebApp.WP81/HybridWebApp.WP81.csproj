@@ -176,10 +176,6 @@
       <Project>{70b07379-cc0c-41c7-bd02-b1eedf2f0277}</Project>
       <Name>HybridWebApp.Framework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\HybridWebApp.Toolkit.WP8\HybridWebApp.Toolkit.WP8.csproj">
-      <Project>{e4b1018b-980a-4f7e-a5b0-10446bf527f4}</Project>
-      <Name>HybridWebApp.Toolkit.WP8</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
