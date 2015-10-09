@@ -16,14 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CB59BB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{E1DDC61A-A690-4748-A4DD-A96018D8E5F3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackgroundAudio", "BackgroundAudio", "{C9EB3847-AA3C-4DA1-B7D0-A8C4232DC6CE}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BackgroundAudio.Shared", "samples\BackgroundAudio\BackgroundAudio.Shared\BackgroundAudio.Shared.shproj", "{472730FD-E72C-494F-BCB8-1C7644128E3B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundAudio.Windows", "samples\BackgroundAudio\BackgroundAudio.Windows\BackgroundAudio.Windows.csproj", "{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundAudio.WindowsPhone", "samples\BackgroundAudio\BackgroundAudio.WindowsPhone\BackgroundAudio.WindowsPhone.csproj", "{E9AA38D2-48B0-462A-BAC6-7A95F380432A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HybridWebApp.Toolkit", "src\HybridWebApp.Toolkit\HybridWebApp.Toolkit.csproj", "{0179FFF5-1583-4541-BACE-E14B53562D35}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HybridWebApp.Windows10", "samples\HybridWebApp.Windows10\HybridWebApp.Windows10.csproj", "{1E7DD445-4BD4-4076-B834-C301473DB13E}"
@@ -33,11 +25,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HybridWebApp.Framework.Test", "test\HybridWebApp.Framework.Test\HybridWebApp.Framework.Test.csproj", "{7745B52E-03C3-4906-8E5C-33BB6221067A}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		samples\BackgroundAudio\BackgroundAudio.Shared\BackgroundAudio.Shared.projitems*{1c2cb8b7-8ef7-409a-af0c-1e6b49619321}*SharedItemsImports = 4
-		samples\BackgroundAudio\BackgroundAudio.Shared\BackgroundAudio.Shared.projitems*{472730fd-e72c-494f-bcb8-1c7644128e3b}*SharedItemsImports = 13
-		samples\BackgroundAudio\BackgroundAudio.Shared\BackgroundAudio.Shared.projitems*{e9aa38d2-48b0-462a-bac6-7a95f380432a}*SharedItemsImports = 4
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
@@ -49,50 +36,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Debug|ARM.ActiveCfg = Debug|ARM
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Debug|ARM.Build.0 = Debug|ARM
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Debug|ARM.Deploy.0 = Debug|ARM
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Debug|x64.ActiveCfg = Debug|x64
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Debug|x64.Build.0 = Debug|x64
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Debug|x64.Deploy.0 = Debug|x64
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Debug|x86.ActiveCfg = Debug|x86
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Debug|x86.Build.0 = Debug|x86
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Debug|x86.Deploy.0 = Debug|x86
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Release|ARM.ActiveCfg = Release|ARM
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Release|ARM.Build.0 = Release|ARM
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Release|ARM.Deploy.0 = Release|ARM
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Release|x64.ActiveCfg = Release|x64
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Release|x64.Build.0 = Release|x64
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Release|x64.Deploy.0 = Release|x64
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Release|x86.ActiveCfg = Release|x86
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Release|x86.Build.0 = Release|x86
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321}.Release|x86.Deploy.0 = Release|x86
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Debug|ARM.ActiveCfg = Debug|ARM
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Debug|ARM.Build.0 = Debug|ARM
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Debug|ARM.Deploy.0 = Debug|ARM
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Debug|x86.ActiveCfg = Debug|x86
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Debug|x86.Build.0 = Debug|x86
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Debug|x86.Deploy.0 = Debug|x86
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Release|ARM.ActiveCfg = Release|ARM
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Release|ARM.Build.0 = Release|ARM
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Release|ARM.Deploy.0 = Release|ARM
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Release|x64.ActiveCfg = Release|Any CPU
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Release|x86.ActiveCfg = Release|x86
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Release|x86.Build.0 = Release|x86
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A}.Release|x86.Deploy.0 = Release|x86
 		{0179FFF5-1583-4541-BACE-E14B53562D35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0179FFF5-1583-4541-BACE-E14B53562D35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0179FFF5-1583-4541-BACE-E14B53562D35}.Debug|ARM.ActiveCfg = Debug|ARM
@@ -164,10 +107,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C9EB3847-AA3C-4DA1-B7D0-A8C4232DC6CE} = {8E9D31B8-91E9-4496-970A-5624DD45409E}
-		{472730FD-E72C-494F-BCB8-1C7644128E3B} = {C9EB3847-AA3C-4DA1-B7D0-A8C4232DC6CE}
-		{1C2CB8B7-8EF7-409A-AF0C-1E6B49619321} = {C9EB3847-AA3C-4DA1-B7D0-A8C4232DC6CE}
-		{E9AA38D2-48B0-462A-BAC6-7A95F380432A} = {C9EB3847-AA3C-4DA1-B7D0-A8C4232DC6CE}
 		{0179FFF5-1583-4541-BACE-E14B53562D35} = {4D49153E-C0A7-4E3F-B874-ECF3E81A7A9F}
 		{1E7DD445-4BD4-4076-B834-C301473DB13E} = {8E9D31B8-91E9-4496-970A-5624DD45409E}
 		{F50D427B-5196-4CEF-A07C-2AEC6E6D963E} = {4D49153E-C0A7-4E3F-B874-ECF3E81A7A9F}
