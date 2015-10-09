@@ -2,22 +2,23 @@
 <package >
   <metadata>
     <id>HybridWebApp.Framework</id>
-    <version>1.0.4</version>
+    <version>1.1.0</version>
     <title>HybridWebApp.Framework</title>
     <authors>Craig Presti</authors>
     <owners>Craig Presti</owners>
     <licenseUrl>https://raw.githubusercontent.com/craigomatic/HybridWebApp-Framework/master/LICENSE</licenseUrl>
     <projectUrl>http://github.com/craigomatic/HybridWebApp-Framework</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A framework to make life easier when creating Hybrid WebApps with Windows Phone 8, Windows Phone 8.1 and Windows 8.1</description>
-    <releaseNotes>Fixed bug preventing ms-appx-web routes from being evaluated</releaseNotes>
+    <description>A framework to make life easier when creating Hybrid WebApps with Windows 10</description>
+    <releaseNotes></releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>WebApp HybridWeb PhoneGap WebView</tags>
 	<dependencies>
-		<dependency id="Newtonsoft.Json" version="6.0.4" />
+		<dependency id="Newtonsoft.Json" version="7.0.1" />
 	</dependencies>
   </metadata>
   <files>
-    <file src="..\src\HybridWebApp.Framework\bin\Release\HybridWebApp.Framework.dll" target="lib\portable-net45+win+wpa81+wp80\HybridWebApp.Framework.dll" />
+    <file src="..\src\HybridWebApp.Framework\bin\Release\HybridWebApp.Framework.dll" target="lib\uap10.0\HybridWebApp.Framework.dll" />
+	<file src="..\src\HybridWebApp.Framework\bin\Release\Properties\HybridWebApp.Framework.rd.xml" target="lib\uap10.0\HybridWebApp.Framework\Properties\HybridWebApp.Framework.rd.xml" />
   </files>
 </package>

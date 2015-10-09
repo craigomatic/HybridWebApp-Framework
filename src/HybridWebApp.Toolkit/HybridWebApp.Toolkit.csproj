@@ -136,7 +136,9 @@
     <Content Include="Audio\empty.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Properties\HybridWebApp.Toolkit.rd.xml" />
+    <Content Include="Properties\HybridWebApp.Toolkit.rd.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\HybridWebView.xaml">
@@ -154,7 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HybridWebApp.Framework\HybridWebApp.Framework.csproj">
-      <Project>{70b07379-cc0c-41c7-bd02-b1eedf2f0277}</Project>
+      <Project>{f50d427b-5196-4cef-a07c-2aec6e6d963e}</Project>
       <Name>HybridWebApp.Framework</Name>
     </ProjectReference>
   </ItemGroup>
