@@ -28,4 +28,12 @@ namespace HybridWebApp.Toolkit
         //     The media is paused.
         Paused = 4,
     }
+
+    public enum AppState
+    {
+        Unknown,
+        Active,
+        Suspended
+    }
+
 }
