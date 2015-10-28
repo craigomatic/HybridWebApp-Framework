@@ -30,7 +30,7 @@ namespace HybridWebApp.Windows10
 
         private void WebHost_Ready(object sender, EventArgs e)
         {
-
+            WebHost.HideNavigatingOverlay();
         }
 
         private void WebHost_MessageReceived(Toolkit.Controls.HybridWebView sender, Framework.Model.ScriptMessage args)
@@ -49,6 +49,26 @@ namespace HybridWebApp.Windows10
             //dialog.Commands.Add(new UICommand("Deny", d => { args.PermissionRequest.Deny(); }));
 
             //await dialog.ShowAsync();
+        }
+
+        private void BackgroundAudio_Click(object sender, RoutedEventArgs e)
+        {
+            WebHost.Navigate(new Uri("http://hybridwebapp.azurewebsites.net/audio-demo/"));
+        }
+
+        private void Geolocation_Click(object sender, RoutedEventArgs e)
+        {
+            WebHost.Navigate(new Uri("http://hybridwebapp.azurewebsites.net/geolocation-demo/"));
+        }
+
+        private void Menu_Click(object sender, RoutedEventArgs e)
+        {
+            this.ShellSplitView.IsPaneOpen = !this.ShellSplitView.IsPaneOpen;
+        }
+
+        private void DontCheck(object sender, RoutedEventArgs e)
+        {
+            (sender as RadioButton).IsChecked = false;
         }
     }
 }
