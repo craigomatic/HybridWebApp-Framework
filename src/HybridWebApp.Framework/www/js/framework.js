@@ -53,14 +53,14 @@ framework.enableGestures = function (gestureSurface) {
     });
 
     //reset gesture on start
-    surface.addEventListener('MSGestureStart', function(event) {
+    surface.addEventListener('MSGestureStart', function (event) {
         rotation = 0;
         scale = 1;
         translationX = translationY = 0;
         recognised = false;
     });
 
-    surface.addEventListener('MSGestureChange', function(event) {
+    surface.addEventListener('MSGestureChange', function (event) {
         // Disable built-in inertia
         if (event.detail == event.MSGESTURE_FLAG_INERTIA) {
             return;
@@ -87,7 +87,7 @@ framework.enableGestures = function (gestureSurface) {
                 // Check for vertical swipe
             } else if (Math.abs(translationY) > MIN_SWIPE_DISTANCE) {
                 recognised = true;
-                
+
                 gesture.type = 'swipe';
                 gesture.direction = translationY < 0 ? 'up' : 'down';
                 gesture.value = translationY;
@@ -122,7 +122,7 @@ framework.enableGestures = function (gestureSurface) {
 }
 
 framework.injectMessageProxy = function () {
-    
+
     var msgProxy = document.createElement('iframe');
 
     msgProxy.frameBorder = 0;
@@ -140,7 +140,7 @@ framework.scriptNotify = function (json) {
 
     //calling app defines if message should be passed via iframe or window.external.notify
 
-    if(framework.useMessageProxy) {
+    if (framework.useMessageProxy) {
         //place the message object into the src of the iframe as json params
         var iframe = document.querySelector("#" + framework.messageProxyId);
         iframe.setAttribute("src", framework.messageProxyPath + encodeURIComponent(json));

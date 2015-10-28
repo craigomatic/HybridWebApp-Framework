@@ -82,17 +82,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <ProjectReference Include="..\..\..\src\HybridWebApp.Framework\HybridWebApp.Framework.csproj">
-      <Project>{70b07379-cc0c-41c7-bd02-b1eedf2f0277}</Project>
-      <Name>HybridWebApp.Framework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\src\HybridWebApp.Toolkit.W81\HybridWebApp.Toolkit.W81.csproj">
-      <Project>{dfce8e26-5bbb-4256-8b44-0ba3d8a370b2}</Project>
-      <Name>HybridWebApp.Toolkit.W81</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

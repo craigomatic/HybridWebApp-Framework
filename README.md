@@ -1,7 +1,7 @@
 HybridWebApp-Framework
 ======================
 
-A framework to make life easier when creating Hybrid WebApps with Windows Phone 8, Windows Phone 8.1 and Windows 8.1
+A framework to make life easier when creating Hybrid WebApps with Windows 10
 
 The framework library currently supports:
 * Simple messaging protocol between web context and host app context

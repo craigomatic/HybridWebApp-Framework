@@ -2,30 +2,30 @@
 <package >
   <metadata>
     <id>HybridWebApp.Toolkit</id>
-    <version>1.0.7</version>
+    <version>1.1.0</version>
     <title>HybridWebApp.Toolkit</title>
     <authors>Craig Presti</authors>
     <owners>Craig Presti</owners>
     <licenseUrl>https://raw.githubusercontent.com/craigomatic/HybridWebApp-Framework/master/LICENSE</licenseUrl>
     <projectUrl>http://github.com/craigomatic/HybridWebApp-Framework</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Toolkit that makes working with the HybridWebApp Toolkit simpler. Supports Windows Phone 8, Windows Phone 8.1 Silverlight, Windows Phone 8.1 Runtime and Windows 8.1 Apps</description>
-    <releaseNotes>Minor improvements to the BackgroundAudioService, fixed some issues with play/pause states.</releaseNotes>
+    <description>Toolkit that makes working with the HybridWebApp Framework simpler. Targeting Windows 10 apps.</description>
+    <releaseNotes>Added support for several W10 WebView APIs including ClearTemporaryWebDataAsync, AddWebAllowedObject, CapturePreviewToStreamAsync, CaptureSelectedContentToDataPackageAsync, DeferredPermissionRequestById, PermissionRequested event and LongRunningScriptDetected event.</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>WebApp HybridWeb PhoneGap HybridWebApp Toolkit</tags>
 	<dependencies>
-		<dependency id="HybridWebApp.Framework" version="1.0.4" />
+		<dependency id="HybridWebApp.Framework" version="1.1.0" />
+		<dependency id="Newtonsoft.Json" version="7.0.1" />
 	</dependencies>
   </metadata>
   <files>
-	<file src="..\src\HybridWebApp.Toolkit\bin\Release\Audio\empty.mp3" target="lib\portable-win81+wpa81\HybridWebApp.Toolkit\Audio\empty.mp3" />
-    <file src="..\src\HybridWebApp.Toolkit\bin\Release\Controls\HybridWebView.xbf" target="lib\portable-win81+wpa81\HybridWebApp.Toolkit\Controls\HybridWebView.xbf" />
-	<file src="..\src\HybridWebApp.Toolkit\bin\Release\Views\LoadingOverlay.xbf" target="lib\portable-win81+wpa81\HybridWebApp.Toolkit\Views\LoadingOverlay.xbf" />
-	<file src="..\src\HybridWebApp.Toolkit\bin\Release\Views\OfflineOverlay.xbf" target="lib\portable-win81+wpa81\HybridWebApp.Toolkit\Views\OfflineOverlay.xbf" />
-	<file src="..\src\HybridWebApp.Toolkit\bin\Release\HybridWebApp.Toolkit.xr.xml" target="lib\portable-win81+wpa81\HybridWebApp.Toolkit\HybridWebApp.Toolkit.xr.xml" />
-    <file src="..\src\HybridWebApp.Toolkit\bin\Release\HybridWebApp.Toolkit.pri" target="lib\portable-win81+wpa81\HybridWebApp.Toolkit.pri" />
-    <file src="..\src\HybridWebApp.Toolkit\bin\Release\HybridWebApp.Toolkit.dll" target="lib\portable-win81+wpa81\HybridWebApp.Toolkit.dll" />
-	
-	<file src="..\src\HybridWebApp.Toolkit.WP8\Bin\Release\HybridWebApp.Toolkit.WP8.dll" target="lib\portable-wp8\HybridWebApp.Toolkit.WP8.dll" />
+	<file src="..\src\HybridWebApp.Toolkit\bin\Release\Audio\empty.mp3" target="lib\uap10.0\HybridWebApp.Toolkit\Audio\empty.mp3" />
+    <file src="..\src\HybridWebApp.Toolkit\bin\Release\Controls\HybridWebView.xbf" target="lib\uap10.0\HybridWebApp.Toolkit\Controls\HybridWebView.xbf" />
+	<file src="..\src\HybridWebApp.Toolkit\bin\Release\Views\LoadingOverlay.xbf" target="lib\uap10.0\HybridWebApp.Toolkit\Views\LoadingOverlay.xbf" />
+	<file src="..\src\HybridWebApp.Toolkit\bin\Release\Views\OfflineOverlay.xbf" target="lib\uap10.0\HybridWebApp.Toolkit\Views\OfflineOverlay.xbf" />
+	<file src="..\src\HybridWebApp.Toolkit\bin\Release\Properties\HybridWebApp.Toolkit.rd.xml" target="lib\uap10.0\HybridWebApp.Toolkit\Properties\HybridWebApp.Toolkit.rd.xml" />
+	<file src="..\src\HybridWebApp.Toolkit\bin\Release\HybridWebApp.Toolkit.xr.xml" target="lib\uap10.0\HybridWebApp.Toolkit\HybridWebApp.Toolkit.xr.xml" />	
+    <file src="..\src\HybridWebApp.Toolkit\bin\Release\HybridWebApp.Toolkit.pri" target="lib\uap10.0\HybridWebApp.Toolkit.pri" />
+    <file src="..\src\HybridWebApp.Toolkit\bin\Release\HybridWebApp.Toolkit.dll" target="lib\uap10.0\HybridWebApp.Toolkit.dll" />
   </files>
 </package>

@@ -11,7 +11,7 @@
     d:DesignWidth="400" x:Name="This" Loaded="HybridWebView_Loaded">
     
     <Grid>
-        <WebView x:Name="WebView" 
+        <WebView x:Name="WebView"
                  HorizontalAlignment="Stretch" 
                  VerticalAlignment="Stretch" 
                  NavigationStarting="WebView_NavigationStarting" 
@@ -19,7 +19,10 @@
                  FrameContentLoading="WebView_FrameContentLoading" 
                  FrameDOMContentLoaded="WebView_FrameDOMContentLoaded" 
                  FrameNavigationCompleted="WebView_FrameNavigationCompleted" 
-                 FrameNavigationStarting="WebView_FrameNavigationStarting"/>
+                 FrameNavigationStarting="WebView_FrameNavigationStarting"
+                 LongRunningScriptDetected="WebView_LongRunningScriptDetected"
+                 PermissionRequested="WebView_PermissionRequested"/>
+        
         <toolkit:LoadingOverlay x:Name="LoadingOverlay" BackgroundImage="{Binding ElementName=This, Path=LoadingBackgroundImage}" BackgroundImageWidth="{Binding ElementName=This, Path=LoadingBackgroundImageWidth}" BackgroundBrush="{Binding ElementName=This, Path=LoadingBackgroundBrush}" Visibility="Collapsed" />
         <toolkit:OfflineOverlay x:Name="OfflineOverlay" BackgroundImage="{Binding ElementName=This, Path=OfflineBackgroundImage}" BackgroundImageWidth="{Binding ElementName=This, Path=OfflineBackgroundImageWidth}" BackgroundBrush="{Binding ElementName=This, Path=OfflineBackgroundBrush}" Visibility="Collapsed" />
     </Grid>
