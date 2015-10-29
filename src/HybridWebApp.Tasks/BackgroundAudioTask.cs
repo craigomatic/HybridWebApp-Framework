@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using HybridWebApp.Toolkit;
+using HybridWebApp.Toolkit.Audio;
 using System.Threading;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Media;
 using Windows.Media.Playback;
 
-namespace HybridWebApp.Toolkit.Audio
+namespace HybridWebApp.Tasks
 {
-    public class BackgroundAudioTask : IBackgroundTask
+    public sealed class BackgroundAudioTask : IBackgroundTask
     {
         private SystemMediaTransportControls _TransportControls;
         private BackgroundTaskDeferral _BackgroundTaskDeferral;

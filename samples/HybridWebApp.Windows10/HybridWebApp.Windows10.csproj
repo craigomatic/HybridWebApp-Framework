@@ -137,6 +137,10 @@
       <Project>{f50d427b-5196-4cef-a07c-2aec6e6d963e}</Project>
       <Name>HybridWebApp.Framework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\HybridWebApp.Tasks\HybridWebApp.Tasks.csproj">
+      <Project>{004973e6-2ffb-4ae3-8c16-719720d1d1e6}</Project>
+      <Name>HybridWebApp.Tasks</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\HybridWebApp.Toolkit\HybridWebApp.Toolkit.csproj">
       <Project>{0179fff5-1583-4541-bace-e14b53562d35}</Project>
       <Name>HybridWebApp.Toolkit</Name>
