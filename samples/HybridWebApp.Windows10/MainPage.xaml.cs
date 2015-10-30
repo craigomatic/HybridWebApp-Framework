@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HybridWebApp.Toolkit.Audio;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +24,8 @@ namespace HybridWebApp.Windows10
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private BackgroundAudioService _BackgroundAudioService;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -54,6 +57,20 @@ namespace HybridWebApp.Windows10
         private void BackgroundAudio_Click(object sender, RoutedEventArgs e)
         {
             WebHost.Navigate(new Uri("http://hybridwebapp.azurewebsites.net/audio-demo/"));
+
+            _BackgroundAudioService = new BackgroundAudioService(Dispatcher);
+
+            //TODO: replace with a message from the webpage that contains the correct data
+            _BackgroundAudioService.UpdateNowPlaying(new AudioInfo
+            {
+                Album = "Album",
+                Artist = "Artist",
+                ImageUri = "",
+                IsNextEnabled = false,
+                IsPreviousEnabled = false,
+                PlaybackStatus = Toolkit.AudioPlaybackStatus.Playing,
+                Title = "Title"
+            });
         }
 
         private void Geolocation_Click(object sender, RoutedEventArgs e)
