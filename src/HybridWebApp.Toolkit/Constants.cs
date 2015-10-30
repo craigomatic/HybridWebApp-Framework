@@ -36,4 +36,8 @@ namespace HybridWebApp.Toolkit
         Suspended
     }
 
+    public class TaskExceptions
+    {
+        public const int RPC_S_SERVER_UNAVAILABLE = -2147023174; // 0x800706BA
+    }
 }

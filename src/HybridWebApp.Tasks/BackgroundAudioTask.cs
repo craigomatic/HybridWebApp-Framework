@@ -1,9 +1,12 @@
 ﻿using HybridWebApp.Toolkit;
 using HybridWebApp.Toolkit.Audio;
+using System.Diagnostics;
 using System.Threading;
 using Windows.ApplicationModel.Background;
 using Windows.Media;
 using Windows.Media.Playback;
+using System;
+using Windows.Storage.Streams;
 
 namespace HybridWebApp.Tasks
 {
@@ -18,6 +21,8 @@ namespace HybridWebApp.Tasks
 
         public void Run(IBackgroundTaskInstance taskInstance)
         {
+            Debug.WriteLine("Background Audio Task starting...");
+
             _AppState = AppState.Unknown;
 
             _TransportControls = BackgroundMediaPlayer.Current.SystemMediaTransportControls;
@@ -40,7 +45,47 @@ namespace HybridWebApp.Tasks
 
         private void BackgroundMediaPlayer_MessageReceivedFromForeground(object sender, MediaPlayerDataReceivedEventArgs e)
         {
-            
+            AudioInfo audioInfo = null;
+
+            if (MessageService.TryParseMessage<AudioInfo>(e.Data, out audioInfo))
+            {
+                _UpdateNowPlaying(audioInfo);
+            }
+        }
+
+        private void _UpdateNowPlaying(AudioInfo audioInfo)
+        {
+            //clear all seems to be required as otherwise the tracks don't update
+            _TransportControls.DisplayUpdater.ClearAll();
+            _TransportControls.IsEnabled = true;
+
+            _TransportControls.DisplayUpdater.Type = MediaPlaybackType.Music;
+
+            _TransportControls.IsPlayEnabled = _NowPlaying.PlaybackStatus == AudioPlaybackStatus.Paused || _NowPlaying.PlaybackStatus == AudioPlaybackStatus.Stopped;
+            _TransportControls.IsPauseEnabled = _NowPlaying.PlaybackStatus == AudioPlaybackStatus.Playing;
+            _TransportControls.IsNextEnabled = _NowPlaying.IsNextEnabled;
+            _TransportControls.IsPreviousEnabled = _NowPlaying.IsPreviousEnabled;
+
+            if (!string.IsNullOrWhiteSpace(_NowPlaying.Artist))
+            {
+                _TransportControls.DisplayUpdater.MusicProperties.AlbumArtist = _NowPlaying.Artist;
+                _TransportControls.DisplayUpdater.MusicProperties.Artist = _NowPlaying.Artist;
+                _TransportControls.DisplayUpdater.MusicProperties.Title = _NowPlaying.Title;
+            }
+
+            _TransportControls.PlaybackStatus = (MediaPlaybackStatus)_NowPlaying.PlaybackStatus;
+
+            if (!string.IsNullOrWhiteSpace(_NowPlaying.ImageUri))
+            {
+                try
+                {
+                    var streamRef = RandomAccessStreamReference.CreateFromUri(new Uri(_NowPlaying.ImageUri));
+                    _TransportControls.DisplayUpdater.Thumbnail = streamRef;
+                }
+                catch { }
+            }
+
+            _TransportControls.DisplayUpdater.Update();
         }
 
         private void _SystemMediaTransportControls_PropertyChanged(SystemMediaTransportControls sender, SystemMediaTransportControlsPropertyChangedEventArgs args)

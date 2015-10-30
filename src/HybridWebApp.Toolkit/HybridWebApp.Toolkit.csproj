@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="Audio\AudioInfo.cs" />
     <Compile Include="Audio\BackgroundAudioService.cs" />
+    <Compile Include="Audio\MessageService.cs" />
     <Compile Include="BrowserWrapper.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\HybridWebView.xaml.cs">
