@@ -69,7 +69,7 @@ namespace HybridWebApp.Toolkit.Audio
             }
 
             this.MediaPlayer.IsLoopingEnabled = true;
-            this.MediaPlayer.AudioCategory = MediaPlayerAudioCategory.Media;
+            //this.MediaPlayer.AudioCategory = MediaPlayerAudioCategory.Media;
             this.MediaPlayer.AutoPlay = false;
             this.MediaPlayer.SetUriSource(new Uri("ms-appx:///HybridWebApp.Toolkit/Audio/empty.mp3"));
             this.MediaPlayer.Volume = 1;
