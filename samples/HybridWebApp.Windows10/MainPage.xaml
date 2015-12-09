@@ -177,7 +177,7 @@
                 </Setter>
             </Style>
 
-            <Style TargetType="TextBlock" BasedOn="{StaticResource SplitViewTextBlockStyle}" />
+            <Style x:Key="SplitViewMenuText" TargetType="TextBlock" BasedOn="{StaticResource SplitViewTextBlockStyle}" />
             <Style TargetType="RadioButton" BasedOn="{StaticResource SplitViewRadioButtonStyle}" />
         </ResourceDictionary>
     </Page.Resources>
@@ -196,7 +196,7 @@
                         <StackPanel>
                             <RadioButton Checked="DontCheck" Click="Menu_Click">
                                 <RadioButton.Tag>
-                                    <TextBlock Text="{StaticResource MenuButtonText}" FontSize="{StaticResource SplitViewLargeNavFontSize}" />
+                                    <TextBlock Style="{StaticResource SplitViewMenuText}" Text="{StaticResource MenuButtonText}" FontSize="{StaticResource SplitViewLargeNavFontSize}" />
                                 </RadioButton.Tag>
                             </RadioButton>
                         </StackPanel>
@@ -207,14 +207,14 @@
                         <!-- GeoLocation -->
                         <RadioButton Click="Geolocation_Click" Content="GeoLocation" GroupName="Nav">
                             <RadioButton.Tag>
-                                <TextBlock Text="&#xE81D;" />
+                                <TextBlock Style="{StaticResource SplitViewMenuText}" Text="&#xE81D;" />
                             </RadioButton.Tag>
                         </RadioButton>
 
                         <!-- Background Audio -->
                         <RadioButton Click="BackgroundAudio_Click" Content="Background Audio" GroupName="Nav">
                             <RadioButton.Tag>
-                                <TextBlock Text="&#xE767;" />
+                                <TextBlock Style="{StaticResource SplitViewMenuText}" Text="&#xE767;" />
                             </RadioButton.Tag>
                         </RadioButton>
                     </StackPanel>
@@ -229,7 +229,10 @@
                                LoadingBackgroundImage="ms-appx:///Assets/StoreLogo.png"
                                LoadingBackgroundBrush="#FF24890D"
                                OfflineBackgroundImage="ms-appx:///Assets/StoreLogo.png"
-                               OfflineBackgroundBrush="#FF24890D"
+                               OfflineBackgroundBrush="#FF24890D" 
+                               OfflineForegroundBrush="White"
+                               OfflineTitle="Got Connection?"
+                               OfflineSubtitle="We couldn't connect right now, please check the connection and try again."
                                WebUri="http://hybridwebapp.azurewebsites.net/"
                                Ready="WebHost_Ready"
                                PermissionRequested="WebHost_PermissionRequested"
