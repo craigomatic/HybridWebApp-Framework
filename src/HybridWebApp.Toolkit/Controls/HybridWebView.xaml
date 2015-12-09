@@ -23,7 +23,20 @@
                  LongRunningScriptDetected="WebView_LongRunningScriptDetected"
                  PermissionRequested="WebView_PermissionRequested"/>
         
-        <toolkit:LoadingOverlay x:Name="LoadingOverlay" BackgroundImage="{Binding ElementName=This, Path=LoadingBackgroundImage}" BackgroundImageWidth="{Binding ElementName=This, Path=LoadingBackgroundImageWidth}" BackgroundBrush="{Binding ElementName=This, Path=LoadingBackgroundBrush}" Visibility="Collapsed" />
-        <toolkit:OfflineOverlay x:Name="OfflineOverlay" BackgroundImage="{Binding ElementName=This, Path=OfflineBackgroundImage}" BackgroundImageWidth="{Binding ElementName=This, Path=OfflineBackgroundImageWidth}" BackgroundBrush="{Binding ElementName=This, Path=OfflineBackgroundBrush}" Visibility="Collapsed" />
+        <toolkit:LoadingOverlay 
+            x:Name="LoadingOverlay" 
+            BackgroundImage="{Binding ElementName=This, Path=LoadingBackgroundImage}" 
+            BackgroundImageWidth="{Binding ElementName=This, Path=LoadingBackgroundImageWidth}" 
+            BackgroundBrush="{Binding ElementName=This, Path=LoadingBackgroundBrush}" 
+            Visibility="Collapsed" />
+        <toolkit:OfflineOverlay 
+            x:Name="OfflineOverlay" 
+            BackgroundImage="{Binding ElementName=This, Path=OfflineBackgroundImage}" 
+            BackgroundImageWidth="{Binding ElementName=This, Path=OfflineBackgroundImageWidth}" 
+            BackgroundBrush="{Binding ElementName=This, Path=OfflineBackgroundBrush}" 
+            ForegroundBrush="{Binding ElementName=This, Path=OfflineForegroundBrush}"
+            Title="{Binding ElementName=This, Path=OfflineTitle}"
+            Subtitle="{Binding ElementName=This, Path=OfflineSubtitle}"
+            Visibility="Collapsed" />
     </Grid>
 </UserControl>

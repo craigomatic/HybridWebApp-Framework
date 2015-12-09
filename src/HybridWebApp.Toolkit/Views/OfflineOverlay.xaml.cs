@@ -22,6 +22,26 @@ namespace HybridWebApp.Toolkit.Views
     /// </summary>
     public sealed partial class OfflineOverlay : Page
     {
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Title.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register("Title", typeof(string), typeof(OfflineOverlay), new PropertyMetadata("Navigation Failed."));
+
+        public string Subtitle
+        {
+            get { return (string)GetValue(SubtitleProperty); }
+            set { SetValue(SubtitleProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Subtitle.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SubtitleProperty =
+            DependencyProperty.Register("Subtitle", typeof(string), typeof(OfflineOverlay), new PropertyMetadata("Check your data connection then retry."));
+
         public int LargeFontSize
         {
             get { return (int)GetValue(LargeFontSizeProperty); }

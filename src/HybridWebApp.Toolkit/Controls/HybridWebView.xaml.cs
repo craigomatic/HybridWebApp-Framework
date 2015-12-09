@@ -51,11 +51,17 @@ namespace HybridWebApp.Toolkit.Controls
 
         public double LoadingBackgroundImageWidth { get; set; }
 
+        public Brush OfflineForegroundBrush { get; set; }
+
         public Brush OfflineBackgroundBrush { get; set; }
 
         public string OfflineBackgroundImage { get; set; }
 
         public double OfflineBackgroundImageWidth { get; set; }
+
+        public string OfflineTitle { get; set; }
+
+        public string OfflineSubtitle { get; set; }
 
         /// <summary>
         /// Default CSS resource to load
@@ -169,6 +175,8 @@ namespace HybridWebApp.Toolkit.Controls
             this.NavigateOnLoad = true;
             this.EnableLoadingOverlay = true;
             this.EnableOfflineOverlay = true;
+            this.OfflineTitle = "Navigation Failed.";
+            this.OfflineSubtitle = "Check your data connection then retry.";
 
             OfflineOverlay.RetryAction = () => { this.HideOfflineOverlayAndRetry(); };
         }

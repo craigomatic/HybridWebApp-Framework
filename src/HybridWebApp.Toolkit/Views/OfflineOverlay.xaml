@@ -10,8 +10,8 @@
     <Grid x:Name="LayoutRoot" Background="{Binding BackgroundBrush}" HorizontalAlignment="Stretch" VerticalAlignment='Stretch'>
         <StackPanel x:Name="NavigationFailed" Grid.Row="1" VerticalAlignment="Center">
             <Image Source="{Binding BackgroundImage}" Width="{Binding BackgroundImageWidth}" Margin="{Binding BackgroundImageMargin}" />
-            <TextBlock Text="Navigation Failed." Foreground="{Binding ForegroundBrush}" FontSize="{Binding LargeFontSize}" HorizontalAlignment="Center" Margin="0,0,0,20"/>
-            <TextBlock Text="Check your data connection then retry." Foreground="{Binding ForegroundBrush}" FontSize="{Binding SmallFontSize}" HorizontalAlignment="Center" />
+            <TextBlock Text="{Binding Title}" Foreground="{Binding ForegroundBrush}" FontSize="{Binding LargeFontSize}" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+            <TextBlock Text="{Binding Subtitle}" Foreground="{Binding ForegroundBrush}" FontSize="{Binding SmallFontSize}" HorizontalAlignment="Center" />
             <Button Margin="0,20,0,0" Content="Retry" Click="Retry_Click" Width="125" Height="65" HorizontalAlignment="Center" Foreground="{Binding ForegroundBrush}" BorderBrush="{Binding ForegroundBrush}"/>
         </StackPanel>
     </Grid>
