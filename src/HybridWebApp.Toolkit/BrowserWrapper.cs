@@ -93,6 +93,15 @@ namespace HybridWebApp.Toolkit
 
         void WebView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs e)
         {
+            //if a custom user agent is specified, cancel the navigation when it has been initiated by the browser as it won't include the custom user-agent    
+            if (!string.IsNullOrWhiteSpace(this.UserAgent) && e.Uri != _CurrentUri)
+            {
+                e.Cancel = true;
+            
+                this.Navigate(e.Uri);
+                return;
+            }
+                      
             if (this.Navigating != null)
             {
                 var eventArgs = new WrappedNavigatingEventArgs(e.Uri);
@@ -145,18 +154,21 @@ namespace HybridWebApp.Toolkit
         {
             _CurrentUri = uri;
 
-            this.WebView.Navigate(uri);
+            this.Navigate(uri, HttpMethod.Get);
         }
 
-        public void Navigate(Uri uri, HttpMethod httpMethod, IList<KeyValuePair<string, string>> httpHeaders, IHttpContent httpContent = null)
+        public void Navigate(Uri uri, HttpMethod httpMethod = null, IList<KeyValuePair<string, string>> httpHeaders = null, IHttpContent httpContent = null)
         {
             _CurrentUri = uri;
 
             var httpRequestMessage = new Windows.Web.Http.HttpRequestMessage(httpMethod, uri);
 
-            foreach (var httpHeader in httpHeaders)
+            if (httpHeaders != null)
             {
-                httpRequestMessage.Headers.Add(httpHeader);
+                foreach (var httpHeader in httpHeaders)
+                {
+                    httpRequestMessage.Headers.Add(httpHeader);
+                }
             }
 
             if (!string.IsNullOrWhiteSpace(this.UserAgent))
