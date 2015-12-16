@@ -25,12 +25,12 @@ namespace HybridWebApp.Framework.Test.Tests
 
                 var wait = true;
 
-                webView.NavigationCompleted += (s, a) =>
+                webView.NavigationCompleted += async (s, a) =>
                 {
                     try
                     {
-                        interpreter.Load("function abc() { }");
-                        interpreter.Eval("abc();");
+                        await interpreter.LoadAsync("function abc() { }");
+                        await interpreter.EvalAsync("abc();");
                     }
                     catch (Exception e)
                     {
@@ -72,11 +72,11 @@ namespace HybridWebApp.Framework.Test.Tests
 
                 var wait = true;
 
-                webView.NavigationCompleted += (s, a) =>
+                webView.NavigationCompleted += async (s, a) =>
                 {
                     try
                     {
-                        interpreter.Eval("thisDoesntExist();");
+                        await interpreter.EvalAsync("thisDoesntExist();");
                     }
                     catch (Exception e)
                     {
@@ -118,13 +118,13 @@ namespace HybridWebApp.Framework.Test.Tests
 
                 var wait = true;
 
-                webView.NavigationCompleted += (s, a) =>
+                webView.NavigationCompleted += async (s, a) =>
                 {
-                    interpreter.Load("app = {};");
+                    await interpreter.LoadAsync("app = {};");
 
                     try
                     {
-                        interpreter.Eval("app.thisDoesntExist();");
+                        await interpreter.EvalAsync("app.thisDoesntExist();");
                     }
                     catch (Exception e)
                     {
