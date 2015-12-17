@@ -87,7 +87,7 @@ namespace HybridWebApp.Framework.Test.Tests
 
                         await interpreter.LoadFrameworkAsync();
                         await interpreter.LoadCssAsync(expectedCss);
-
+                        
                         actualCss = await interpreter.EvalAsync("document.getElementsByTagName('style')[0].innerHTML");
                     }
                     catch (Exception e)
@@ -117,6 +117,113 @@ namespace HybridWebApp.Framework.Test.Tests
 
             Assert.IsNull(thrownException);
             Assert.IsTrue(string.Equals(expectedCss.Replace("\r", string.Empty).Replace("\n", string.Empty), actualCss, StringComparison.OrdinalIgnoreCase));
+        }
+
+        [TestMethod]
+        public async Task Valid_Js_Loads_Without_Throwing_An_Exception()
+        {
+            Exception thrownException = null;
+
+            var action = new Func<Task>(async () =>
+            {
+                var webView = new WebView();
+                var interpreter = new Interpreter(new BrowserWrapper(webView));
+
+                var wait = true;
+
+                webView.NavigationCompleted += async (s, a) =>
+                {
+                    try
+                    {
+                        var js = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///TestData/app.js"));
+                        var jsString = await Windows.Storage.FileIO.ReadTextAsync(js);
+
+                        await interpreter.LoadFrameworkAsync();
+                        await interpreter.LoadAsync(jsString);
+                    }
+                    catch (Exception e)
+                    {
+                        thrownException = e;
+                    }
+
+                    wait = false;
+                };
+
+                await Task.Factory.StartNew(async () =>
+                {
+                    await DispatcherHelper.Dispatch(() =>
+                    {
+                        webView.NavigateToString("<html><body><div id='abc'></div></body></html>");
+                    });
+                });
+
+                while (wait)
+                {
+                    await Task.Delay(1000);
+                }
+            });
+
+            var runner = new AsyncUITestRunner(action);
+            await runner.RunAsync();
+
+            Assert.IsNull(thrownException);
+        }
+
+        [TestMethod]
+        public async Task Valid_Js_Loads_And_Is_The_Same_As_The_Contents_Of_The_Js_File()
+        {
+            var actualJs = "";
+            var expectedJs = "";
+
+            Exception thrownException = null;
+
+            var action = new Func<Task>(async () =>
+            {
+                var webView = new WebView();
+                var interpreter = new Interpreter(new BrowserWrapper(webView));
+
+                var wait = true;
+
+                webView.NavigationCompleted += async (s, a) =>
+                {
+                    try
+                    {
+                        var css = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///TestData/app.js"));
+                        expectedJs = await Windows.Storage.FileIO.ReadTextAsync(css);
+
+                        await interpreter.LoadFrameworkAsync();
+                        await interpreter.LoadCssAsync(expectedJs);
+
+                        //TODO: how to get the script from the DOM, it's passed in via eval
+                        actualJs = "";
+                    }
+                    catch (Exception e)
+                    {
+                        thrownException = e;
+                    }
+
+                    wait = false;
+                };
+
+                await Task.Factory.StartNew(async () =>
+                {
+                    await DispatcherHelper.Dispatch(() =>
+                    {
+                        webView.NavigateToString("<html><body><div id='abc'></div></body></html>");
+                    });
+                });
+
+                while (wait)
+                {
+                    await Task.Delay(1000);
+                }
+            });
+
+            var runner = new AsyncUITestRunner(action);
+            await runner.RunAsync();
+
+            Assert.IsNull(thrownException);
+            Assert.IsTrue(string.Equals(expectedJs, actualJs, StringComparison.OrdinalIgnoreCase));
         }
     }
 }
