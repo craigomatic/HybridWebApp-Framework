@@ -1,0 +1,18 @@
+﻿body {
+    background-image: url('img.png')
+}
+
+.myclass {
+    background: #ff0000;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+
+.double-quotations {
+    background: #ff0000;
+    font-family:"Franklin Gothic Medium", "Arial Narrow"
+}
+
+#id {
+    display: block;
+    margin: 4px 7px 10px 8px;
+}
