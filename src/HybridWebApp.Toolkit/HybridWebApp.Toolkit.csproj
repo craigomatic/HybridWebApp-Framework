@@ -113,6 +113,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioExtensions.cs" />
     <Compile Include="Audio\AudioInfo.cs" />
     <Compile Include="Audio\BackgroundAudioService.cs" />
     <Compile Include="Audio\MessageService.cs" />
