@@ -32,32 +32,17 @@ namespace HybridWebApp.Framework
                     }
             }
         }
-
-        public void Load(string scriptPayload)
-        {
-            this.Eval(scriptPayload);
-        }
-
+        
         public async Task LoadAsync(string scriptPayload)
         {
             await this.EvalAsync(scriptPayload);
-        }
-
-        public void LoadCss(string cssPayload)
-        {
-            this.Eval(string.Format("framework.appendCss(\"{0}\");", cssPayload.Replace("\r", string.Empty).Replace("\n", string.Empty)));
         }
 
         public async Task LoadCssAsync(string cssPayload)
         {
             await this.EvalAsync(string.Format("framework.appendCss(\"{0}\");", cssPayload.Replace("\r", string.Empty).Replace("\n", string.Empty)));
         }
-
-        public string Eval(string scriptPayload)
-        {
-            return (string)_ScriptInvoker.Eval(scriptPayload);
-        }
-
+        
         public Task<string> EvalAsync(string scriptPayload)
         {
             return _ScriptInvoker.EvalAsync(scriptPayload);

@@ -124,7 +124,7 @@ namespace HybridWebApp.Framework
 
         public void NavigateHome()
         {
-            this.Interpreter.Eval(string.Format("framework.routeTo('{0}');", this.Root));
+            this.Interpreter.EvalAsync(string.Format("framework.routeTo('{0}');", this.Root));
         }
 
         public void Navigate(NavItem navItem)
@@ -134,7 +134,7 @@ namespace HybridWebApp.Framework
 
         public void Navigate(string href)
         {
-            this.Interpreter.Eval(string.Format("framework.routeTo('{0}');", href));
+            this.Interpreter.EvalAsync(string.Format("framework.routeTo('{0}');", href));
         }
 
         private async Task _EvaluateMappedRoutesAsync(RouteTiming mapTiming, Uri uri, bool isSuccess, int webErrorStatus)
