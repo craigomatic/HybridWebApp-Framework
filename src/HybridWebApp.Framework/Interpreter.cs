@@ -45,12 +45,18 @@ namespace HybridWebApp.Framework
 
         public void LoadCss(string cssPayload)
         {
-            this.Eval(string.Format("framework.appendCss(\"{0}\");", cssPayload.Replace("\r", string.Empty).Replace("\n", string.Empty)));
+            this.Eval(string.Format("framework.appendCss(\"{0}\");", cssPayload
+                .Replace("\r", string.Empty)
+                .Replace("\n", string.Empty)
+                .Replace("\"", "'")));
         }
 
         public async Task LoadCssAsync(string cssPayload)
         {
-            await this.EvalAsync(string.Format("framework.appendCss(\"{0}\");", cssPayload.Replace("\r", string.Empty).Replace("\n", string.Empty)));
+            await this.EvalAsync(string.Format("framework.appendCss(\"{0}\");", cssPayload
+                .Replace("\r", string.Empty)
+                .Replace("\n", string.Empty)
+                .Replace("\"", "'")));
         }
 
         public string Eval(string scriptPayload)
