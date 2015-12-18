@@ -116,7 +116,7 @@ namespace HybridWebApp.Framework.Test.Tests
             await runner.RunAsync();
 
             Assert.IsNull(thrownException);
-            Assert.IsTrue(string.Equals(expectedCss.Replace("\r", string.Empty).Replace("\n", string.Empty), actualCss, StringComparison.OrdinalIgnoreCase));
+            Assert.IsTrue(string.Equals(expectedCss.Replace("\r", string.Empty).Replace("\n", string.Empty).Replace("\"", "'"), actualCss, StringComparison.OrdinalIgnoreCase));
         }
 
         [TestMethod]
