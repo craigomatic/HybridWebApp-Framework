@@ -40,6 +40,8 @@ namespace HybridWebApp.Toolkit.Controls
 
         public event TypedEventHandler<HybridWebView, WebViewPermissionRequestedEventArgs> PermissionRequested;
 
+        public event TypedEventHandler<HybridWebView, NewWindowEventArgs> NewWindowRequested;
+
         /// <summary>
         /// Fires when the HybridWebView is ready for manipulation
         /// </summary>
@@ -270,6 +272,9 @@ namespace HybridWebApp.Toolkit.Controls
                 {
                     await _Interpreter.LoadFrameworkAsync(WebToHostMessageChannel.IFrame);
 
+                    //always override window.open, it gets swallowed anyway by the WebView 
+                    await _Interpreter.EvalAsync("framework.overrideWindowOpen();");
+
                     //load JS
                     if (!string.IsNullOrWhiteSpace(jsString))
                     {
@@ -370,6 +375,18 @@ namespace HybridWebApp.Toolkit.Controls
 
         private void _OnMessageReceived(ScriptMessage scriptMessage)
         {
+            //swallow the WindowOpen messages, these are handled via the NewWindowRequested event instead
+            if (scriptMessage.Type == KnownMessageTypes.WindowOpen)
+            {
+                if (this.NewWindowRequested != null)
+                {
+                    var navItem = JsonConvert.DeserializeObject<NavItem>(scriptMessage.Payload);
+                    this.NewWindowRequested(this, new NewWindowEventArgs(new Uri(navItem.Href), null));
+                }
+
+                return;
+            }
+
             if (MessageReceived != null)
             {
                 MessageReceived(this, scriptMessage);
@@ -557,6 +574,14 @@ namespace HybridWebApp.Toolkit.Controls
             if (this.PermissionRequested != null)
             {
                 this.PermissionRequested(this, args);
+            }
+        }
+
+        private void WebView_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)
+        {
+            if (this.NewWindowRequested != null)
+            {
+                this.NewWindowRequested(this, new NewWindowEventArgs(args));
             }
         }
     }

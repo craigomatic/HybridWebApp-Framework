@@ -21,7 +21,8 @@
                  FrameNavigationCompleted="WebView_FrameNavigationCompleted" 
                  FrameNavigationStarting="WebView_FrameNavigationStarting"
                  LongRunningScriptDetected="WebView_LongRunningScriptDetected"
-                 PermissionRequested="WebView_PermissionRequested"/>
+                 PermissionRequested="WebView_PermissionRequested"
+                 NewWindowRequested="WebView_NewWindowRequested"/>
         
         <toolkit:LoadingOverlay 
             x:Name="LoadingOverlay" 

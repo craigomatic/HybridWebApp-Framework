@@ -127,6 +127,7 @@
     <Compile Include="Identity\Model\UserInfo.cs" />
     <Compile Include="Identity\WebAuthHelper.cs" />
     <Compile Include="Imaging\ImagingExtensions.cs" />
+    <Compile Include="NewWindowEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\LoadingOverlay.xaml.cs">
       <DependentUpon>LoadingOverlay.xaml</DependentUpon>
