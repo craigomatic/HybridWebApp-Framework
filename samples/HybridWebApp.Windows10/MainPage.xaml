@@ -217,6 +217,13 @@
                                 <TextBlock Style="{StaticResource SplitViewMenuText}" Text="&#xE767;" />
                             </RadioButton.Tag>
                         </RadioButton>
+
+                        <!-- New Window -->
+                        <RadioButton Click="NewWindow_Click" Content="Windowing" GroupName="Nav">
+                            <RadioButton.Tag>
+                                <TextBlock Style="{StaticResource SplitViewMenuText}" Text="&#xE78B;" />
+                            </RadioButton.Tag>
+                        </RadioButton>
                     </StackPanel>
 
                 </Grid>
@@ -236,6 +243,7 @@
                                WebUri="http://hybridwebapp.azurewebsites.net/"
                                Ready="WebHost_Ready"
                                PermissionRequested="WebHost_PermissionRequested"
+                               NewWindowRequested="WebHost_NewWindowRequested"
                                NavigateOnLoad="False"/>
             </SplitView.Content>
         </SplitView>

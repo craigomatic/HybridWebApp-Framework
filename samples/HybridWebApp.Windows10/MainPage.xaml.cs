@@ -61,6 +61,11 @@ namespace HybridWebApp.Windows10
             WebHost.Navigate(new Uri("http://hybridwebapp.azurewebsites.net/geolocation-demo/"));
         }
 
+        private void NewWindow_Click(object sender, RoutedEventArgs e)
+        {
+            WebHost.Navigate(new Uri("http://hybridwebapp.azurewebsites.net/windowing-demo/"));
+        }
+
         private void Menu_Click(object sender, RoutedEventArgs e)
         {
             this.ShellSplitView.IsPaneOpen = !this.ShellSplitView.IsPaneOpen;
@@ -69,6 +74,14 @@ namespace HybridWebApp.Windows10
         private void DontCheck(object sender, RoutedEventArgs e)
         {
             (sender as RadioButton).IsChecked = false;
+        }
+
+        private void WebHost_NewWindowRequested(Toolkit.Controls.HybridWebView sender, Toolkit.NewWindowEventArgs args)
+        {
+            args.Handled = true;            
+
+            //just navigate using the same WebView
+            sender.Navigate(args.Uri);
         }
     }
 }
