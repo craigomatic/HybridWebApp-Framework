@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>HybridWebApp.Toolkit</id>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
     <title>HybridWebApp.Toolkit</title>
     <authors>Craig Presti</authors>
     <owners>Craig Presti</owners>
@@ -10,7 +10,7 @@
     <projectUrl>http://github.com/craigomatic/HybridWebApp-Framework</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Toolkit that makes working with the HybridWebApp Framework simpler. Targeting Windows 10 apps.</description>
-    <releaseNotes>Fixed support for custom UserAgent strings.</releaseNotes>
+    <releaseNotes>Expose NewWindowRequested event (handles window.open now also)</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>WebApp HybridWeb PhoneGap HybridWebApp Toolkit</tags>
 	<dependencies>
